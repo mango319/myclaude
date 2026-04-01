@@ -1,0 +1,30 @@
+const pptxgen = require('pptxgenjs');
+const html2pptx = require('../scripts/html2pptx');
+const path = require('path');
+
+async function createPresentation() {
+  const pptx = new pptxgen();
+  pptx.layout = 'LAYOUT_16x9';
+  pptx.author = 'Claude';
+  pptx.title = '打印机分类体系';
+
+  const workspaceDir = __dirname;
+
+  await html2pptx(path.join(workspaceDir, 'slide1.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide2.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide3.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide4.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide5.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide6.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide7.html'), pptx);
+  await html2pptx(path.join(workspaceDir, 'slide8.html'), pptx);
+
+  const outputPath = path.join(workspaceDir, '打印机分类体系.pptx');
+  await pptx.writeFile({ fileName: outputPath });
+  console.log(`Presentation created: ${outputPath}`);
+}
+
+createPresentation().catch(err => {
+  console.error('Error creating presentation:', err);
+  process.exit(1);
+});

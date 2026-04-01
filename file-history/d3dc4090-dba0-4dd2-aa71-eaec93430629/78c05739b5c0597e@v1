@@ -1,0 +1,249 @@
+"""
+FastAPI应用主入口
+"""
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+from loguru import logger
+import sys
+
+from config.settings import settings
+from core.middleware import setup_middlewares
+from core.exceptions import BaseAppException, ExceptionHandler
+from api.routes import webhook, chat, admin
+
+
+# 配置日志
+logger.remove()
+logger.add(
+    sys.stdout,
+    format=settings.LOG_FORMAT,
+    level=settings.LOG_LEVEL
+)
+
+# 如果配置了文件日志
+if settings.LOG_FILE_PATH:
+    logger.add(
+        settings.LOG_FILE_PATH,
+        rotation="1 day",
+        retention="30 days",
+        level=settings.LOG_LEVEL
+    )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """应用生命周期管理"""
+    logger.info("🚀 应用启动中...")
+
+    # 初始化平台路由器
+    try:
+        from gateway.router import init_router
+        init_router()
+        logger.info("✓ 平台路由器初始化完成")
+    except Exception as e:
+        logger.warning(f"平台路由器初始化失败: {str(e)}")
+
+    # 初始化知识库
+    try:
+        from services import kb_service
+        await kb_service.initialize()
+        logger.info("✓ 知识库初始化完成")
+    except Exception as e:
+        logger.warning(f"知识库初始化失败: {str(e)}")
+
+    # 初始化LLM客户端
+    try:
+        if settings.LLM_PROVIDER == "dashscope":
+            from nlp.llm_client import DashScopeClient
+            app.state.llm_client = DashScopeClient()
+        else:
+            from nlp.llm_client import OpenAIClient
+            app.state.llm_client = OpenAIClient()
+        logger.info(f"✓ LLM客户端初始化完成 ({settings.LLM_PROVIDER})")
+    except Exception as e:
+        logger.warning(f"LLM客户端初始化失败: {str(e)}")
+        app.state.llm_client = None
+
+    # 初始化Redis缓存
+    try:
+        import redis.asyncio as redis
+        app.state.redis = redis.from_url(
+            settings.REDIS_URL,
+            encoding="utf-8",
+            decode_responses=True
+        )
+        await app.state.redis.ping()
+        logger.info("✓ Redis连接成功")
+    except Exception as e:
+        logger.warning(f"Redis连接失败: {str(e)}")
+        app.state.redis = None
+
+    logger.info("✅ 应用启动完成")
+
+    yield
+
+    # 清理资源
+    logger.info("🛑 应用关闭中...")
+
+    if hasattr(app.state, "redis") and app.state.redis:
+        await app.state.redis.close()
+
+    logger.info("✅ 应用已关闭")
+
+
+# 创建FastAPI应用
+app = FastAPI(
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
+    description="智能客服系统 - 支持天猫、京东、亚马逊",
+    lifespan=lifespan,
+    docs_url="/docs" if settings.DEBUG else None,
+    redoc_url="/redoc" if settings.DEBUG else None
+)
+
+
+# CORS配置
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"] if settings.DEBUG else [
+        "https://yourdomain.com",
+        "https://admin.yourdomain.com"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# 设置自定义中间件
+setup_middlewares(app)
+
+
+# 全局异常处理器
+@app.exception_handler(BaseAppException)
+async def app_exception_handler(request: Request, exc: BaseAppException):
+    """处理应用异常"""
+    handler = ExceptionHandler()
+    result = await handler.handle_exception(exc)
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content=result
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """处理请求验证异常"""
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={
+            "success": False,
+            "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "请求参数验证失败",
+                "details": exc.errors()
+            }
+        }
+    )
+
+
+# 注册路由
+app.include_router(webhook.router, prefix="/api/v1", tags=["Webhook"])
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["Chat"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin"])
+
+
+# 根路径
+@app.get("/")
+async def root():
+    """根路径"""
+    return {
+        "name": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "status": "running",
+        "docs": "/docs" if settings.DEBUG else "disabled"
+    }
+
+
+# 健康检查
+@app.get("/health", tags=["Health"])
+async def health_check():
+    """健康检查"""
+    health_status = {
+        "status": "healthy",
+        "version": settings.APP_VERSION,
+        "timestamp": logger._core.start_time
+    }
+
+    # 检查各服务状态
+    services = {}
+
+    # 检查Redis
+    if hasattr(app.state, "redis") and app.state.redis:
+        try:
+            await app.state.redis.ping()
+            services["redis"] = "healthy"
+        except Exception:
+            services["redis"] = "unhealthy"
+            health_status["status"] = "degraded"
+    else:
+        services["redis"] = "not configured"
+
+    # 检查知识库
+    try:
+        from services import kb_service
+        if kb_service._initialized:
+            services["knowledge_base"] = "healthy"
+        else:
+            services["knowledge_base"] = "initializing"
+            health_status["status"] = "degraded"
+    except Exception:
+        services["knowledge_base"] = "error"
+        health_status["status"] = "degraded"
+
+    # 检查平台连接
+    try:
+        from gateway.router import router
+        platform_health = await router.health_check_all()
+        for platform, healthy in platform_health.items():
+            services[f"platform_{platform.value}"] = "healthy" if healthy else "unhealthy"
+
+            if not healthy and health_status["status"] == "healthy":
+                health_status["status"] = "degraded"
+    except Exception:
+        services["platforms"] = "error"
+
+    health_status["services"] = services
+
+    return health_status
+
+
+# 指标端点（Prometheus）
+@app.get("/metrics", tags=["Monitoring"])
+async def metrics():
+    """Prometheus指标"""
+    if not settings.ENABLE_METRICS:
+        return {"error": "Metrics disabled"}
+
+    from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+    from fastapi.responses import Response
+
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST
+    )
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "api.main:app",
+        host=settings.API_HOST,
+        port=settings.API_PORT,
+        reload=settings.DEBUG,
+        log_level=settings.LOG_LEVEL.lower()
+    )

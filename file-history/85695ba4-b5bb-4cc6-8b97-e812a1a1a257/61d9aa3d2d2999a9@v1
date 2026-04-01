@@ -21,8 +21,8 @@ shell-snapshots/
 # Logs
 *.log
 
-# File history - now backed up
-# file-history/
+# File history (可选，很大)
+file-history/
 
-# Large history file - now backed up
-# history.jsonl
+# Large history file (可选)
+history.jsonl

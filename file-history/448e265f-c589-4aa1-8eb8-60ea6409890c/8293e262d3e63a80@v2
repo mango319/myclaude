@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #2E4053;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.title-container {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 60pt;
+  box-sizing: border-box;
+}
+h1 {
+  color: #FFFFFF;
+  font-size: 56pt;
+  font-weight: bold;
+  margin: 0 0 30pt 0;
+  text-align: center;
+  letter-spacing: 2pt;
+}
+.subtitle {
+  color: #E67E22;
+  font-size: 24pt;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 1pt;
+}
+</style>
+</head>
+<body>
+<div class="title-container">
+  <h1>打印机分类体系</h1>
+  <p class="subtitle">全方位解析打印机类型与应用场景</p>
+</div>
+</body>
+</html>

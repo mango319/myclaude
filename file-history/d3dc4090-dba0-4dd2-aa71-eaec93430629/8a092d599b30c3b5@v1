@@ -1,0 +1,138 @@
+"""
+全局配置管理
+支持环境变量和配置文件
+"""
+from typing import Optional, List
+from pydantic_settings import BaseSettings
+from pydantic import Field
+import os
+from pathlib import Path
+
+# 项目根目录
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+class Settings(BaseSettings):
+    """应用配置"""
+
+    # 应用基础配置
+    APP_NAME: str = "E-commerce CS Bot"
+    APP_VERSION: str = "1.0.0"
+    DEBUG: bool = False
+    ENVIRONMENT: str = "development"
+
+    # API配置
+    API_HOST: str = "0.0.0.0"
+    API_PORT: int = 8000
+    API_PREFIX: str = "/api/v1"
+
+    # 数据库配置
+    DATABASE_URL: str = Field(
+        default="postgresql://user:pass@localhost:5432/csbot",
+        description="PostgreSQL数据库连接URL"
+    )
+
+    # Redis配置
+    REDIS_URL: str = Field(
+        default="redis://localhost:6379/0",
+        description="Redis连接URL"
+    )
+    REDIS_CACHE_TTL: int = 3600  # 缓存过期时间(秒)
+
+    # LLM配置
+    LLM_PROVIDER: str = Field(default="dashscope", description="LLM提供商: dashscope/openai")
+    DASHSCOPE_API_KEY: Optional[str] = Field(default=None, description="通义千问API密钥")
+    OPENAI_API_KEY: Optional[str] = Field(default=None, description="OpenAI API密钥")
+    DASHSCOPE_MODEL: str = "qwen-turbo"
+    OPENAI_MODEL: str = "gpt-3.5-turbo"
+    LLM_TEMPERATURE: float = 0.7
+    LLM_MAX_TOKENS: int = 2000
+
+    # 向量数据库配置
+    VECTOR_DB_TYPE: str = "chroma"  # chroma/pinecone
+    CHROMA_PERSIST_DIR: str = str(BASE_DIR / "knowledge_base" / "embeddings")
+    CHROMA_COLLECTION_NAME: str = "knowledge_base"
+    PINECONE_API_KEY: Optional[str] = None
+    PINECONE_ENVIRONMENT: Optional[str] = None
+    PINECONE_INDEX_NAME: str = "csbot-kb"
+
+    # Embedding配置
+    EMBEDDING_MODEL: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    EMBEDDING_DIMENSION: int = 384
+
+    # RAG配置
+    RAG_TOP_K: int = 5
+    RAG_SCORE_THRESHOLD: float = 0.6
+    RAG_CHUNK_SIZE: int = 500
+    RAG_CHUNK_OVERLAP: int = 50
+
+    # 意图识别配置
+    INTENT_CONFIDENCE_THRESHOLD: float = 0.7
+    INTENT_MAX_RETRIES: int = 3
+    INTENT_FALLBACK: str = "FAQ"
+
+    # 天猫配置
+    TMALL_APP_KEY: Optional[str] = None
+    TMALL_APP_SECRET: Optional[str] = None
+    TMALL_SANDBOX: bool = False
+    TMALL_WEBHOOK_URL: str = "/api/v1/webhook/tmall"
+
+    # 京东配置
+    JD_APP_KEY: Optional[str] = None
+    JD_APP_SECRET: Optional[str] = None
+    JD_TOKEN_URL: str = "https://api.jd.com/routerjson"
+    JD_WEBHOOK_URL: str = "/api/v1/webhook/jd"
+
+    # 亚马逊配置
+    AMAZON_SELLER_ID: Optional[str] = None
+    AMAZON_MARKETPLACE_ID: Optional[str] = None
+    AWS_ACCESS_KEY_ID: Optional[str] = None
+    AWS_SECRET_ACCESS_KEY: Optional[str] = None
+    AMAZON_WEBHOOK_URL: str = "/api/v1/webhook/amazon"
+
+    # 人工转接配置
+    ESCALATION_WEBHOOK_URL: Optional[str] = None
+    ESCALATION_MAX_FAILURES: int = 3
+    ESCALATION_NEGATIVE_THRESHOLD: float = 0.6
+
+    # Celery配置
+    CELERY_BROKER_URL: str = "redis://localhost:6379/1"
+    CELERY_RESULT_BACKEND: str = "redis://localhost:6379/2"
+
+    # JWT配置
+    JWT_SECRET_KEY: str = "your-secret-key-change-in-production"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRATION: int = 86400  # 24小时
+
+    # 日志配置
+    LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
+    LOG_FILE_PATH: str = str(BASE_DIR / "logs" / "app.log")
+
+    # 文件上传配置
+    MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10MB
+    ALLOWED_FILE_TYPES: List[str] = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/plain",
+        "text/markdown"
+    ]
+
+    # 监控配置
+    ENABLE_METRICS: bool = True
+    METRICS_PORT: int = 9090
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        case_sensitive = True
+
+
+# 全局配置实例
+settings = Settings()
+
+
+def get_settings() -> Settings:
+    """获取配置实例(依赖注入用)"""
+    return settings

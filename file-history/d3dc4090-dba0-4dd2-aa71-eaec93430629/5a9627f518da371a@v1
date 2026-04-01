@@ -1,0 +1,441 @@
+"""
+知识库服务
+管理文档加载、向量化、检索
+"""
+import os
+from pathlib import Path
+from typing import List, Dict, Any, Optional
+from loguru import logger
+
+from core.models import Document, DocumentChunk, SearchResult
+from config.settings import settings
+
+
+class KnowledgeBaseService:
+    """知识库服务"""
+
+    def __init__(self, embedding_client=None):
+        """
+        初始化知识库服务
+
+        Args:
+            embedding_client: 向量化客户端
+        """
+        self.embedding_client = embedding_client
+        self.vector_store = None
+        self.documents: Dict[str, Document] = {}
+        self._initialized = False
+
+    async def initialize(self):
+        """初始化知识库"""
+        try:
+            # 初始化向量数据库
+            await self._init_vector_store()
+
+            # 加载已有文档
+            await self._load_documents()
+
+            self._initialized = True
+            logger.info("知识库初始化完成")
+
+        except Exception as e:
+            logger.error(f"知识库初始化失败: {str(e)}")
+            raise
+
+    async def _init_vector_store(self):
+        """初始化向量数据库"""
+        try:
+            import chromadb
+
+            # 创建持久化客户端
+            persist_dir = Path(settings.CHROMA_PERSIST_DIR)
+            persist_dir.mkdir(parents=True, exist_ok=True)
+
+            self.vector_store = chromadb.PersistentClient(
+                path=str(persist_dir),
+                settings=chromadb.Settings(
+                    anonymized_telemetry=False,
+                    allow_reset=True
+                )
+            )
+
+            # 获取或创建集合
+            self.collection = self.vector_store.get_or_create_collection(
+                name=settings.CHROMA_COLLECTION_NAME,
+                metadata={"hnsw:space": "cosine"}
+            )
+
+            logger.info(f"向量数据库初始化完成: {persist_dir}")
+
+        except Exception as e:
+            logger.error(f"向量数据库初始化失败: {str(e)}")
+            raise
+
+    async def _load_documents(self):
+        """加载已有文档到内存"""
+        try:
+            # 从向量数据库加载所有文档
+            results = self.collection.get()
+
+            if results and results.get("ids"):
+                # 重建文档索引
+                for doc_id, metadata, embedding in zip(
+                    results["ids"],
+                    results["metadata"],
+                    results.get("embeddings", [])
+                ):
+                    if doc_id not in self.documents:
+                        self.documents[doc_id] = Document(
+                            document_id=doc_id,
+                            title=metadata.get("title", ""),
+                            content="",
+                            source=metadata.get("source", ""),
+                            metadata=metadata
+                        )
+
+                logger.info(f"已加载 {len(self.documents)} 个文档")
+
+        except Exception as e:
+            logger.warning(f"加载文档失败: {str(e)}")
+
+    async def add_document(
+        self,
+        title: str,
+        content: str,
+        source: str,
+        document_type: str = "text",
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> Document:
+        """
+        添加文档到知识库
+
+        Args:
+            title: 文档标题
+            content: 文档内容
+            source: 来源
+            document_type: 文档类型
+            metadata: 元数据
+
+        Returns:
+            添加的文档
+        """
+        try:
+            import uuid
+
+            # 创建文档
+            document_id = str(uuid.uuid4())
+            doc = Document(
+                document_id=document_id,
+                title=title,
+                content=content,
+                source=source,
+                document_type=document_type,
+                metadata=metadata or {}
+            )
+
+            # 分块
+            chunks = await self._chunk_document(doc)
+
+            # 生成向量并存储
+            await self._index_chunks(chunks)
+
+            # 保存到内存
+            self.documents[document_id] = doc
+
+            logger.info(f"文档添加成功: {title} ({len(chunks)}个分块)")
+
+            return doc
+
+        except Exception as e:
+            logger.error(f"添加文档失败: {str(e)}")
+            raise
+
+    async def _chunk_document(
+        self,
+        document: Document
+    ) -> List[DocumentChunk]:
+        """
+        将文档分块
+
+        Args:
+            document: 文档对象
+
+        Returns:
+            文档分块列表
+        """
+        chunks = []
+        content = document.content
+
+        # 按段落分割
+        paragraphs = content.split("\n\n")
+        current_chunk = ""
+        chunk_index = 0
+
+        for para in paragraphs:
+            para = para.strip()
+            if not para:
+                continue
+
+            # 检查是否需要创建新分块
+            if len(current_chunk) + len(para) > settings.RAG_CHUNK_SIZE:
+                if current_chunk:
+                    chunks.append(self._create_chunk(
+                        document, current_chunk, chunk_index
+                    ))
+                    chunk_index += 1
+                current_chunk = para
+            else:
+                current_chunk += "\n\n" + para if current_chunk else para
+
+        # 添加最后一个分块
+        if current_chunk:
+            chunks.append(self._create_chunk(
+                document, current_chunk, chunk_index
+            ))
+
+        return chunks
+
+    def _create_chunk(
+        self,
+        document: Document,
+        content: str,
+        index: int
+    ) -> DocumentChunk:
+        """创建文档分块"""
+        import uuid
+
+        return DocumentChunk(
+            chunk_id=f"{document.document_id}_chunk_{index}",
+            document_id=document.document_id,
+            content=content,
+            metadata={
+                **document.metadata,
+                "title": document.title,
+                "source": document.source,
+                "chunk_index": index
+            }
+        )
+
+    async def _index_chunks(self, chunks: List[DocumentChunk]):
+        """
+        将文档分块索引到向量数据库
+
+        Args:
+            chunks: 文档分块列表
+        """
+        if not chunks:
+            return
+
+        try:
+            # 生成向量
+            texts = [chunk.content for chunk in chunks]
+            embeddings = await self._generate_embeddings(texts)
+
+            # 准备数据
+            ids = [chunk.chunk_id for chunk in chunks]
+            metadatas = [chunk.metadata for chunk in chunks]
+
+            # 添加到向量数据库
+            self.collection.add(
+                ids=ids,
+                embeddings=embeddings,
+                metadatas=metadatas,
+                documents=texts
+            )
+
+            logger.info(f"已索引 {len(chunks)} 个分块")
+
+        except Exception as e:
+            logger.error(f"索引分块失败: {str(e)}")
+            raise
+
+    async def _generate_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """
+        生成文本向量
+
+        Args:
+            texts: 文本列表
+
+        Returns:
+            向量列表
+        """
+        try:
+            from sentence_transformers import SentenceTransformer
+
+            model = SentenceTransformer(settings.EMBEDDING_MODEL)
+            embeddings = model.encode(texts, convert_to_numpy=True)
+
+            return embeddings.tolist()
+
+        except Exception as e:
+            logger.error(f"生成向量失败: {str(e)}")
+
+            # 使用简单的向量作为后备
+            import hashlib
+            import numpy as np
+
+            embeddings = []
+            dim = settings.EMBEDDING_DIMENSION
+
+            for text in texts:
+                # 使用哈希生成伪向量
+                hash_val = hashlib.md5(text.encode()).hexdigest()
+                vector = [int(hash_val[i:i+2], 16) / 255.0 for i in range(0, min(dim * 2, len(hash_val)), 2)]
+
+                # 填充到指定维度
+                if len(vector) < dim:
+                    vector.extend([0.0] * (dim - len(vector)))
+
+                embeddings.append(vector[:dim])
+
+            return embeddings
+
+    async def search(
+        self,
+        query: str,
+        top_k: int = 5,
+        filters: Optional[Dict[str, Any]] = None
+    ) -> List[SearchResult]:
+        """
+        语义检索
+
+        Args:
+            query: 查询文本
+            top_k: 返回结果数量
+            filters: 过滤条件
+
+        Returns:
+            检索结果列表
+        """
+        if not self._initialized:
+            await self.initialize()
+
+        try:
+            # 生成查询向量
+            query_embeddings = await self._generate_embeddings([query])
+            query_embedding = query_embeddings[0]
+
+            # 执行检索
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=top_k,
+                where=filters
+            )
+
+            # 转换结果
+            search_results = []
+
+            if results and results.get("ids") and results["ids"][0]:
+                for i, doc_id in enumerate(results["ids"][0]):
+                    metadata = results["metadatas"][0][i]
+                    score = 1 - results["distances"][0][i]  # 转换距离为相似度
+
+                    chunk = DocumentChunk(
+                        chunk_id=doc_id,
+                        document_id=metadata.get("document_id", ""),
+                        content=results["documents"][0][i],
+                        metadata=metadata,
+                        score=score
+                    )
+
+                    search_results.append(SearchResult(chunk=chunk, score=score))
+
+            logger.info(f"检索完成: 查询='{query}', 返回{len(search_results)}条结果")
+
+            return search_results
+
+        except Exception as e:
+            logger.error(f"检索失败: {str(e)}")
+            return []
+
+    async def delete_document(self, document_id: str) -> bool:
+        """
+        删除文档
+
+        Args:
+            document_id: 文档ID
+
+        Returns:
+            是否成功
+        """
+        try:
+            # 从向量数据库删除
+            self.collection.delete(where={"document_id": document_id})
+
+            # 从内存删除
+            if document_id in self.documents:
+                del self.documents[document_id]
+
+            logger.info(f"文档删除成功: {document_id}")
+            return True
+
+        except Exception as e:
+            logger.error(f"删除文档失败: {str(e)}")
+            return False
+
+    async def get_document(self, document_id: str) -> Optional[Document]:
+        """
+        获取文档
+
+        Args:
+            document_id: 文档ID
+
+        Returns:
+            文档对象或None
+        """
+        return self.documents.get(document_id)
+
+    async def list_documents(
+        self,
+        limit: int = 100,
+        offset: int = 0
+    ) -> List[Document]:
+        """
+        列出文档
+
+        Args:
+            limit: 返回数量限制
+            offset: 偏移量
+
+        Returns:
+            文档列表
+        """
+        docs = list(self.documents.values())
+        return docs[offset:offset + limit]
+
+    async def update_document(
+        self,
+        document_id: str,
+        **updates
+    ) -> Optional[Document]:
+        """
+        更新文档
+
+        Args:
+            document_id: 文档ID
+            **updates: 更新字段
+
+        Returns:
+            更新后的文档
+        """
+        try:
+            # 删除旧文档
+            await self.delete_document(document_id)
+
+            # 添加新文档
+            return await self.add_document(**updates)
+
+        except Exception as e:
+            logger.error(f"更新文档失败: {str(e)}")
+            return None
+
+
+# 全局知识库服务实例
+kb_service = KnowledgeBaseService()
+
+
+async def get_kb_service() -> KnowledgeBaseService:
+    """获取知识库服务实例（依赖注入用）"""
+    if not kb_service._initialized:
+        await kb_service.initialize()
+    return kb_service

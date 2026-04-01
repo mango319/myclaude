@@ -1,0 +1,486 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+闲鱼佳能1DX2价格爬虫 - 增强版
+自动下载ChromeDriver，无需手动安装
+"""
+
+import time
+import json
+import csv
+import re
+import sys
+import io
+from datetime import datetime
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from webdriver_manager.chrome import ChromeDriverManager
+
+# 修复Windows控制台编码问题
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
+
+class XianyuScraperPro:
+    """闲鱼价格爬虫增强版 - 自动管理ChromeDriver"""
+
+    def __init__(self, headless=False, max_items=50):
+        """
+        初始化爬虫
+
+        Args:
+            headless: 是否使用无头模式
+            max_items: 最大抓取商品数量
+        """
+        self.headless = headless
+        self.max_items = max_items
+        self.driver = None
+        self.results = []
+
+    def _setup_options(self):
+        """配置浏览器选项"""
+        options = Options()
+        if self.headless:
+            options.add_argument('--headless=new')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--start-maximized')
+        options.add_argument(
+            'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) '
+            'Chrome/120.0.0.0 Safari/537.36'
+        )
+        # 禁用自动化检测
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        return options
+
+    def start_driver(self):
+        """启动浏览器（自动下载ChromeDriver）"""
+        try:
+            print("正在启动Chrome浏览器...")
+            options = self._setup_options()
+
+            # 使用webdriver-manager自动下载匹配的ChromeDriver
+            service = Service(ChromeDriverManager().install())
+            self.driver = webdriver.Chrome(service=service, options=options)
+
+            # 执行CDP命令隐藏webdriver特征
+            self.driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+                'source': '''
+                    Object.defineProperty(navigator, 'webdriver', {
+                        get: () => undefined
+                    })
+                '''
+            })
+
+            self.driver.maximize_window()
+            print("[OK] 浏览器启动成功")
+            return True
+
+        except Exception as e:
+            print(f"[X] 浏览器启动失败: {e}")
+            print("\n请确保:")
+            print("1. 已安装Chrome浏览器")
+            print("2. 网络连接正常（需要下载ChromeDriver）")
+            print("3. 已运行: pip install -r requirements.txt")
+            return False
+
+    def search_products(self, keyword="佳能1DX2"):
+        """搜索商品"""
+        if not self.driver:
+            if not self.start_driver():
+                return False
+
+        url = f"https://www.goofish.com/search?q={keyword}"
+        print(f"\n正在搜索: {keyword}")
+        print(f"访问URL: {url}")
+
+        try:
+            self.driver.get(url)
+            print("[OK] 页面加载成功")
+
+            # 等待页面加载
+            time.sleep(5)
+
+            # 滚动加载更多商品
+            self._scroll_and_load()
+
+            return True
+
+        except Exception as e:
+            print(f"[X] 页面访问失败: {e}")
+            return False
+
+    def _scroll_and_load(self):
+        """滚动页面加载更多内容 - 增强版"""
+        print("\n滚动加载商品...")
+        scroll_times = 20  # 增加到20次
+        for i in range(scroll_times):
+            # 滚动到底部
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1.5)
+
+            # 模拟鼠标移动（更真实的用户行为）
+            try:
+                from selenium.webdriver.common.action_chains import ActionChains
+                actions = ActionChains(self.driver)
+                actions.move_by_offset(0, -100).perform()
+            except:
+                pass
+
+            print(f"  已滚动 {i+1}/{scroll_times} 次", end='\r')
+
+        print(f"\n  滚动完成，共 {scroll_times} 次")
+
+        # 滚回顶部
+        self.driver.execute_script("window.scrollTo(0, 0);")
+        time.sleep(3)  # 等待元素稳定
+
+    def parse_page_source(self):
+        """从页面源码中提取价格信息（备用方法）"""
+        print("\n使用页面源码解析方法...")
+
+        page_source = self.driver.page_source
+
+        # 保存页面源码用于调试
+        debug_file = "xianyu_page_source.html"
+        with open(debug_file, 'w', encoding='utf-8') as f:
+            f.write(page_source)
+        print(f"[DEBUG] 页面源码已保存到: {debug_file}")
+
+        # 扩展的价格模式 - 更全面
+        price_patterns = [
+            # 直接价格格式
+            r'¥\s*(\d{3,5})',
+            r'(\d{3,5})\s*元',
+            r'￥\s*(\d{3,5})',
+
+            # JSON数据格式
+            r'"price"\s*:\s*"?(\d{3,5})',
+            r'"priceCny"\s*:\s*"(\d+)"',
+            r'"current"\s*:\s*"(\d+)"',
+            r'"value"\s*:\s*"?(\d{3,5})"',
+            r'"amount"\s*:\s*(\d+)',
+            r'"priceYuan"\s*:\s*"(\d+)"',
+            r'"realPrice"\s*:\s*"?(\d+)',
+
+            # HTML属性格式
+            r'class="[^"]*price[^"]*"[^>]*>(\d{3,5})',
+            r'<span[^>]*price[^>]*>(\d{3,5})',
+            r'data-price="(\d{3,5})"',
+            r'price="(\d{3,5})"',
+
+            # 通用数字模式（在合理价格范围内）
+            r'>(\d{4,5})</span>',
+            r'>(\d{4,5})</div>',
+            r'class="[^"]*[Pp]rice[^"]*">(\d{3,5})',
+        ]
+
+        all_prices = []
+        for i, pattern in enumerate(price_patterns):
+            matches = re.findall(pattern, page_source)
+            if matches:
+                for match in matches:
+                    try:
+                        p = int(match)
+                        # 价格范围：2000-50000
+                        if 2000 <= p <= 50000:
+                            all_prices.append(p)
+                    except:
+                        pass
+
+        # 去重并排序
+        prices = sorted(list(set(all_prices)))
+
+        if prices:
+            print(f"\n从页面源码提取到 {len(prices)} 个价格:")
+            for i, price in enumerate(prices[:20], 1):  # 显示前20个
+                print(f"  [{i}] ¥{price:,}")
+            if len(prices) > 20:
+                print(f"  ... 还有 {len(prices) - 20} 个价格")
+
+            return prices
+
+        print("  未找到有效价格数据")
+        return []
+
+    def parse_products(self):
+        """解析商品信息"""
+        print("\n开始解析商品...")
+
+        products = []
+
+        # 优先使用页面源码解析（能获取更多数据）
+        print("优先使用页面源码解析方法...")
+        prices = self.parse_page_source()
+
+        if prices:
+            for i, price in enumerate(prices[:self.max_items], 1):
+                products.append({
+                    'index': i,
+                    'title': f'佳能1DX2 (价格#{i})',
+                    'price': str(price),
+                    'seller': 'N/A',
+                    'location': 'N/A',
+                    'url': 'N/A',
+                    'scraped_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                })
+
+        # 如果页面源码解析失败，尝试其他方法
+        if not products:
+            print("\n页面源码解析失败，尝试CSS选择器...")
+            strategies = [
+                self._parse_by_css_selector,
+                self._parse_by_xpath,
+                self._parse_by_text_content,
+            ]
+
+            for strategy in strategies:
+                try:
+                    products = strategy()
+                    if products:
+                        print(f"[OK] 使用 {strategy.__name__} 成功解析 {len(products)} 个商品")
+                        break
+                except Exception as e:
+                    print(f"{strategy.__name__} 失败: {e}")
+                    continue
+
+        self.results = products
+        return products
+
+    def _parse_by_css_selector(self):
+        """使用CSS选择器解析"""
+        products = []
+
+        # 闲鱼可能的各种class名称
+        selectors = [
+            "[class*='SearchItem']",
+            "[class*='search-item']",
+            "[class*='card-item']",
+            "[class*='item-card']",
+            ".search-item",
+            ".item",
+        ]
+
+        all_items = []
+        for selector in selectors:
+            items = self.driver.find_elements(By.CSS_SELECTOR, selector)
+            if items:
+                all_items = items
+                print(f"找到 {len(items)} 个元素 (selector: {selector})")
+                break
+
+        for idx, item in enumerate(all_items[:self.max_items], 1):
+            product = self._extract_info(item, idx)
+            if product and product['price'] != 'N/A':
+                products.append(product)
+                print(f"  [{idx}] {product['title'][:25]}... - ¥{product['price']}")
+
+        return products
+
+    def _parse_by_xpath(self):
+        """使用XPath解析"""
+        products = []
+
+        # 查找包含价格的元素
+        price_elements = self.driver.find_elements(By.XPATH, "//*[contains(text(), '¥') or contains(text(), '元')]")
+
+        for idx, elem in enumerate(price_elements[:self.max_items], 1):
+            try:
+                text = elem.text.strip()
+                price_match = re.search(r'(\d{3,5})', text)
+                if price_match:
+                    price = price_match.group(1)
+                    if 3000 <= int(price) <= 30000:
+                        products.append({
+                            'index': idx,
+                            'title': f'佳能1DX2 #{idx}',
+                            'price': price,
+                            'seller': 'N/A',
+                            'location': 'N/A',
+                            'url': 'N/A',
+                            'scraped_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        })
+                        print(f"  [{idx}] ¥{price}")
+            except:
+                continue
+
+        return products
+
+    def _parse_by_text_content(self):
+        """通过文本内容解析"""
+        products = []
+
+        # 获取页面所有文本
+        body = self.driver.find_element(By.TAG_NAME, "body").text
+
+        # 查找价格
+        prices = re.findall(r'[¥元]\s*(\d{3,5})', body)
+
+        for idx, price in enumerate(prices[:self.max_items], 1):
+            price_int = int(price)
+            if 3000 <= price_int <= 30000:
+                products.append({
+                    'index': idx,
+                    'title': f'佳能1DX2 #{idx}',
+                    'price': str(price_int),
+                    'seller': 'N/A',
+                    'location': 'N/A',
+                    'url': 'N/A',
+                    'scraped_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                })
+
+        return products
+
+    def _extract_info(self, item, index):
+        """从商品元素提取信息"""
+        product = {
+            'index': index,
+            'title': 'N/A',
+            'price': 'N/A',
+            'seller': 'N/A',
+            'location': 'N/A',
+            'url': 'N/A',
+            'scraped_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+        # 提取标题
+        try:
+            title_elem = item.find_element(By.CSS_SELECTOR, "[class*='title'], [class*='name'], h3, h4")
+            product['title'] = title_elem.text.strip()[:50]
+        except:
+            product['title'] = f'佳能1DX2 #{index}'
+
+        # 提取价格
+        try:
+            price_text = item.text
+            price_match = re.search(r'[¥元]\s*(\d{3,5})', price_text)
+            if price_match:
+                price = int(price_match.group(1))
+                if 3000 <= price <= 30000:
+                    product['price'] = str(price)
+        except:
+            pass
+
+        # 提取链接
+        try:
+            link = item.find_element(By.TAG_NAME, "a")
+            product['url'] = link.get_attribute('href')
+        except:
+            pass
+
+        return product if product['price'] != 'N/A' else None
+
+    def save_results(self, filename='xianyu_1dx2_prices'):
+        """保存结果"""
+        if not self.results:
+            print("没有数据可保存")
+            return
+
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+        # JSON
+        json_file = f"{filename}_{timestamp}.json"
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(self.results, f, ensure_ascii=False, indent=2)
+        print(f"\n[OK] JSON: {json_file}")
+
+        # CSV
+        csv_file = f"{filename}_{timestamp}.csv"
+        with open(csv_file, 'w', newline='', encoding='utf-8-sig') as f:
+            writer = csv.DictWriter(f, fieldnames=self.results[0].keys())
+            writer.writeheader()
+            writer.writerows(self.results)
+        print(f"[OK] CSV: {csv_file}")
+
+    def print_summary(self):
+        """打印统计信息"""
+        if not self.results:
+            print("\n没有获取到数据")
+            return
+
+        prices = []
+        for item in self.results:
+            try:
+                price = float(item['price'])
+                if 3000 <= price <= 30000:
+                    prices.append(price)
+            except:
+                pass
+
+        if prices:
+            print("\n" + "="*55)
+            print("  佳能1DX2 价格统计")
+            print("="*55)
+            print(f"  采集时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            print(f"  商品数量: {len(self.results)}")
+            print(f"  有效价格: {len(prices)} 个")
+            print("-"*55)
+            print(f"  最低价: ¥{min(prices):,.2f}")
+            print(f"  最高价: ¥{max(prices):,.2f}")
+            print(f"  平均价: ¥{sum(prices)/len(prices):,.2f}")
+            print(f"  中位数: ¥{sorted(prices)[len(prices)//2]:,.2f}")
+            print("="*55)
+
+    def close(self):
+        """关闭浏览器"""
+        if self.driver:
+            self.driver.quit()
+            print("\n[OK] 浏览器已关闭")
+
+    def run(self, keyword="佳能1DX2"):
+        """运行爬虫"""
+        try:
+            print("="*55)
+            print("  闲鱼佳能1DX2价格爬虫 - 增强版")
+            print("="*55)
+
+            if self.search_products(keyword):
+                self.parse_products()
+                self.print_summary()
+                self.save_results()
+
+        except KeyboardInterrupt:
+            print("\n用户中断")
+        except Exception as e:
+            print(f"\n[X] 运行出错: {e}")
+            import traceback
+            traceback.print_exc()
+        finally:
+            self.close()
+
+
+def main():
+    """主函数"""
+    print("\n" + "="*55)
+    print("  闲鱼佳能1DX2价格爬虫 - 增强版")
+    print("="*55)
+
+    print("\n请选择:")
+    print("  1. 显示浏览器 (推荐)")
+    print("  2. 无头模式 (后台运行)")
+
+    choice = input("\n选择 (1/2, 默认1): ").strip() or "1"
+
+    print("\n请输入最大抓取数量 (默认50):")
+    max_items = input("数量: ").strip() or "50"
+
+    scraper = XianyuScraperPro(
+        headless=(choice == "2"),
+        max_items=int(max_items)
+    )
+    scraper.run()
+
+
+if __name__ == "__main__":
+    main()

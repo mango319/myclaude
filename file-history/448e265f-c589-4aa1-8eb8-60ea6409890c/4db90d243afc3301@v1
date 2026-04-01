@@ -1,0 +1,18 @@
+const pptxgen = require('pptxgenjs');
+const html2pptx = require('../scripts/html2pptx');
+const path = require('path');
+
+async function test() {
+  const workspaceDir = path.resolve(__dirname);
+  process.chdir(workspaceDir);
+
+  const pptx = new pptxgen();
+  pptx.layout = 'LAYOUT_16x9';
+
+  await html2pptx(path.join(workspaceDir, 'test-image.html'), pptx);
+
+  await pptx.writeFile({ fileName: 'test-image-output.pptx' });
+  console.log('Test completed!');
+}
+
+test().catch(console.error);

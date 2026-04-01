@@ -1,0 +1,399 @@
+"""
+天猫/淘宝平台适配器
+集成阿里云客服SDK
+"""
+import hashlib
+import time
+from typing import Dict, Any, Optional
+from urllib.parse import quote
+
+import httpx
+
+from core.models import (
+    PlatformType,
+    IncomingMessage,
+    OutgoingMessage,
+    Order,
+    OrderItem,
+    LogisticsInfo,
+    MessageRole
+)
+from core.exceptions import PlatformAPIError
+from gateway.base import BasePlatformAdapter
+from config.settings import settings
+from loguru import logger
+
+
+class TmallAdapter(BasePlatformAdapter):
+    """天猫平台适配器"""
+
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__(config)
+        self.app_key = config.get("app_key") or settings.TMALL_APP_KEY
+        self.app_secret = config.get("app_secret") or settings.TMALL_APP_SECRET
+        self.format = config.get("format", "json")
+        self.sign_method = config.get("sign_method", "md5")
+        self.api_version = config.get("api_version", "2.0")
+        self.session_timeout = config.get("session_timeout", 7200)
+
+        if not self.app_key or not self.app_secret:
+            raise PlatformAPIError(
+                "天猫app_key或app_secret未配置",
+                platform="tmall"
+            )
+
+    def _get_platform_type(self) -> PlatformType:
+        return PlatformType.TMALL
+
+    def _get_gateway_url(self) -> str:
+        if self.is_sandbox:
+            return self.config.get("sandbox_url", "https://gw.open.taobao.com/router/rest")
+        return self.config.get("gateway_url", "https://eco.taobao.com/router/rest")
+
+    async def validate_signature(self, payload: Dict[str, Any], signature: str) -> bool:
+        """
+        验证天猫回调签名
+
+        Args:
+            payload: 回调数据
+            signature: 签名
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 天猫签名算法: MD5(app_secret + 参数按key排序拼接)
+            sorted_params = sorted(payload.items())
+            sign_string = self.app_secret + "".join([f"{k}{v}" for k, v in sorted_params])
+
+            calculated_sign = hashlib.md5(sign_string.encode("utf-8")).hexdigest().upper()
+
+            return calculated_sign == signature.upper()
+
+        except Exception as e:
+            logger.error(f"Tmall signature validation error: {str(e)}")
+            return False
+
+    async def parse_incoming_message(self, raw_data: Dict[str, Any]) -> IncomingMessage:
+        """
+        解析天猫消息
+
+        Args:
+            raw_data: 天猫原始消息
+
+        Returns:
+            标准化消息对象
+        """
+        try:
+            # 提取消息内容
+            content = raw_data.get("content", "")
+            if not content:
+                # 某些消息类型可能使用不同字段
+                content = raw_data.get("msg", "")
+
+            return IncomingMessage(
+                id=raw_data.get("msg_id", f"tmall_{int(time.time() * 1000)}"),
+                platform=PlatformType.TMALL,
+                user_id=str(raw_data.get("user_id", "")),
+                session_id=str(raw_data.get("session_id", raw_data.get("user_id", ""))),
+                role=MessageRole.USER,
+                content=content,
+                message_type=raw_data.get("msg_type", "text"),
+                platform_message_id=raw_data.get("msg_id"),
+                raw_data=raw_data,
+                metadata={
+                    "sender_nick": raw_data.get("sender_nick"),
+                    "receiver_nick": raw_data.get("receiver_nick"),
+                    "chat_type": raw_data.get("chat_type")
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"Tmall message parsing error: {str(e)}")
+            raise PlatformAPIError(
+                f"消息解析失败: {str(e)}",
+                platform="tmall"
+            )
+
+    async def send_message(self, message: OutgoingMessage) -> Dict[str, Any]:
+        """
+        发送消息到天猫
+
+        Args:
+            message: 待发送消息
+
+        Returns:
+            发送结果
+        """
+        try:
+            # 调用天猫客服消息发送API
+            api_method = "taobao.openim.messages.send"
+
+            params = {
+                "userid": message.user_id,
+                "msg": message.content,
+                "msg_type": "text"
+            }
+
+            result = await self._call_api(api_method, params)
+
+            return {
+                "success": True,
+                "message_id": result.get("mid"),
+                "platform_message_id": result.get("mid")
+            }
+
+        except Exception as e:
+            logger.error(f"Tmall send message error: {str(e)}")
+            raise PlatformAPIError(
+                f"发送消息失败: {str(e)}",
+                platform="tmall"
+            )
+
+    async def get_order(self, order_id: str, user_id: str) -> Order:
+        """
+        获取天猫订单信息
+
+        Args:
+            order_id: 订单号
+            user_id: 用户ID
+
+        Returns:
+            订单信息
+        """
+        try:
+            # 调用天猫订单API
+            api_method = "taobao.trade.fullinfo.get"
+
+            params = {
+                "tid": order_id,
+                "fields": "tid,status,payment,orders,created,pay_time,consign_time,received_time"
+            }
+
+            result = await self._call_api(api_method, params)
+            trade = result.get("trade", {})
+
+            # 转换订单商品
+            items = []
+            for order in trade.get("orders", {}).get("order", []):
+                items.append(OrderItem(
+                    sku_id=str(order.get("num_iid", "")),
+                    name=order.get("title", ""),
+                    quantity=int(order.get("num", 0)),
+                    price=float(order.get("price", 0)),
+                    total_price=float(order.get("total_fee", 0))
+                ))
+
+            # 构建订单对象
+            return Order(
+                order_id=order_id,
+                platform=PlatformType.TMALL,
+                platform_order_id=str(trade.get("tid", "")),
+                user_id=user_id,
+                status=self._normalize_order_status(trade.get("status", "")),
+                items=items,
+                total_amount=float(trade.get("total_fee", 0)),
+                payment_amount=float(trade.get("payment", 0)),
+                currency="CNY",
+                created_at=self._parse_datetime(trade.get("created")),
+                updated_at=self._parse_datetime(trade.get("modified", trade.get("created"))),
+                paid_at=self._parse_datetime(trade.get("pay_time")),
+                shipped_at=self._parse_datetime(trade.get("consign_time")),
+                delivered_at=self._parse_datetime(trade.get("received_time"))
+            )
+
+        except Exception as e:
+            logger.error(f"Tmall get order error: {str(e)}")
+            raise PlatformAPIError(
+                f"获取订单失败: {str(e)}",
+                platform="tmall"
+            )
+
+    async def get_order_logistics(self, order_id: str) -> Dict[str, Any]:
+        """
+        获取天猫订单物流信息
+
+        Args:
+            order_id: 订单号
+
+        Returns:
+            物流信息
+        """
+        try:
+            api_method = "taobao.logistics.trace.get"
+
+            params = {
+                "tid": order_id,
+                "seller_confirm": "yes"
+            }
+
+            result = await self._call_api(api_method, params)
+
+            # 转换物流信息
+            traces = []
+            for trace in result.get("trace_list", {}).get("trace_info", []):
+                traces.append({
+                    "time": trace.get("occur_time"),
+                    "status": trace.get("status_desc"),
+                    "location": trace.get("station")
+                })
+
+            return LogisticsInfo(
+                tracking_number=result.get("mail_no", ""),
+                carrier=result.get("company_name", ""),
+                status=result.get("status_desc", ""),
+                traces=traces
+            )
+
+        except Exception as e:
+            logger.error(f"Tmall get logistics error: {str(e)}")
+            raise PlatformAPIError(
+                f"获取物流失败: {str(e)}",
+                platform="tmall"
+            )
+
+    async def verify_user(self, user_id: str) -> bool:
+        """
+        验证天猫用户
+
+        Args:
+            user_id: 用户ID
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 调用天猫用户信息API验证
+            api_method = "taobao.user.buyer.get"
+
+            params = {
+                "fields": "user_id,nick"
+            }
+
+            # 这里需要用户的session key
+            # 实际使用时需要获取并验证session
+            return True
+
+        except Exception as e:
+            logger.error(f"Tmall verify user error: {str(e)}")
+            return False
+
+    async def _call_api(
+        self,
+        method: str,
+        params: Dict[str, Any],
+        session: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        调用天猫API
+
+        Args:
+            method: API方法名
+            params: 请求参数
+            session: 会话令牌（可选）
+
+        Returns:
+            API响应
+        """
+        # 构建基础参数
+        api_params = {
+            "method": method,
+            "app_key": self.app_key,
+            "timestamp": str(int(time.time())),
+            "format": self.format,
+            "v": self.api_version,
+            "sign_method": self.sign_method,
+            "partner_id": "top-apitools"
+        }
+
+        # 添加业务参数
+        api_params.update(params)
+
+        # 添加session（如果有）
+        if session:
+            api_params["session"] = session
+
+        # 生成签名
+        api_params["sign"] = self._generate_sign(api_params)
+
+        # 发送请求
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(self.gateway_url, data=api_params)
+            response.raise_for_status()
+
+            result = response.json()
+
+            # 检查错误响应
+            if "error_response" in result:
+                error = result["error_response"]
+                raise PlatformAPIError(
+                    error.get("msg", "API调用失败"),
+                    platform="tmall",
+                    details={"code": error.get("code")}
+                )
+
+            return result.get(self._parse_response_key(method), result)
+
+    def _generate_sign(self, params: Dict[str, Any]) -> str:
+        """
+        生成天猫API签名
+
+        Args:
+            params: 请求参数
+
+        Returns:
+            签名字符串
+        """
+        # 排序参数
+        sorted_params = sorted(params.items())
+
+        # 拼接字符串
+        sign_string = self.app_secret + "".join([f"{k}{v}" for k, v in sorted_params]) + self.app_secret
+
+        # MD5加密并转大写
+        return hashlib.md5(sign_string.encode("utf-8")).hexdigest().upper()
+
+    def _parse_response_key(self, method: str) -> str:
+        """
+        从API方法名提取响应键名
+
+        Args:
+            method: API方法名
+
+        Returns:
+            响应键名
+        """
+        # taobao.trade.fullinfo.get -> trade_fullinfo_get_response
+        return method.replace(".", "_") + "_response"
+
+    @staticmethod
+    def _parse_datetime(date_str: Optional[str]) -> Optional[Any]:
+        """
+        解析天猫日期字符串
+
+        Args:
+            date_str: 日期字符串
+
+        Returns:
+            datetime对象
+        """
+        if not date_str:
+            return None
+
+        try:
+            from datetime import datetime
+
+            # 天猫日期格式: 2024-01-15 10:30:00
+            return datetime.fromisoformat(date_str.replace(" ", "T"))
+
+        except Exception:
+            return None
+
+    async def _test_connection(self) -> bool:
+        """测试天猫API连接"""
+        try:
+            # 调用一个简单的API测试
+            await self._call_api("taobao.time.get", {})
+            return True
+        except Exception:
+            return False

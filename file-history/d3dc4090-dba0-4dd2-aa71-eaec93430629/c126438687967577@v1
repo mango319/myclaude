@@ -1,0 +1,394 @@
+"""
+京东平台适配器
+集成京东宙斯开放平台API
+"""
+import hashlib
+import json
+import time
+from typing import Dict, Any, Optional
+
+import httpx
+
+from core.models import (
+    PlatformType,
+    IncomingMessage,
+    OutgoingMessage,
+    Order,
+    OrderItem,
+    LogisticsInfo,
+    MessageRole
+)
+from core.exceptions import PlatformAPIError
+from gateway.base import BasePlatformAdapter
+from config.settings import settings
+from loguru import logger
+
+
+class JDAdapter(BasePlatformAdapter):
+    """京东平台适配器"""
+
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__(config)
+        self.app_key = config.get("app_key") or settings.JD_APP_KEY
+        self.app_secret = config.get("app_secret") or settings.JD_APP_SECRET
+        self.token_url = config.get("token_url", "https://api.jd.com/routerjson")
+        self.api_version = config.get("api_version", "2.0")
+        self.format = config.get("format", "json")
+
+        if not self.app_key or not self.app_secret:
+            raise PlatformAPIError(
+                "京东app_key或app_secret未配置",
+                platform="jd"
+            )
+
+    def _get_platform_type(self) -> PlatformType:
+        return PlatformType.JD
+
+    def _get_gateway_url(self) -> str:
+        if self.is_sandbox:
+            return self.config.get("sandbox_url", "https://sandbox.jd.com/routerjson")
+        return self.config.get("gateway_url", "https://api.jd.com/routerjson")
+
+    async def validate_signature(self, payload: Dict[str, Any], signature: str) -> bool:
+        """
+        验证京东回调签名
+
+        Args:
+            payload: 回调数据
+            signature: 签名
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 京东签名算法: MD5(app_secret + 参数按key拼接)
+            sorted_params = sorted(payload.items())
+            sign_string = self.app_secret + "".join([f"{k}{v}" for k, v in sorted_params])
+
+            calculated_sign = hashlib.md5(sign_string.encode("utf-8")).hexdigest().upper()
+
+            return calculated_sign == signature.upper()
+
+        except Exception as e:
+            logger.error(f"JD signature validation error: {str(e)}")
+            return False
+
+    async def parse_incoming_message(self, raw_data: Dict[str, Any]) -> IncomingMessage:
+        """
+        解析京东消息
+
+        Args:
+            raw_data: 京东原始消息
+
+        Returns:
+            标准化消息对象
+        """
+        try:
+            # 京东消息结构
+            content = raw_data.get("content", "")
+            if not content:
+                content = raw_data.get("msg", "")
+
+            return IncomingMessage(
+                id=raw_data.get("msg_id", f"jd_{int(time.time() * 1000)}"),
+                platform=PlatformType.JD,
+                user_id=str(raw_data.get("buyer_id", "")),
+                session_id=str(raw_data.get("chat_id", raw_data.get("buyer_id", ""))),
+                role=MessageRole.USER,
+                content=content,
+                message_type=raw_data.get("msg_type", "text"),
+                platform_message_id=raw_data.get("msg_id"),
+                raw_data=raw_data,
+                metadata={
+                    "buyer_nick": raw_data.get("buyer_nick"),
+                    "seller_id": raw_data.get("seller_id"),
+                    "shop_id": raw_data.get("shop_id")
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"JD message parsing error: {str(e)}")
+            raise PlatformAPIError(
+                f"消息解析失败: {str(e)}",
+                platform="jd"
+            )
+
+    async def send_message(self, message: OutgoingMessage) -> Dict[str, Any]:
+        """
+        发送消息到京东
+
+        Args:
+            message: 待发送消息
+
+        Returns:
+            发送结果
+        """
+        try:
+            # 调用京东客服消息发送API
+            api_method = "jingdong.im.msg.sendMsg"
+
+            params = {
+                "chatId": message.user_id,
+                "content": message.content,
+                "msgType": "text"
+            }
+
+            result = await self._call_api(api_method, params)
+
+            return {
+                "success": True,
+                "message_id": result.get("msgId"),
+                "platform_message_id": result.get("msgId")
+            }
+
+        except Exception as e:
+            logger.error(f"JD send message error: {str(e)}")
+            raise PlatformAPIError(
+                f"发送消息失败: {str(e)}",
+                platform="jd"
+            )
+
+    async def get_order(self, order_id: str, user_id: str) -> Order:
+        """
+        获取京东订单信息
+
+        Args:
+            order_id: 订单号
+            user_id: 用户ID
+
+        Returns:
+            订单信息
+        """
+        try:
+            # 调用京东订单API
+            api_method = "jingdong.order.read.get"
+
+            params = {
+                "orderId": order_id,
+                "optionalFields": "orderId,orderTotalPrice,orderState,orderStartTime,orderEndTime,orderModifiedTime,payTime,consigneeInfo,orderSku"
+            }
+
+            result = await self._call_api(api_method, params)
+            order_info = result.get("orderInfo", {})
+
+            # 转换订单商品
+            items = []
+            for sku in order_info.get("orderSku", {}).get("skuInfo", []):
+                items.append(OrderItem(
+                    sku_id=str(sku.get("skuId", "")),
+                    name=sku.get("skuName", ""),
+                    quantity=int(sku.get("skuNum", 0)),
+                    price=float(sku.get("skuPrice", 0)),
+                    total_price=float(sku.get("skuTotalPrice", 0))
+                ))
+
+            # 获取物流信息
+            logistics = await self.get_order_logistics(order_id)
+
+            return Order(
+                order_id=order_id,
+                platform=PlatformType.JD,
+                platform_order_id=str(order_info.get("orderId", "")),
+                user_id=user_id,
+                status=self._normalize_order_status(order_info.get("orderState", "")),
+                items=items,
+                total_amount=float(order_info.get("orderTotalPrice", 0)),
+                payment_amount=float(order_info.get("orderTotalPrice", 0)),
+                currency="CNY",
+                created_at=self._parse_datetime(order_info.get("orderStartTime")),
+                updated_at=self._parse_datetime(order_info.get("orderModifiedTime", order_info.get("orderStartTime"))),
+                paid_at=self._parse_datetime(order_info.get("payTime")),
+                logistics=logistics,
+                recipient_address={
+                    "name": order_info.get("consigneeInfo", {}).get("fullname"),
+                    "phone": order_info.get("consigneeInfo", {}).get("phone"),
+                    "address": order_info.get("consigneeInfo", {}).get("fullAddress")
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"JD get order error: {str(e)}")
+            raise PlatformAPIError(
+                f"获取订单失败: {str(e)}",
+                platform="jd"
+            )
+
+    async def get_order_logistics(self, order_id: str) -> Dict[str, Any]:
+        """
+        获取京东订单物流信息
+
+        Args:
+            order_id: 订单号
+
+        Returns:
+            物流信息
+        """
+        try:
+            api_method = "jingdong.order.trace.get"
+
+            params = {
+                "orderId": order_id
+            }
+
+            result = await self._call_api(api_method, params)
+
+            # 转换物流信息
+            traces = []
+            for trace in result.get("traceList", {}).get("traceInfo", []):
+                traces.append({
+                    "time": trace.get("occurTime"),
+                    "status": trace.get("content"),
+                    "location": trace.get("operator")
+                })
+
+            return LogisticsInfo(
+                tracking_number=result.get("waybill", ""),
+                carrier="京东物流",
+                status=result.get("stateDesc", ""),
+                traces=traces
+            )
+
+        except Exception as e:
+            logger.error(f"JD get logistics error: {str(e)}")
+            # 物流查询失败时不抛异常，返回空物流信息
+            return LogisticsInfo(
+                tracking_number="",
+                carrier="",
+                status="物流信息查询失败",
+                traces=[]
+            )
+
+    async def verify_user(self, user_id: str) -> bool:
+        """
+        验证京东用户
+
+        Args:
+            user_id: 用户ID
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 调用京东用户信息API验证
+            api_method = "jingdong.user.info.get"
+
+            params = {
+                "buyerId": user_id
+            }
+
+            await self._call_api(api_method, params)
+            return True
+
+        except Exception as e:
+            logger.error(f"JD verify user error: {str(e)}")
+            return False
+
+    async def _call_api(
+        self,
+        method: str,
+        params: Dict[str, Any],
+        access_token: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        调用京东API
+
+        Args:
+            method: API方法名
+            params: 请求参数
+            access_token: 访问令牌（可选）
+
+        Returns:
+            API响应
+        """
+        # 构建基础参数
+        api_params = {
+            "method": method,
+            "app_key": self.app_key,
+            "timestamp": str(int(time.time() * 1000)),
+            "format": self.format,
+            "v": self.api_version
+        }
+
+        # 添加业务参数（需要JSON序列化）
+        if params:
+            api_params["360buy_param_json"] = json.dumps(params)
+
+        # 添加access_token（如果有）
+        if access_token:
+            api_params["access_token"] = access_token
+
+        # 生成签名
+        api_params["sign"] = self._generate_sign(api_params)
+
+        # 发送请求
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(self.gateway_url, data=api_params)
+            response.raise_for_status()
+
+            result = response.json()
+
+            # 检查错误响应
+            if "error_response" in result:
+                error = result["error_response"]
+                raise PlatformAPIError(
+                    error.get("zh_desc", error.get("en_desc", "API调用失败")),
+                    platform="jd",
+                    details={"code": error.get("code")}
+                )
+
+            # 京东API响应直接在根级别
+            return result
+
+    def _generate_sign(self, params: Dict[str, Any]) -> str:
+        """
+        生成京东API签名
+
+        Args:
+            params: 请求参数
+
+        Returns:
+            签名字符串
+        """
+        # 排序参数（排除sign本身）
+        sorted_params = sorted([(k, v) for k, v in params.items() if k != "sign"])
+
+        # 拼接字符串
+        sign_string = self.app_secret + "".join([f"{k}{v}" for k, v in sorted_params]) + self.app_secret
+
+        # MD5加密并转大写
+        return hashlib.md5(sign_string.encode("utf-8")).hexdigest().upper()
+
+    @staticmethod
+    def _parse_datetime(date_str: Optional[str]) -> Optional[Any]:
+        """
+        解析京东日期字符串
+
+        Args:
+            date_str: 日期字符串
+
+        Returns:
+            datetime对象
+        """
+        if not date_str:
+            return None
+
+        try:
+            from datetime import datetime
+
+            # 京东日期格式: 2024-01-15 10:30:00 或时间戳
+            if str(date_str).isdigit():
+                return datetime.fromtimestamp(int(date_str) / 1000)
+            else:
+                return datetime.fromisoformat(date_str.replace(" ", "T"))
+
+        except Exception:
+            return None
+
+    async def _test_connection(self) -> bool:
+        """测试京东API连接"""
+        try:
+            # 调用一个简单的API测试
+            await self._call_api("jingdong.time.get", {})
+            return True
+        except Exception:
+            return False

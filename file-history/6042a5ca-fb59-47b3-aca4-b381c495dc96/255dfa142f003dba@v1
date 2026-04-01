@@ -1,0 +1,595 @@
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+        AlignmentType, HeadingLevel, BorderStyle, WidthType, ShadingType,
+        VerticalAlign, UnderlineType, LevelFormat, PageBreak, Header, Footer, PageNumber } = require('docx');
+
+// Table border style
+const tableBorder = { style: BorderStyle.SINGLE, size: 1, color: "999999" };
+const cellBorders = { top: tableBorder, bottom: tableBorder, left: tableBorder, right: tableBorder };
+const headerBorders = { top: tableBorder, bottom: tableBorder, left: tableBorder, right: tableBorder };
+
+// Helper function to create a table row
+function createRow(cells, isHeader = false) {
+  return new TableRow({
+    tableHeader: isHeader,
+    children: cells.map((cellText, index) => {
+      const isFirstColumn = index === 0;
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: isFirstColumn ? 2000 : 3500, type: WidthType.DXA },
+        shading: isHeader ? { fill: "E8F4F8", type: ShadingType.CLEAR } : undefined,
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: isFirstColumn ? AlignmentType.LEFT : AlignmentType.LEFT,
+          spacing: { before: 50, after: 50 },
+          children: [new TextRun({ text: cellText, bold: isHeader, size: isHeader ? 22 : 20 })]
+        })]
+      });
+    })
+  });
+}
+
+// Helper function to create a three-column table row
+function createThreeColRow(cells, isHeader = false, colWidths = [2000, 3500, 2500]) {
+  return new TableRow({
+    tableHeader: isHeader,
+    children: cells.map((cellText, index) => {
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: colWidths[index], type: WidthType.DXA },
+        shading: isHeader ? { fill: "E8F4F8", type: ShadingType.CLEAR } : undefined,
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: index === 0 ? AlignmentType.LEFT : AlignmentType.CENTER,
+          spacing: { before: 50, after: 50 },
+          children: [new TextRun({ text: cellText, bold: isHeader, size: isHeader ? 22 : 20 })]
+        })]
+      });
+    })
+  });
+}
+
+// Helper function for complex table
+function createDetailRow(items, colWidths) {
+  return new TableRow({
+    children: items.map((item, index) => {
+      const isHeader = index === 0;
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: colWidths[index], type: WidthType.DXA },
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: AlignmentType.LEFT,
+          spacing: { before: 50, after: 50 },
+          children: [new TextRun({ text: item, size: 20, bold: isHeader })]
+        })]
+      });
+    })
+  });
+}
+
+const doc = new Document({
+  styles: {
+    default: {
+      document: {
+        run: { font: "Microsoft YaHei", size: 22 }
+      }
+    },
+    paragraphStyles: [
+      {
+        id: "Title",
+        name: "Title",
+        basedOn: "Normal",
+        run: { size: 40, bold: true, color: "2C3E50", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 200, after: 200 }, alignment: AlignmentType.CENTER }
+      },
+      {
+        id: "Heading1",
+        name: "Heading 1",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 32, bold: true, color: "2980B9", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 240, after: 120 }, outlineLevel: 0 }
+      },
+      {
+        id: "Heading2",
+        name: "Heading 2",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 28, bold: true, color: "34495E", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 180, after: 100 }, outlineLevel: 1 }
+      },
+      {
+        id: "Heading3",
+        name: "Heading 3",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 24, bold: true, color: "7F8C8D", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 140, after: 80 }, outlineLevel: 2 }
+      }
+    ]
+  },
+  numbering: {
+    config: [
+      {
+        reference: "check-list",
+        levels: [
+          {
+            level: 0,
+            format: LevelFormat.BULLET,
+            text: "✓",
+            alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } }
+          }
+        ]
+      },
+      {
+        reference: "cross-list",
+        levels: [
+          {
+            level: 0,
+            format: LevelFormat.BULLET,
+            text: "✗",
+            alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } }
+          }
+        ]
+      }
+    ]
+  },
+  sections: [{
+    properties: {
+      page: {
+        margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+      }
+    },
+    headers: {
+      default: new Header({
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.RIGHT,
+            children: [new TextRun({ text: "APP产品报价单", size: 20, color: "7F8C8D" })]
+          })
+        ]
+      })
+    },
+    footers: {
+      default: new Footer({
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            children: [
+              new TextRun({ text: "第 ", size: 20 }),
+              new TextRun({ children: [PageNumber.CURRENT] }),
+              new TextRun({ text: " 页", size: 20 })
+            ]
+          })
+        ]
+      })
+    },
+    children: [
+      // Title
+      new Paragraph({
+        heading: HeadingLevel.TITLE,
+        children: [new TextRun("智能打印扫描工具APP")]
+      }),
+      new Paragraph({
+        heading: HeadingLevel.TITLE,
+        children: [new TextRun("产品报价单")]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 300 },
+        children: [new TextRun({ text: "（人天单价：¥2,000）", size: 22, color: "7F8C8D" })]
+      }),
+
+      // Section 1: 项目基本信息
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("一、项目基本信息")]
+      }),
+      new Table({
+        columnWidths: [2000, 7000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["项目名称", "智能打印扫描工具APP"]),
+          createRow(["APP类型", "打印扫描/效率工具类应用"]),
+          createRow(["开发平台", "iOS + Android 双平台"]),
+          createRow(["功能版本", "专业版（10大核心功能）"]),
+          createRow(["报价日期", "2026年3月24日"])
+        ]
+      }),
+
+      // Section 2: 核心功能模块
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        spacing: { before: 300 },
+        children: [new TextRun("二、核心功能模块（10大功能）")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("📄 打印功能模块（5项）")]
+      }),
+      new Table({
+        columnWidths: [1800, 7200],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["文档打印", "支持PDF、Word、Excel、PPT等文档格式打印；支持云文档导入；打印预览；页面缩放、黑白/彩色选择；份数设置"]),
+          createRow(["图片打印", "支持JPG、PNG、HEIC等图片格式；单张/批量打印；图片裁剪、旋转、滤镜效果；证件照排版打印；照片尺寸自定义"]),
+          createRow(["网页打印", "内置浏览器；支持长截图打印；网页内容智能识别；广告过滤；打印区域自定义选择"]),
+          createRow(["模版打印", "内置丰富打印模版（发票、合同、简历、证书等）；模版在线编辑；自定义模版上传保存；企业模版库"]),
+          createRow(["文身打印", "图片自定义编辑；文字添加效果；图案缩放旋转；镜像翻转打印；贴纸打印支持"])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("📷 扫描功能模块（2项）")]
+      }),
+      new Table({
+        columnWidths: [1800, 7200],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["随心扫", "智能边缘检测；多页扫描合并；自动纠偏；图片增强；PDF导出；批量扫描；支持多种滤镜（黑白、彩色、增强、省墨）"]),
+          createRow(["高拍仪", "硬件设备SDK对接；实时预览；连拍功能；定时拍摄；支持主流高拍仪品牌；视频录制功能"])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("🔧 图像处理与识别（2项）")]
+      }),
+      new Table({
+        columnWidths: [1800, 7200],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["去手写", "AI智能去手写算法；保留打印内容；手写笔迹精准识别清除；批量处理；效果预览对比"]),
+          createRow(["OCR文字识别", "多语言OCR识别（中英日韩等）；文字提取导出（TXT/Word/PDF）；表格识别还原；身份证/银行卡等证件识别；批量OCR处理"])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("📚 在线服务（1项）")]
+      }),
+      new Table({
+        columnWidths: [1800, 7200],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["在线题库", "题目搜索（文字/拍照搜题）；题目收藏；错题本；题目解析；知识点标签；练习记录统计；题目分享；试卷生成打印"])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // Section 3: 工作量估算
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("三、工作量估算")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("3.1 设计阶段")]
+      }),
+      new Table({
+        columnWidths: [3000, 2000, 1500, 2000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["项目", "工作量", "人天", "小计"], true, [3000, 2000, 1500, 2000]),
+          createDetailRow(["产品原型设计（10个功能模块）", "UI/UX设计师", "8人天", "¥16,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["视觉界面设计", "UI设计师", "12人天", "¥24,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["打印模版设计", "平面设计师", "5人天", "¥10,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["图标与素材设计", "平面设计师", "4人天", "¥8,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["设计小计", "", "29人天", "¥58,000"], [3000, 2000, 1500, 2000])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("3.2 开发阶段")]
+      }),
+      new Table({
+        columnWidths: [3000, 2000, 1500, 2000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["项目", "工作量", "人天", "小计"], true, [3000, 2000, 1500, 2000]),
+          createDetailRow(["iOS客户端开发", "iOS工程师×2", "50人天", "¥100,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["Android客户端开发", "Android工程师×2", "50人天", "¥100,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["后端API开发", "后端工程师", "25人天", "¥50,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["后台管理系统", "前端+后端", "15人天", "¥30,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["AI算法开发", "算法工程师", "10人天", "¥20,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["数据库设计与优化", "数据库工程师", "5人天", "¥10,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["开发小计", "", "155人天", "¥310,000"], [3000, 2000, 1500, 2000])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("3.3 第三方服务与硬件对接")]
+      }),
+      new Table({
+        columnWidths: [3000, 3000, 1500, 2000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["项目", "说明", "人天", "小计"], true, [3000, 3000, 1500, 2000]),
+          createDetailRow(["OCR SDK集成", "百度/腾讯/阿里OCR", "3人天", "¥6,000"], [3000, 3000, 1500, 2000]),
+          createDetailRow(["高拍仪SDK对接", "主流品牌兼容", "4人天", "¥8,000"], [3000, 3000, 1500, 2000]),
+          createDetailRow(["打印机驱动适配", "多品牌打印机兼容", "5人天", "¥10,000"], [3000, 3000, 1500, 2000]),
+          createDetailRow(["第三方登录", "微信/QQ/支付宝", "2人天", "¥4,000"], [3000, 3000, 1500, 2000]),
+          createDetailRow(["第三方对接小计", "", "14人天", "¥28,000"], [3000, 3000, 1500, 2000])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("3.4 测试与上线")]
+      }),
+      new Table({
+        columnWidths: [3000, 2000, 1500, 2000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["项目", "工作量", "人天", "小计"], true, [3000, 2000, 1500, 2000]),
+          createDetailRow(["功能测试", "测试工程师", "12人天", "¥24,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["硬件兼容性测试", "测试工程师", "5人天", "¥10,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["多设备兼容性测试", "测试工程师", "4人天", "¥8,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["性能优化", "开发工程师", "5人天", "¥10,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["应用商店上架", "运营专员", "3人天", "¥6,000"], [3000, 2000, 1500, 2000]),
+          createDetailRow(["测试小计", "", "29人天", "¥58,000"], [3000, 2000, 1500, 2000])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // Section 4: 项目总报价
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("四、项目总报价")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("4.1 开发费用汇总")]
+      }),
+      new Table({
+        columnWidths: [2500, 2500, 3000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["阶段", "人天", "金额"], true, [2500, 2500, 3000]),
+          createDetailRow(["设计阶段", "29人天", "¥58,000"], [2500, 2500, 3000]),
+          createDetailRow(["开发阶段", "155人天", "¥310,000"], [2500, 2500, 3000]),
+          createDetailRow(["第三方对接", "14人天", "¥28,000"], [2500, 2500, 3000]),
+          createDetailRow(["测试阶段", "29人天", "¥58,000"], [2500, 2500, 3000]),
+          createDetailRow(["项目总计", "227人天", "¥454,000"], [2500, 2500, 3000])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("4.2 可选增值服务")]
+      }),
+      new Table({
+        columnWidths: [3000, 2000, 3000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["服务项目", "人天", "金额"], true, [3000, 2000, 3000]),
+          createDetailRow(["服务器部署与运维", "5人天", "¥10,000"], [3000, 2000, 3000]),
+          createDetailRow(["安全渗透测试", "3人天", "¥6,000"], [3000, 2000, 3000]),
+          createDetailRow(["SEO/ASO优化", "3人天", "¥6,000"], [3000, 2000, 3000]),
+          createDetailRow(["持续迭代维护（6个月）", "30人天", "¥60,000"], [3000, 2000, 3000]),
+          createDetailRow(["题库内容录入服务", "按实际题量", "另议"], [3000, 2000, 3000])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("4.3 第三方服务费用（客户承担）")]
+      }),
+      new Table({
+        columnWidths: [4000, 4000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["服务项目", "预估费用（月/年）"]),
+          createRow(["云服务器（阿里云/腾讯云）", "¥500-2,000/月"]),
+          createRow(["云存储服务（OSS/COS）", "¥200-1,000/月"]),
+          createRow(["OCR识别服务（按调用量）", "¥0.01-0.1/次"]),
+          createRow(["CDN加速", "¥200-1,000/月"]),
+          createRow(["短信验证码", "¥0.04-0.06/条"]),
+          createRow(["应用商店开发者账号", "Apple $99/年，Google $25（一次性）"])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // Section 5: 项目周期
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("五、项目周期")]
+      }),
+      new Table({
+        columnWidths: [4000, 4000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["阶段", "周期"]),
+          createRow(["需求确认与原型设计", "2周"]),
+          createRow(["UI视觉设计", "2-3周"]),
+          createRow(["iOS客户端开发", "8-10周"]),
+          createRow(["Android客户端开发", "8-10周"]),
+          createRow(["后端开发", "6-8周"]),
+          createRow(["第三方SDK对接", "2-3周"]),
+          createRow(["AI算法开发与调优", "4-5周"]),
+          createRow(["测试与优化", "3-4周"]),
+          createRow(["应用商店审核", "1-2周"]),
+          createRow(["总计", "约16-20周（4-5个月）"])
+        ]
+      }),
+      new Paragraph({
+        spacing: { before: 100, after: 200 },
+        italics: true,
+        children: [new TextRun({ text: "注：以上阶段可并行推进，实际周期根据项目进度调整", size: 20, color: "7F8C8D" })]
+      }),
+
+      // Section 6: 付款方式
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("六、付款方式")]
+      }),
+      new Table({
+        columnWidths: [1500, 3500, 1500, 2500],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["期数", "节点", "比例", "金额"], true, [1500, 3500, 1500, 2500]),
+          createDetailRow(["第一期", "项目启动，签订合同", "30%", "¥136,200"], [1500, 3500, 1500, 2500]),
+          createDetailRow(["第二期", "UI设计完成，开发启动", "20%", "¥90,800"], [1500, 3500, 1500, 2500]),
+          createDetailRow(["第三期", "核心功能开发完成", "20%", "¥90,800"], [1500, 3500, 1500, 2500]),
+          createDetailRow(["第四期", "测试完成，验收交付", "20%", "¥90,800"], [1500, 3500, 1500, 2500]),
+          createDetailRow(["第五期", "源码移交，上线运行", "10%", "¥45,400"], [1500, 3500, 1500, 2500]),
+          createDetailRow(["合计", "", "100%", "¥454,000"], [1500, 3500, 1500, 2500])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // Section 7: 团队配置
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("七、团队配置")]
+      }),
+      new Table({
+        columnWidths: [2000, 2000, 6000],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["角色", "人数", "职责"], true, [2000, 2000, 6000]),
+          createDetailRow(["项目经理", "1人", "项目统筹、进度管理"], [2000, 2000, 6000]),
+          createDetailRow(["产品经理", "1人", "需求分析、原型设计"], [2000, 2000, 6000]),
+          createDetailRow(["UI设计师", "2人", "界面设计、模版设计"], [2000, 2000, 6000]),
+          createDetailRow(["iOS工程师", "2人", "iOS客户端开发"], [2000, 2000, 6000]),
+          createDetailRow(["Android工程师", "2人", "Android客户端开发"], [2000, 2000, 6000]),
+          createDetailRow(["后端工程师", "2人", "服务端开发"], [2000, 2000, 6000]),
+          createDetailRow(["算法工程师", "1人", "AI图像处理算法"], [2000, 2000, 6000]),
+          createDetailRow(["测试工程师", "2人", "功能测试、兼容性测试"], [2000, 2000, 6000]),
+          createDetailRow(["合计", "13人", ""], [2000, 2000, 6000])
+        ]
+      }),
+
+      // Section 8: 质量保证
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        spacing: { before: 300 },
+        children: [new TextRun("八、质量保证")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• 代码质量：遵循行业规范，代码注释完整，可读性强", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• 响应速度：页面加载时间 < 2秒，打印响应 < 3秒", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• 兼容性：支持主流设备，iOS 13+、Android 9.0+", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• 打印兼容：支持主流打印机品牌（HP、佳能、爱普生、兄弟等）", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• 安全性：数据加密传输，用户隐私保护，符合等保要求", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "• Bug修复：验收后6个月内免费修复", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 200 },
+        children: [new TextRun({ text: "• 性能优化：支持并发处理，图像处理速度优化", size: 22 })]
+      }),
+
+      // Section 9: 备注
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("九、备注")]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "1. 本报价单有效期为30天", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "2. 实际工作量可能根据具体需求细节进行10%-15%的调整", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "3. 加急开发需额外支付20%加急费", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "4. 高拍仪SDK对接如需定制开发，费用另计", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "5. 题库内容如需专业录入，按实际题量单独报价", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "6. 人力单价按¥2,000/人天计算，可根据实际合作规模协商调整", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 200 },
+        children: [new TextRun({ text: "7. 建议预留10%-15%预算作为功能变更和需求调整的缓冲", size: 22 })]
+      }),
+
+      // Footer info
+      new Paragraph({
+        spacing: { before: 300, after: 100 },
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "报价单位：[您的公司名称]", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "联系人：[姓名]", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "联系电话：[电话]", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "邮箱：[邮箱]", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: "日期：2026年3月24日", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { before: 200 },
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "本报价单仅供参考，最终合同价格以双方确认的技术方案和需求文档为准", size: 20, italics: true, color: "7F8C8D" })]
+      })
+    ]
+  }]
+});
+
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync("C:\\Users\\Administrator\\智能打印扫描工具APP_报价单.docx", buffer);
+  console.log("Word文档生成成功！");
+  console.log("文件路径：C:\\Users\\Administrator\\智能打印扫描工具APP_报价单.docx");
+});

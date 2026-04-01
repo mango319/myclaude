@@ -1,0 +1,109 @@
+# 电商平台API配置
+
+tmall:
+  app_key: "${TMALL_APP_KEY}"
+  app_secret: "${TMALL_APP_SECRET}"
+  sandbox: false
+  gateway_url: "https://eco.taobao.com/router/rest"
+  sandbox_url: "https://gw.open.taobao.com/router/rest"
+  webhook_url: "/api/v1/webhook/tmall"
+  api_version: "2.0"
+  format: "json"
+  sign_method: "md5"
+  session_timeout: 7200
+  # 支持的消息类型
+  message_types:
+    - text          # 文本消息
+    - image         # 图片消息
+    - order_event   # 订单事件
+    - refund_event  # 退款事件
+  # 订单API配置
+  order_api:
+    get_order: "taobao.trade.get"
+    get_order_info: "taobao.trade.fullinfo.get"
+    get_logistics: "taobao.logistics.trace.get"
+
+jd:
+  app_key: "${JD_APP_KEY}"
+  app_secret: "${JD_APP_SECRET}"
+  token_url: "https://api.jd.com/routerjson"
+  webhook_url: "/api/v1/webhook/jd"
+  gateway_url: "https://api.jd.com/routerjson"
+  sandbox_url: "https://sandbox.jd.com/routerjson"
+  api_version: "2.0"
+  format: "json"
+  v: "1.0"
+  # 支持的消息类型
+  message_types:
+    - text
+    - image
+    - order_event
+  # 订单API配置
+  order_api:
+    get_order: "jd.order.read.get"
+    get_order_info: "jd.order.info.get"
+    get_logistics: "jd.order.trace.get"
+
+amazon:
+  seller_id: "${AMAZON_SELLER_ID}"
+  marketplace_id: "${AMAZON_MARKETPLACE_ID}"
+  aws_access_key: "${AWS_ACCESS_KEY_ID}"
+  aws_secret_key: "${AWS_SECRET_ACCESS_KEY}"
+  webhook_url: "/api/v1/webhook/amazon"
+  # AWS区域配置
+  regions:
+    NA:  # 北美
+      marketplace_id: "ATVPDKIKX0DER"
+      endpoint: "https://sellingpartnerapi-na.amazon.com"
+    EU:  # 欧洲
+      marketplace_id: "A1PA6795UKMFR9"
+      endpoint: "https://sellingpartnerapi-eu.amazon.com"
+    FE:  # 远东
+      marketplace_id: "A1VC38T7YXB5Y6"
+      endpoint: "https://sellingpartnerapi-fe.amazon.com"
+  # 支持的消息类型
+  message_types:
+    - text
+    - attachment
+    - order_event
+  # 订单API配置
+  order_api:
+    get_order: "orders/v0/orders"
+    get_order_items: "orders/v0/orders/{orderId}/orderItems"
+    get_logistics: "orders/v0/orders/{orderId}/address"
+
+# 人工转接配置
+escalation:
+  # 触发条件
+  triggers:
+    # 连续失败次数
+    max_failures: 3
+    # 负面情绪阈值
+    negative_sentiment_threshold: 0.6
+    # 转接关键词
+    keywords:
+      - "转人工"
+      - "人工客服"
+      - "投诉"
+      - "退款"
+      - "麻烦"
+      - "不满意"
+    # 必转人工的意图
+    force_intents:
+      - ESCALATION
+      - COMPLAINT
+  # 通知配置
+  notification:
+    type: "webhook"  # webhook/email/sms
+    url: "${ESCALATION_WEBHOOK_URL}"
+    timeout: 30
+    retry_times: 3
+    retry_delay: 5
+  # 工单配置
+  ticket:
+    auto_create: true
+    priority_map:
+      COMPLAINT: "high"
+      REFUND: "high"
+      RETURN: "medium"
+      DEFAULT: "low"

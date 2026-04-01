@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.test {
+  text-align: center;
+}
+.test img {
+  width: 100pt;
+  height: 100pt;
+}
+</style>
+</head>
+<body>
+<div class="test">
+  <p>Image Test</p>
+  <img src="document.png" alt="Test">
+</div>
+</body>
+</html>

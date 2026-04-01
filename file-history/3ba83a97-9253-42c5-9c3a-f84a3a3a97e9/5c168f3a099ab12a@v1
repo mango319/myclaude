@@ -1,0 +1,148 @@
+from docx import Document
+from docx.shared import Pt, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml.ns import qn
+
+# 读取Markdown文件
+with open(r'C:\Users\Administrator\Desktop\智能客服系统PRD.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# 创建Word文档
+doc = Document()
+
+# 设置默认字体
+doc.styles['Normal'].font.name = 'Microsoft YaHei'
+doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+
+# 解析Markdown并添加到Word
+lines = content.split('\n')
+in_table = False
+table_headers = []
+table_rows = []
+
+for line in lines:
+    line = line.rstrip()
+
+    # 处理空行
+    if not line:
+        if in_table and table_rows:
+            # 创建表格
+            table = doc.add_table(rows=len(table_rows) + 1, cols=len(table_headers))
+            table.style = 'Light Grid Accent 1'
+
+            # 设置表头
+            for col, header in enumerate(table_headers):
+                cell = table.rows[0].cells[col]
+                cell.text = str(header) if header else ''
+                for paragraph in cell.paragraphs:
+                    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    for run in paragraph.runs:
+                        run.font.bold = True
+                        run.font.size = Pt(11)
+
+            # 设置表格内容
+            for row_idx, row_data in enumerate(table_rows):
+                for col_idx, cell_data in enumerate(row_data):
+                    cell = table.rows[row_idx + 1].cells[col_idx]
+                    cell.text = str(cell_data) if cell_data else ''
+                    for paragraph in cell.paragraphs:
+                        for run in paragraph.runs:
+                            run.font.size = Pt(10)
+
+            table_headers = []
+            table_rows = []
+            in_table = False
+        continue
+
+    # 处理一级标题
+    if line.startswith('# '):
+        title = line[2:].strip()
+        heading = doc.add_heading(title, level=1)
+        heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        for run in heading.runs:
+            run.font.size = Pt(18)
+            run.font.color.rgb = RGBColor(0, 0, 0)
+
+    # 处理二级标题
+    elif line.startswith('## '):
+        title = line[3:].strip()
+        heading = doc.add_heading(title, level=2)
+        for run in heading.runs:
+            run.font.size = Pt(14)
+            run.font.color.rgb = RGBColor(31, 78, 120)
+
+    # 处理三级标题
+    elif line.startswith('### '):
+        title = line[4:].strip()
+        heading = doc.add_heading(title, level=3)
+        for run in heading.runs:
+            run.font.size = Pt(12)
+
+    # 处理四级标题
+    elif line.startswith('#### '):
+        title = line[5:].strip()
+        heading = doc.add_heading(title, level=4)
+        for run in heading.runs:
+            run.font.size = Pt(11)
+
+    # 处理表格分隔符
+    elif line.startswith('|') and line.endswith('|'):
+        parts = [p.strip() for p in line.split('|')[1:-1]]
+
+        # 检查是否是分隔行
+        if all(p.startswith('---') or not p for p in parts):
+            if table_headers:
+                in_table = True
+            continue
+
+        if not in_table:
+            table_headers = parts
+        else:
+            table_rows.append(parts)
+
+    # 处理引用块
+    elif line.startswith('> '):
+        p = doc.add_paragraph(line[2:].strip())
+        p.style = 'Intense Quote'
+
+    # 处理代码块（简单处理）
+    elif line.startswith('```'):
+        continue
+
+    # 处理水平线
+    elif line.strip() == '---':
+        doc.add_paragraph('_' * 80)
+
+    # 处理普通段落
+    else:
+        if not in_table:
+            p = doc.add_paragraph(line)
+            for run in p.runs:
+                run.font.size = Pt(11)
+
+# 添加最后可能残留的表格
+if in_table and table_rows:
+    table = doc.add_table(rows=len(table_rows) + 1, cols=len(table_headers))
+    table.style = 'Light Grid Accent 1'
+
+    for col, header in enumerate(table_headers):
+        cell = table.rows[0].cells[col]
+        cell.text = str(header) if header else ''
+        for paragraph in cell.paragraphs:
+            paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            for run in paragraph.runs:
+                run.font.bold = True
+                run.font.size = Pt(11)
+
+    for row_idx, row_data in enumerate(table_rows):
+        for col_idx, cell_data in enumerate(row_data):
+            cell = table.rows[row_idx + 1].cells[col_idx]
+            cell.text = str(cell_data) if cell_data else ''
+            for paragraph in cell.paragraphs:
+                for run in paragraph.runs:
+                    run.font.size = Pt(10)
+
+# 保存Word文档
+output_path = r'C:\Users\Administrator\Desktop\智能客服系统PRD.docx'
+doc.save(output_path)
+print(f'Word文档已生成: {output_path}')

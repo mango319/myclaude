@@ -1,0 +1,1102 @@
+[master (root-commit) 3d6f7ba] Initial backup of Claude Code configuration
+ 688 files changed, 95489 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 config.json
+ create mode 100644 ide/13074.lock
+ create mode 100644 plans/quizzical-enchanting-thompson.md
+ create mode 100644 plugins/blocklist.json
+ create mode 100644 plugins/known_marketplaces.json
+ create mode 160000 plugins/marketplaces/claude-plugins-official
+ create mode 100644 projects/C--Users-Administrator-Documents-trae-projects-test/sessions-index.json
+ create mode 100644 projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-a205296.jsonl
+ create mode 100644 projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-a84618d.jsonl
+ create mode 100644 projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-aa39be2.jsonl
+ create mode 100644 projects/C--Users-Administrator/00aa49a7-042e-43ca-8f54-deb49cf59bc5.jsonl
+ create mode 100644 projects/C--Users-Administrator/00aa49a7-042e-43ca-8f54-deb49cf59bc5/tool-results/call_6f6de16c77084953bb55c3a2.txt
+ create mode 100644 projects/C--Users-Administrator/0148855f-2b7c-45a2-ab21-d7e867d9d2d4.jsonl
+ create mode 100644 projects/C--Users-Administrator/0bb902c1-ceab-4f21-bfd2-fbec3f0705e3.jsonl
+ create mode 100644 projects/C--Users-Administrator/0c64ed00-65d9-4dd0-9c15-4c038adc3811.jsonl
+ create mode 100644 projects/C--Users-Administrator/0c64ed00-65d9-4dd0-9c15-4c038adc3811/tool-results/call_8a0e7414a0c54e67aeb691ff.txt
+ create mode 100644 projects/C--Users-Administrator/0faebb44-1964-4c59-9047-32a3cfa7b89e.jsonl
+ create mode 100644 projects/C--Users-Administrator/136ac1a2-4b72-431c-8b64-83874cefcfd7.jsonl
+ create mode 100644 projects/C--Users-Administrator/15fbfdac-48ce-4911-b2c5-65d6ae28438b.jsonl
+ create mode 100644 projects/C--Users-Administrator/1b3f0b87-eb41-4fb5-a096-e19a90600003.jsonl
+ create mode 100644 projects/C--Users-Administrator/1edff147-bc10-453c-819c-56ed29924c7f.jsonl
+ create mode 100644 projects/C--Users-Administrator/2628c195-d97f-422d-99db-9879fdb19e40.jsonl
+ create mode 100644 projects/C--Users-Administrator/26a41fda-20ef-4b37-a035-fd71004122a8.jsonl
+ create mode 100644 projects/C--Users-Administrator/26d79b8e-afa8-4383-944f-8cb776542de8.jsonl
+ create mode 100644 projects/C--Users-Administrator/2c538c9b-5c7d-4891-ae0d-cdbca7dca09e.jsonl
+ create mode 100644 projects/C--Users-Administrator/2c538c9b-5c7d-4891-ae0d-cdbca7dca09e/tool-results/call_013a2414ccf74744871c6dd2.txt
+ create mode 100644 projects/C--Users-Administrator/2ced4907-423b-4e24-b56a-bd95f3a3b452/subagents/agent-aaefeb2.jsonl
+ create mode 100644 projects/C--Users-Administrator/2ced4907-423b-4e24-b56a-bd95f3a3b452/subagents/agent-acb530b.jsonl
+ create mode 100644 projects/C--Users-Administrator/36350088-922f-4f40-81ba-c597ff4af0c0.jsonl
+ create mode 100644 projects/C--Users-Administrator/38f1e783-69c6-483d-9689-834de236b8f3.jsonl
+ create mode 100644 projects/C--Users-Administrator/393703e2-6e9c-461c-924b-5af24421f890.jsonl
+ create mode 100644 projects/C--Users-Administrator/3a8f9140-1af4-4983-a681-797a6ec6f50c.jsonl
+ create mode 100644 projects/C--Users-Administrator/3ba83a97-9253-42c5-9c3a-f84a3a3a97e9.jsonl
+ create mode 100644 projects/C--Users-Administrator/3ba83a97-9253-42c5-9c3a-f84a3a3a97e9/tool-results/call_4f986c7746944d8a942f431f.txt
+ create mode 100644 projects/C--Users-Administrator/44539549-11f1-4a64-9ea3-c8d6d2cd4557.jsonl
+ create mode 100644 projects/C--Users-Administrator/448e265f-c589-4aa1-8eb8-60ea6409890c.jsonl
+ create mode 100644 projects/C--Users-Administrator/48897704-0ba8-41e4-9633-39907d774c3e.jsonl
+ create mode 100644 projects/C--Users-Administrator/48e99a70-cce6-4fa5-bf29-f45c34beb0ef.jsonl
+ create mode 100644 projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-aa405c2.jsonl
+ create mode 100644 projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-ab4d54a.jsonl
+ create mode 100644 projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-ab7e9be.jsonl
+ create mode 100644 projects/C--Users-Administrator/4daa6324-8cb8-4623-82db-b3aa28912900.jsonl
+ create mode 100644 projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a2e289b.jsonl
+ create mode 100644 projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a66a51f.jsonl
+ create mode 100644 projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a76214c.jsonl
+ create mode 100644 projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-a7a4a3f.jsonl
+ create mode 100644 projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-a8eb183.jsonl
+ create mode 100644 projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-ae59eb8.jsonl
+ create mode 100644 projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-a193a17.jsonl
+ create mode 100644 projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-a268869.jsonl
+ create mode 100644 projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-af3307f.jsonl
+ create mode 100644 projects/C--Users-Administrator/575ea348-8f17-49a9-a54e-10e9bcc91f73.jsonl
+ create mode 100644 projects/C--Users-Administrator/5e5fbf2b-255e-4c81-98d2-85c85d5ed235.jsonl
+ create mode 100644 projects/C--Users-Administrator/5ee35c62-66cf-4d3a-9425-401af61c2311.jsonl
+ create mode 100644 projects/C--Users-Administrator/6042a5ca-fb59-47b3-aca4-b381c495dc96.jsonl
+ create mode 100644 projects/C--Users-Administrator/6c558991-90dc-470e-8d8a-768dceb24596.jsonl
+ create mode 100644 projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-a6bc6f6.jsonl
+ create mode 100644 projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-a7cc159.jsonl
+ create mode 100644 projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-afacac1.jsonl
+ create mode 100644 projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-a234cbb.jsonl
+ create mode 100644 projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-a4168cf.jsonl
+ create mode 100644 projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-ab9682f.jsonl
+ create mode 100644 projects/C--Users-Administrator/773b2f35-8393-4035-8fd9-6e2e028fd2c4.jsonl
+ create mode 100644 projects/C--Users-Administrator/79a09c94-c73b-4b0d-b0f7-ffe665d44216.jsonl
+ create mode 100644 projects/C--Users-Administrator/84f0edd4-4d2f-4145-928d-b7ba32675908.jsonl
+ create mode 100644 projects/C--Users-Administrator/85695ba4-b5bb-4cc6-8b97-e812a1a1a257.jsonl
+ create mode 100644 projects/C--Users-Administrator/8860d962-f431-4a15-8446-aa66f248f6f6.jsonl
+ create mode 100644 projects/C--Users-Administrator/8ad15c59-c40b-467d-b6b3-a95fcb7317a8.jsonl
+ create mode 100644 projects/C--Users-Administrator/8ad15c59-c40b-467d-b6b3-a95fcb7317a8/tool-results/call_5bb8d6595e104fb4bfec7b86.txt
+ create mode 100644 projects/C--Users-Administrator/8ad9d922-2e82-4ab7-a98c-19f353893577.jsonl
+ create mode 100644 projects/C--Users-Administrator/8b7e1118-8cfc-4492-ae6e-490da8ebba8e.jsonl
+ create mode 100644 projects/C--Users-Administrator/8ede35ef-f2cc-4664-a23a-c20d3b93bec9.jsonl
+ create mode 100644 projects/C--Users-Administrator/8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984.jsonl
+ create mode 100644 projects/C--Users-Administrator/8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984/tool-results/call_5e904f2fab7b483192b31343.txt
+ create mode 100644 projects/C--Users-Administrator/8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984/tool-results/call_e07f96872923486e9feb1d8e.txt
+ create mode 100644 projects/C--Users-Administrator/90ed2e2a-68df-4728-91de-ff264cf3f6d1.jsonl
+ create mode 100644 projects/C--Users-Administrator/97c9b9da-cf7d-4901-b143-cb357e9e5dcb.jsonl
+ create mode 100644 projects/C--Users-Administrator/990bea0e-721f-4049-8bd5-00421f4840b4.jsonl
+ create mode 100644 projects/C--Users-Administrator/995ca7ca-bbaa-47ac-894d-56193776fb96.jsonl
+ create mode 100644 projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-a01c86a.jsonl
+ create mode 100644 projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-ab1d897.jsonl
+ create mode 100644 projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-aee6172.jsonl
+ create mode 100644 projects/C--Users-Administrator/a496b240-9447-4f08-92e1-dc5ba8515b38.jsonl
+ create mode 100644 projects/C--Users-Administrator/a5e559b0-c544-4c2a-8c82-aa7fc47641b4.jsonl
+ create mode 100644 projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-a1a927a.jsonl
+ create mode 100644 projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-a912982.jsonl
+ create mode 100644 projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-ae7c164.jsonl
+ create mode 100644 projects/C--Users-Administrator/bb27974c-18bd-418a-91a8-c1a6c2045769.jsonl
+ create mode 100644 projects/C--Users-Administrator/bfd663fd-3a01-49fc-b511-a5ccb2be3650.jsonl
+ create mode 100644 projects/C--Users-Administrator/c3407ebb-56c8-4339-b8a7-a07654fb6fa0.jsonl
+ create mode 100644 projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-a1c48d0.jsonl
+ create mode 100644 projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-a620936.jsonl
+ create mode 100644 projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-afa8425.jsonl
+ create mode 100644 projects/C--Users-Administrator/c768391a-cf5d-4c2a-abf2-1897d138a185.jsonl
+ create mode 100644 projects/C--Users-Administrator/c7f79a88-39fe-4931-862f-e0f94f847231.jsonl
+ create mode 100644 projects/C--Users-Administrator/ccc75b82-f9a0-41de-9a7c-852054b21787.jsonl
+ create mode 100644 projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-a5f99cc.jsonl
+ create mode 100644 projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-a7b956b.jsonl
+ create mode 100644 projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-afb25d7.jsonl
+ create mode 100644 projects/C--Users-Administrator/d3dc4090-dba0-4dd2-aa71-eaec93430629.jsonl
+ create mode 100644 projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-ace59b6.jsonl
+ create mode 100644 projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-ad0f2d6.jsonl
+ create mode 100644 projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-afffec3.jsonl
+ create mode 100644 projects/C--Users-Administrator/d88a328d-a80a-402b-8789-46555909ecf5.jsonl
+ create mode 100644 projects/C--Users-Administrator/dc230429-c7c1-4121-969c-614ee314bd0a.jsonl
+ create mode 100644 projects/C--Users-Administrator/e406cbf6-dad1-4eda-9ca1-735dadadef88.jsonl
+ create mode 100644 projects/C--Users-Administrator/ef48b339-0afb-4a0a-8c31-6bd970348f0e.jsonl
+ create mode 100644 projects/C--Users-Administrator/f9d27e41-5672-4f13-b4f8-774014a44989.jsonl
+ create mode 100644 projects/C--Users-Administrator/fdb5d4be-9606-406a-b062-bd6674364079.jsonl
+ create mode 100644 projects/C--Users-Administrator/sessions-index.json
+ create mode 100644 projects/c--Users-Administrator-Documents-trae-projects-trae-solo-PDF-WEB/5c5df4af-2c0a-4b3f-97d8-6849ab8895fa.jsonl
+ create mode 100644 settings.json
+ create mode 100644 settings.local.json
+ create mode 100644 skills/algorithmic-art/LICENSE.txt
+ create mode 100644 skills/algorithmic-art/SKILL.md
+ create mode 100644 skills/algorithmic-art/templates/generator_template.js
+ create mode 100644 skills/algorithmic-art/templates/viewer.html
+ create mode 100644 skills/brand-guidelines/LICENSE.txt
+ create mode 100644 skills/brand-guidelines/SKILL.md
+ create mode 100644 skills/canvas-design/LICENSE.txt
+ create mode 100644 skills/canvas-design/SKILL.md
+ create mode 100644 skills/canvas-design/canvas-fonts/ArsenalSC-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/ArsenalSC-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/BigShoulders-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/BigShoulders-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/BigShoulders-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Boldonse-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Boldonse-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/BricolageGrotesque-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/BricolageGrotesque-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/BricolageGrotesque-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/CrimsonPro-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/CrimsonPro-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/CrimsonPro-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/CrimsonPro-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/DMMono-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/DMMono-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/EricaOne-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/EricaOne-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/GeistMono-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/GeistMono-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/GeistMono-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Gloock-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Gloock-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexMono-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexMono-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexMono-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexSerif-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexSerif-BoldItalic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexSerif-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/IBMPlexSerif-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSans-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSans-BoldItalic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSans-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSans-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSans-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSerif-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/InstrumentSerif-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Italiana-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Italiana-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/JetBrainsMono-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/JetBrainsMono-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/JetBrainsMono-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Jura-Light.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Jura-Medium.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Jura-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/LibreBaskerville-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/LibreBaskerville-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Lora-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Lora-BoldItalic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Lora-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Lora-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Lora-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/NationalPark-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/NationalPark-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/NationalPark-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/NothingYouCouldDo-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/NothingYouCouldDo-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Outfit-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Outfit-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Outfit-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/PixelifySans-Medium.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/PixelifySans-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/PoiretOne-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/PoiretOne-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/RedHatMono-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/RedHatMono-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/RedHatMono-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Silkscreen-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Silkscreen-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/SmoochSans-Medium.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/SmoochSans-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Tektur-Medium.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/Tektur-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/Tektur-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/WorkSans-Bold.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/WorkSans-BoldItalic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/WorkSans-Italic.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/WorkSans-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/WorkSans-Regular.ttf
+ create mode 100644 skills/canvas-design/canvas-fonts/YoungSerif-OFL.txt
+ create mode 100644 skills/canvas-design/canvas-fonts/YoungSerif-Regular.ttf
+ create mode 160000 skills/claude-trading-skills
+ create mode 100644 skills/doc-coauthoring/SKILL.md
+ create mode 100644 skills/docx/LICENSE.txt
+ create mode 100644 skills/docx/SKILL.md
+ create mode 100644 skills/docx/create_doc.js
+ create mode 100644 skills/docx/docx-js.md
+ create mode 100644 skills/docx/generate_oem_doc.js
+ create mode 100644 skills/docx/ooxml.md
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd
+ create mode 100644 skills/docx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd
+ create mode 100644 skills/docx/ooxml/schemas/mce/mc.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-2010.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-2012.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-2018.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-cex-2018.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-cid-2016.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd
+ create mode 100644 skills/docx/ooxml/schemas/microsoft/wml-symex-2015.xsd
+ create mode 100644 skills/docx/ooxml/scripts/__pycache__/pack.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/pack.py
+ create mode 100644 skills/docx/ooxml/scripts/unpack.py
+ create mode 100644 skills/docx/ooxml/scripts/validate.py
+ create mode 100644 skills/docx/ooxml/scripts/validation/__init__.py
+ create mode 100644 skills/docx/ooxml/scripts/validation/__pycache__/__init__.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/validation/__pycache__/base.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/validation/__pycache__/docx.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/validation/__pycache__/pptx.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/validation/__pycache__/redlining.cpython-312.pyc
+ create mode 100644 skills/docx/ooxml/scripts/validation/base.py
+ create mode 100644 skills/docx/ooxml/scripts/validation/docx.py
+ create mode 100644 skills/docx/ooxml/scripts/validation/pptx.py
+ create mode 100644 skills/docx/ooxml/scripts/validation/redlining.py
+ create mode 100644 skills/docx/scripts/__init__.py
+ create mode 100644 skills/docx/scripts/__pycache__/__init__.cpython-312.pyc
+ create mode 100644 skills/docx/scripts/__pycache__/document.cpython-312.pyc
+ create mode 100644 skills/docx/scripts/__pycache__/utilities.cpython-312.pyc
+ create mode 100644 skills/docx/scripts/document.py
+ create mode 100644 skills/docx/scripts/templates/comments.xml
+ create mode 100644 skills/docx/scripts/templates/commentsExtended.xml
+ create mode 100644 skills/docx/scripts/templates/commentsExtensible.xml
+ create mode 100644 skills/docx/scripts/templates/commentsIds.xml
+ create mode 100644 skills/docx/scripts/templates/people.xml
+ create mode 100644 skills/docx/scripts/utilities.py
+ create mode 160000 skills/follow-builders
+ create mode 100644 skills/frontend-design/LICENSE.txt
+ create mode 100644 skills/frontend-design/SKILL.md
+ create mode 100644 skills/ima-skill/SKILL.md
+ create mode 100644 skills/ima-skill/knowledge-base/SKILL.md
+ create mode 100644 skills/ima-skill/knowledge-base/references/api.md
+ create mode 100644 skills/ima-skill/knowledge-base/scripts/cos-upload.cjs
+ create mode 100644 skills/ima-skill/knowledge-base/scripts/preflight-check.cjs
+ create mode 100644 skills/ima-skill/notes/SKILL.md
+ create mode 100644 skills/ima-skill/notes/references/api.md
+ create mode 100644 skills/internal-comms/LICENSE.txt
+ create mode 100644 skills/internal-comms/SKILL.md
+ create mode 100644 skills/internal-comms/examples/3p-updates.md
+ create mode 100644 skills/internal-comms/examples/company-newsletter.md
+ create mode 100644 skills/internal-comms/examples/faq-answers.md
+ create mode 100644 skills/internal-comms/examples/general-comms.md
+ create mode 100644 skills/mcp-builder/LICENSE.txt
+ create mode 100644 skills/mcp-builder/SKILL.md
+ create mode 100644 skills/mcp-builder/reference/evaluation.md
+ create mode 100644 skills/mcp-builder/reference/mcp_best_practices.md
+ create mode 100644 skills/mcp-builder/reference/node_mcp_server.md
+ create mode 100644 skills/mcp-builder/reference/python_mcp_server.md
+ create mode 100644 skills/mcp-builder/scripts/connections.py
+ create mode 100644 skills/mcp-builder/scripts/evaluation.py
+ create mode 100644 skills/mcp-builder/scripts/example_evaluation.xml
+ create mode 100644 skills/mcp-builder/scripts/requirements.txt
+ create mode 100644 skills/nano-pdf/.skillhub.json
+ create mode 100644 skills/nano-pdf/SKILL.md
+ create mode 100644 skills/pdf/LICENSE.txt
+ create mode 100644 skills/pdf/SKILL.md
+ create mode 100644 skills/pdf/forms.md
+ create mode 100644 skills/pdf/reference.md
+ create mode 100644 skills/pdf/scripts/check_bounding_boxes.py
+ create mode 100644 skills/pdf/scripts/check_bounding_boxes_test.py
+ create mode 100644 skills/pdf/scripts/check_fillable_fields.py
+ create mode 100644 skills/pdf/scripts/convert_pdf_to_images.py
+ create mode 100644 skills/pdf/scripts/create_validation_image.py
+ create mode 100644 skills/pdf/scripts/extract_form_field_info.py
+ create mode 100644 skills/pdf/scripts/fill_fillable_fields.py
+ create mode 100644 skills/pdf/scripts/fill_pdf_form_with_annotations.py
+ create mode 100644 skills/pptx/LICENSE.txt
+ create mode 100644 skills/pptx/SKILL.md
+ create mode 100644 skills/pptx/conclusion-gradient.png
+ create mode 100644 skills/pptx/cover-gradient.png
+ create mode 100644 skills/pptx/html2pptx.md
+ create mode 100644 skills/pptx/ooxml.md
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/mce/mc.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-2010.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-2012.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-2018.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-cex-2018.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-cid-2016.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd
+ create mode 100644 skills/pptx/ooxml/schemas/microsoft/wml-symex-2015.xsd
+ create mode 100644 skills/pptx/ooxml/scripts/pack.py
+ create mode 100644 skills/pptx/ooxml/scripts/unpack.py
+ create mode 100644 skills/pptx/ooxml/scripts/validate.py
+ create mode 100644 skills/pptx/ooxml/scripts/validation/__init__.py
+ create mode 100644 skills/pptx/ooxml/scripts/validation/base.py
+ create mode 100644 skills/pptx/ooxml/scripts/validation/docx.py
+ create mode 100644 skills/pptx/ooxml/scripts/validation/pptx.py
+ create mode 100644 skills/pptx/ooxml/scripts/validation/redlining.py
+ create mode 100644 skills/pptx/scripts/__pycache__/inventory.cpython-312.pyc
+ create mode 100644 skills/pptx/scripts/html2pptx.js
+ create mode 100644 skills/pptx/scripts/inventory.py
+ create mode 100644 skills/pptx/scripts/rearrange.py
+ create mode 100644 skills/pptx/scripts/replace.py
+ create mode 100644 skills/pptx/scripts/thumbnail.py
+ create mode 100644 skills/pptx/slogan-gradient.png
+ create mode 100644 skills/pptx/workspace/cafe.png
+ create mode 100644 skills/pptx/workspace/conclusion-gradient.png
+ create mode 100644 skills/pptx/workspace/cover-gradient.png
+ create mode 100644 skills/pptx/workspace/create-gradients.js
+ create mode 100644 skills/pptx/workspace/create-icons.js
+ create mode 100644 skills/pptx/workspace/create-ppt.js
+ create mode 100644 skills/pptx/workspace/create-scene-icons.js
+ create mode 100644 skills/pptx/workspace/dark-gradient-bg.png
+ create mode 100644 skills/pptx/workspace/document.png
+ create mode 100644 skills/pptx/workspace/factory.png
+ create mode 100644 skills/pptx/workspace/gradients.js
+ create mode 100644 skills/pptx/workspace/home.png
+ create mode 100644 skills/pptx/workspace/icons/cafe.png
+ create mode 100644 skills/pptx/workspace/icons/document.png
+ create mode 100644 skills/pptx/workspace/icons/factory.png
+ create mode 100644 skills/pptx/workspace/icons/home.png
+ create mode 100644 skills/pptx/workspace/icons/logistics.png
+ create mode 100644 skills/pptx/workspace/icons/medical.png
+ create mode 100644 skills/pptx/workspace/icons/retail.png
+ create mode 100644 skills/pptx/workspace/icons/shipping.png
+ create mode 100644 skills/pptx/workspace/icons/supermarket.png
+ create mode 100644 skills/pptx/workspace/icons/warehouse.png
+ create mode 100644 skills/pptx/workspace/logistics.png
+ create mode 100644 skills/pptx/workspace/medical.png
+ create mode 100644 skills/pptx/workspace/retail.png
+ create mode 100644 skills/pptx/workspace/shipping.png
+ create mode 100644 skills/pptx/workspace/slide01.html
+ create mode 100644 skills/pptx/workspace/slide02.html
+ create mode 100644 skills/pptx/workspace/slide03.html
+ create mode 100644 skills/pptx/workspace/slide04.html
+ create mode 100644 skills/pptx/workspace/slide05.html
+ create mode 100644 skills/pptx/workspace/slide06.html
+ create mode 100644 skills/pptx/workspace/slide07.html
+ create mode 100644 skills/pptx/workspace/slide08.html
+ create mode 100644 skills/pptx/workspace/slide09.html
+ create mode 100644 skills/pptx/workspace/slide1.html
+ create mode 100644 skills/pptx/workspace/slide10.html
+ create mode 100644 skills/pptx/workspace/slide11.html
+ create mode 100644 skills/pptx/workspace/slide12.html
+ create mode 100644 skills/pptx/workspace/slide13.html
+ create mode 100644 skills/pptx/workspace/slide14.html
+ create mode 100644 skills/pptx/workspace/slide15.html
+ create mode 100644 skills/pptx/workspace/slide16.html
+ create mode 100644 skills/pptx/workspace/slide17.html
+ create mode 100644 skills/pptx/workspace/slide18.html
+ create mode 100644 skills/pptx/workspace/slide19.html
+ create mode 100644 skills/pptx/workspace/slide2.html
+ create mode 100644 skills/pptx/workspace/slide20.html
+ create mode 100644 skills/pptx/workspace/slide21.html
+ create mode 100644 skills/pptx/workspace/slide22.html
+ create mode 100644 skills/pptx/workspace/slide23.html
+ create mode 100644 skills/pptx/workspace/slide24.html
+ create mode 100644 skills/pptx/workspace/slide25.html
+ create mode 100644 skills/pptx/workspace/slide26.html
+ create mode 100644 skills/pptx/workspace/slide27.html
+ create mode 100644 skills/pptx/workspace/slide28.html
+ create mode 100644 skills/pptx/workspace/slide29.html
+ create mode 100644 skills/pptx/workspace/slide3.html
+ create mode 100644 skills/pptx/workspace/slide30.html
+ create mode 100644 skills/pptx/workspace/slide4.html
+ create mode 100644 skills/pptx/workspace/slide5.html
+ create mode 100644 skills/pptx/workspace/slide6.html
+ create mode 100644 skills/pptx/workspace/slide7.html
+ create mode 100644 skills/pptx/workspace/slide8.html
+ create mode 100644 skills/pptx/workspace/slogan-gradient.png
+ create mode 100644 skills/pptx/workspace/summary-gradient-bg.png
+ create mode 100644 skills/pptx/workspace/supermarket.png
+ create mode 100644 skills/pptx/workspace/warehouse.png
+ create mode 100644 "skills/pptx/workspace/\346\211\223\345\215\260\346\234\272\345\210\206\347\261\273\344\275\223\347\263\273.pptx"
+ create mode 100644 "skills/pptx/workspace/\347\203\255\346\225\217\346\211\223\345\215\260\346\234\272\344\272\247\345\223\201\345\237\271\350\256\255\346\226\271\346\241\210.md"
+ create mode 100644 skills/skill-creator/LICENSE.txt
+ create mode 100644 skills/skill-creator/SKILL.md
+ create mode 100644 skills/skill-creator/references/output-patterns.md
+ create mode 100644 skills/skill-creator/references/workflows.md
+ create mode 100644 skills/skill-creator/scripts/init_skill.py
+ create mode 100644 skills/skill-creator/scripts/package_skill.py
+ create mode 100644 skills/skill-creator/scripts/quick_validate.py
+ create mode 100644 skills/slack-gif-creator/LICENSE.txt
+ create mode 100644 skills/slack-gif-creator/SKILL.md
+ create mode 100644 skills/slack-gif-creator/core/easing.py
+ create mode 100644 skills/slack-gif-creator/core/frame_composer.py
+ create mode 100644 skills/slack-gif-creator/core/gif_builder.py
+ create mode 100644 skills/slack-gif-creator/core/validators.py
+ create mode 100644 skills/slack-gif-creator/requirements.txt
+ create mode 100644 skills/summarize/.skillhub.json
+ create mode 100644 skills/summarize/SKILL.md
+ create mode 100644 skills/tavily-search-free/.skillhub.json
+ create mode 100644 skills/tavily-search-free/SKILL.md
+ create mode 100644 skills/tavily-search-free/scripts/tavily_search.py
+ create mode 100644 skills/tavily/.skillhub.json
+ create mode 100644 skills/tavily/SKILL.md
+ create mode 100644 skills/theme-factory/LICENSE.txt
+ create mode 100644 skills/theme-factory/SKILL.md
+ create mode 100644 skills/theme-factory/theme-showcase.pdf
+ create mode 100644 skills/theme-factory/themes/arctic-frost.md
+ create mode 100644 skills/theme-factory/themes/botanical-garden.md
+ create mode 100644 skills/theme-factory/themes/desert-rose.md
+ create mode 100644 skills/theme-factory/themes/forest-canopy.md
+ create mode 100644 skills/theme-factory/themes/golden-hour.md
+ create mode 100644 skills/theme-factory/themes/midnight-galaxy.md
+ create mode 100644 skills/theme-factory/themes/modern-minimalist.md
+ create mode 100644 skills/theme-factory/themes/ocean-depths.md
+ create mode 100644 skills/theme-factory/themes/sunset-boulevard.md
+ create mode 100644 skills/theme-factory/themes/tech-innovation.md
+ create mode 100644 skills/weather/.skillhub.json
+ create mode 100644 skills/weather/SKILL.md
+ create mode 100644 skills/web-artifacts-builder/LICENSE.txt
+ create mode 100644 skills/web-artifacts-builder/SKILL.md
+ create mode 100644 skills/web-artifacts-builder/scripts/bundle-artifact.sh
+ create mode 100644 skills/web-artifacts-builder/scripts/init-artifact.sh
+ create mode 100644 skills/web-artifacts-builder/scripts/shadcn-components.tar.gz
+ create mode 100644 skills/webapp-testing/LICENSE.txt
+ create mode 100644 skills/webapp-testing/SKILL.md
+ create mode 100644 skills/webapp-testing/examples/console_logging.py
+ create mode 100644 skills/webapp-testing/examples/element_discovery.py
+ create mode 100644 skills/webapp-testing/examples/static_html_automation.py
+ create mode 100644 skills/webapp-testing/scripts/with_server.py
+ create mode 100644 skills/whisper/.skillhub.json
+ create mode 100644 skills/whisper/SKILL.md
+ create mode 100644 skills/whisper/references/languages.md
+ create mode 100644 skills/xlsx/LICENSE.txt
+ create mode 100644 skills/xlsx/SKILL.md
+ create mode 100644 skills/xlsx/add_summary.py
+ create mode 100644 skills/xlsx/recalc.py
+ create mode 100644 stats-cache.json
+ create mode 100644 todos/00aa49a7-042e-43ca-8f54-deb49cf59bc5-agent-00aa49a7-042e-43ca-8f54-deb49cf59bc5.json
+ create mode 100644 todos/00cb3043-d632-49ca-84f0-2456940d2149-agent-00cb3043-d632-49ca-84f0-2456940d2149.json
+ create mode 100644 todos/0148855f-2b7c-45a2-ab21-d7e867d9d2d4-agent-0148855f-2b7c-45a2-ab21-d7e867d9d2d4.json
+ create mode 100644 todos/040506e9-3389-483c-809b-e8cdb30b53ae-agent-040506e9-3389-483c-809b-e8cdb30b53ae.json
+ create mode 100644 todos/07862592-b989-423d-8971-47a3c848f270-agent-07862592-b989-423d-8971-47a3c848f270.json
+ create mode 100644 todos/0a311a1c-f57e-4597-b6f1-bfc3dec3c092-agent-0a311a1c-f57e-4597-b6f1-bfc3dec3c092.json
+ create mode 100644 todos/0ae73565-dc0e-4b0a-b1d3-338d4e404d2d-agent-0ae73565-dc0e-4b0a-b1d3-338d4e404d2d.json
+ create mode 100644 todos/0bb902c1-ceab-4f21-bfd2-fbec3f0705e3-agent-0bb902c1-ceab-4f21-bfd2-fbec3f0705e3.json
+ create mode 100644 todos/0bf4e039-7ced-47a6-aaed-9b8c1a2d03bd-agent-0bf4e039-7ced-47a6-aaed-9b8c1a2d03bd.json
+ create mode 100644 todos/0c64ed00-65d9-4dd0-9c15-4c038adc3811-agent-0c64ed00-65d9-4dd0-9c15-4c038adc3811.json
+ create mode 100644 todos/0cd0c9b1-3439-46e0-9bd3-9b731501bcbc-agent-0cd0c9b1-3439-46e0-9bd3-9b731501bcbc.json
+ create mode 100644 todos/0e1be1ce-4843-40af-9dc9-9c479c5a744b-agent-0e1be1ce-4843-40af-9dc9-9c479c5a744b.json
+ create mode 100644 todos/0f17f96e-7607-4e03-977d-be2749984da0-agent-0f17f96e-7607-4e03-977d-be2749984da0.json
+ create mode 100644 todos/0faebb44-1964-4c59-9047-32a3cfa7b89e-agent-0faebb44-1964-4c59-9047-32a3cfa7b89e.json
+ create mode 100644 todos/0fb0e07e-5212-4c0e-a55f-f34a53584af0-agent-0fb0e07e-5212-4c0e-a55f-f34a53584af0.json
+ create mode 100644 todos/136ac1a2-4b72-431c-8b64-83874cefcfd7-agent-136ac1a2-4b72-431c-8b64-83874cefcfd7.json
+ create mode 100644 todos/13fab7ff-9b26-4252-ad16-3d687e4683fd-agent-13fab7ff-9b26-4252-ad16-3d687e4683fd.json
+ create mode 100644 todos/15fbfdac-48ce-4911-b2c5-65d6ae28438b-agent-15fbfdac-48ce-4911-b2c5-65d6ae28438b.json
+ create mode 100644 todos/175fdd4a-effc-4549-ad8d-d6d7827cf69c-agent-175fdd4a-effc-4549-ad8d-d6d7827cf69c.json
+ create mode 100644 todos/1a3f6cb0-cd50-401c-a5ee-a22b6c77a132-agent-1a3f6cb0-cd50-401c-a5ee-a22b6c77a132.json
+ create mode 100644 todos/1ae1a9b5-2488-4950-a2d8-00e193de8439-agent-1ae1a9b5-2488-4950-a2d8-00e193de8439.json
+ create mode 100644 todos/1b3f0b87-eb41-4fb5-a096-e19a90600003-agent-1b3f0b87-eb41-4fb5-a096-e19a90600003.json
+ create mode 100644 todos/1b41eda0-3fd5-4196-bee9-25892480ea94-agent-1b41eda0-3fd5-4196-bee9-25892480ea94.json
+ create mode 100644 todos/1b7c0fcb-744f-4e3f-93a6-f4bdce130fbf-agent-1b7c0fcb-744f-4e3f-93a6-f4bdce130fbf.json
+ create mode 100644 todos/1d4988bd-6e56-4e56-a007-39eb3521449d-agent-1d4988bd-6e56-4e56-a007-39eb3521449d.json
+ create mode 100644 todos/1edff147-bc10-453c-819c-56ed29924c7f-agent-1edff147-bc10-453c-819c-56ed29924c7f.json
+ create mode 100644 todos/21308f17-95a7-4b23-9a90-f6704ad16f57-agent-21308f17-95a7-4b23-9a90-f6704ad16f57.json
+ create mode 100644 todos/250b4b19-9dc3-490d-bba1-7093f9f569eb-agent-250b4b19-9dc3-490d-bba1-7093f9f569eb.json
+ create mode 100644 todos/2518fdcb-1803-4a68-93ed-f24fd985f9ee-agent-2518fdcb-1803-4a68-93ed-f24fd985f9ee.json
+ create mode 100644 todos/2628c195-d97f-422d-99db-9879fdb19e40-agent-2628c195-d97f-422d-99db-9879fdb19e40.json
+ create mode 100644 todos/26a41fda-20ef-4b37-a035-fd71004122a8-agent-26a41fda-20ef-4b37-a035-fd71004122a8.json
+ create mode 100644 todos/26d79b8e-afa8-4383-944f-8cb776542de8-agent-26d79b8e-afa8-4383-944f-8cb776542de8.json
+ create mode 100644 todos/282733f7-d395-40f0-961e-17e1403f085c-agent-282733f7-d395-40f0-961e-17e1403f085c.json
+ create mode 100644 todos/2c538c9b-5c7d-4891-ae0d-cdbca7dca09e-agent-2c538c9b-5c7d-4891-ae0d-cdbca7dca09e.json
+ create mode 100644 todos/2ced4907-423b-4e24-b56a-bd95f3a3b452-agent-2ced4907-423b-4e24-b56a-bd95f3a3b452.json
+ create mode 100644 todos/2ed0d520-adf3-44fa-b55f-a56bc4f2ce80-agent-2ed0d520-adf3-44fa-b55f-a56bc4f2ce80.json
+ create mode 100644 todos/30b7937a-e1a1-445f-b1f3-2e47e89b120a-agent-30b7937a-e1a1-445f-b1f3-2e47e89b120a.json
+ create mode 100644 todos/3522c732-22bf-4415-9356-186fe002095d-agent-3522c732-22bf-4415-9356-186fe002095d.json
+ create mode 100644 todos/36350088-922f-4f40-81ba-c597ff4af0c0-agent-36350088-922f-4f40-81ba-c597ff4af0c0.json
+ create mode 100644 todos/38f1e783-69c6-483d-9689-834de236b8f3-agent-38f1e783-69c6-483d-9689-834de236b8f3.json
+ create mode 100644 todos/393703e2-6e9c-461c-924b-5af24421f890-agent-393703e2-6e9c-461c-924b-5af24421f890.json
+ create mode 100644 todos/3a2aae9c-3846-4ead-84a0-6c05ba7fed52-agent-3a2aae9c-3846-4ead-84a0-6c05ba7fed52.json
+ create mode 100644 todos/3a8f9140-1af4-4983-a681-797a6ec6f50c-agent-3a8f9140-1af4-4983-a681-797a6ec6f50c.json
+ create mode 100644 todos/3a9a478e-be73-4276-99dd-c2f8f9863630-agent-3a9a478e-be73-4276-99dd-c2f8f9863630.json
+ create mode 100644 todos/3abf2f86-1122-4765-a2d4-4d08992e3b5c-agent-3abf2f86-1122-4765-a2d4-4d08992e3b5c.json
+ create mode 100644 todos/3ba83a97-9253-42c5-9c3a-f84a3a3a97e9-agent-3ba83a97-9253-42c5-9c3a-f84a3a3a97e9.json
+ create mode 100644 todos/3d8e7f23-3402-4dad-b9df-43e2dd6ad0bb-agent-3d8e7f23-3402-4dad-b9df-43e2dd6ad0bb.json
+ create mode 100644 todos/3de4ea35-84ea-4693-9759-5b95041e5e9e-agent-3de4ea35-84ea-4693-9759-5b95041e5e9e.json
+ create mode 100644 todos/4032943e-a240-4941-ae6e-7785e5c77af3-agent-4032943e-a240-4941-ae6e-7785e5c77af3.json
+ create mode 100644 todos/415545cb-75d0-4a7a-8c67-1c30b4031dc9-agent-415545cb-75d0-4a7a-8c67-1c30b4031dc9.json
+ create mode 100644 todos/44539549-11f1-4a64-9ea3-c8d6d2cd4557-agent-44539549-11f1-4a64-9ea3-c8d6d2cd4557.json
+ create mode 100644 todos/448e265f-c589-4aa1-8eb8-60ea6409890c-agent-448e265f-c589-4aa1-8eb8-60ea6409890c.json
+ create mode 100644 todos/45c0204e-7a54-4eda-b237-81ca2f21f2a8-agent-45c0204e-7a54-4eda-b237-81ca2f21f2a8.json
+ create mode 100644 todos/4680cb30-2eef-4a36-b271-747b21f2d3b5-agent-4680cb30-2eef-4a36-b271-747b21f2d3b5.json
+ create mode 100644 todos/48897704-0ba8-41e4-9633-39907d774c3e-agent-48897704-0ba8-41e4-9633-39907d774c3e.json
+ create mode 100644 todos/48e99a70-cce6-4fa5-bf29-f45c34beb0ef-agent-48e99a70-cce6-4fa5-bf29-f45c34beb0ef.json
+ create mode 100644 todos/4948ff65-3c8c-4d04-904a-f11a7ce02c26-agent-4948ff65-3c8c-4d04-904a-f11a7ce02c26.json
+ create mode 100644 todos/4a14e3f9-2187-402a-82fb-726858d18a9a-agent-4a14e3f9-2187-402a-82fb-726858d18a9a.json
+ create mode 100644 todos/4a6cd390-57a4-4866-b8f4-de52010e0501-agent-4a6cd390-57a4-4866-b8f4-de52010e0501.json
+ create mode 100644 todos/4daa6324-8cb8-4623-82db-b3aa28912900-agent-4daa6324-8cb8-4623-82db-b3aa28912900.json
+ create mode 100644 todos/4dbd8aca-1efd-4002-9cee-560af22df268-agent-4dbd8aca-1efd-4002-9cee-560af22df268.json
+ create mode 100644 todos/4dd4415c-dfa9-4f60-83f1-3357e3ebe4b8-agent-4dd4415c-dfa9-4f60-83f1-3357e3ebe4b8.json
+ create mode 100644 todos/4decdb96-16e8-4a91-b719-721ea0827bab-agent-4decdb96-16e8-4a91-b719-721ea0827bab.json
+ create mode 100644 todos/4ea1ecf8-5688-4493-8cf9-79c3975c9383-agent-4ea1ecf8-5688-4493-8cf9-79c3975c9383.json
+ create mode 100644 todos/50657987-c3ae-4ae2-b39a-084411b12a14-agent-50657987-c3ae-4ae2-b39a-084411b12a14.json
+ create mode 100644 todos/50d744ab-a492-4c76-8911-35bec465b4d5-agent-50d744ab-a492-4c76-8911-35bec465b4d5.json
+ create mode 100644 todos/516db56e-df3a-44f7-b7d0-643dd08d5b85-agent-516db56e-df3a-44f7-b7d0-643dd08d5b85.json
+ create mode 100644 todos/5256df16-0fd5-4806-aea9-0d255acc8668-agent-5256df16-0fd5-4806-aea9-0d255acc8668.json
+ create mode 100644 todos/54592f04-7915-4143-89ca-7f23fb850e92-agent-54592f04-7915-4143-89ca-7f23fb850e92.json
+ create mode 100644 todos/54d7aa63-252f-4a08-ab66-7a056f17442a-agent-54d7aa63-252f-4a08-ab66-7a056f17442a.json
+ create mode 100644 todos/54eb5cc9-86fc-46b7-85ea-2d8a581ba8ca-agent-54eb5cc9-86fc-46b7-85ea-2d8a581ba8ca.json
+ create mode 100644 todos/57515ce0-6037-4446-9e78-115d9bc1f3e1-agent-57515ce0-6037-4446-9e78-115d9bc1f3e1.json
+ create mode 100644 todos/575ea348-8f17-49a9-a54e-10e9bcc91f73-agent-575ea348-8f17-49a9-a54e-10e9bcc91f73.json
+ create mode 100644 todos/5762fa6a-ca1e-427e-8fe0-fbbf10320e00-agent-5762fa6a-ca1e-427e-8fe0-fbbf10320e00.json
+ create mode 100644 todos/57d418ad-ad91-4014-a23e-2e4f6de3ce44-agent-57d418ad-ad91-4014-a23e-2e4f6de3ce44.json
+ create mode 100644 todos/5952c0f9-69f8-46ca-99dc-56d53d17deba-agent-5952c0f9-69f8-46ca-99dc-56d53d17deba.json
+ create mode 100644 todos/59c862a9-abfa-475f-9b18-d867a1c29a3b-agent-59c862a9-abfa-475f-9b18-d867a1c29a3b.json
+ create mode 100644 todos/59dd85e4-ba42-4066-9cd7-b1e48e4c13fc-agent-59dd85e4-ba42-4066-9cd7-b1e48e4c13fc.json
+ create mode 100644 todos/5bc6d924-3ca8-469a-9908-c147f4944202-agent-5bc6d924-3ca8-469a-9908-c147f4944202.json
+ create mode 100644 todos/5dc60be4-fd6b-4039-ac06-4dfcbe707c8a-agent-5dc60be4-fd6b-4039-ac06-4dfcbe707c8a.json
+ create mode 100644 todos/5e5fbf2b-255e-4c81-98d2-85c85d5ed235-agent-5e5fbf2b-255e-4c81-98d2-85c85d5ed235.json
+ create mode 100644 todos/5eb57283-0970-4d98-9e97-f971ac039e4d-agent-5eb57283-0970-4d98-9e97-f971ac039e4d.json
+ create mode 100644 todos/5ee35c62-66cf-4d3a-9425-401af61c2311-agent-5ee35c62-66cf-4d3a-9425-401af61c2311.json
+ create mode 100644 todos/6042a5ca-fb59-47b3-aca4-b381c495dc96-agent-6042a5ca-fb59-47b3-aca4-b381c495dc96.json
+ create mode 100644 todos/639608ab-91c3-4ddc-ac64-7df734141eb2-agent-639608ab-91c3-4ddc-ac64-7df734141eb2.json
+ create mode 100644 todos/65cac1a2-d38b-4cdf-8a27-59a41ea56b64-agent-65cac1a2-d38b-4cdf-8a27-59a41ea56b64.json
+ create mode 100644 todos/67a101b0-d835-4c21-b47c-91014bf91d11-agent-67a101b0-d835-4c21-b47c-91014bf91d11.json
+ create mode 100644 todos/680f20fc-6b2d-44ed-9e46-0665ab84a527-agent-680f20fc-6b2d-44ed-9e46-0665ab84a527.json
+ create mode 100644 todos/68f342ab-8330-4b56-b263-5b78710adcd4-agent-68f342ab-8330-4b56-b263-5b78710adcd4.json
+ create mode 100644 todos/69c9f6ac-9cf1-467a-8ddf-388201d40f13-agent-69c9f6ac-9cf1-467a-8ddf-388201d40f13.json
+ create mode 100644 todos/6c558991-90dc-470e-8d8a-768dceb24596-agent-6c558991-90dc-470e-8d8a-768dceb24596.json
+ create mode 100644 todos/6dd926bc-2813-4be6-a1ea-b386c5d97d19-agent-6dd926bc-2813-4be6-a1ea-b386c5d97d19.json
+ create mode 100644 todos/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b-agent-6e7c1f5a-7df7-4e60-aa33-5a950b25d71b.json
+ create mode 100644 todos/6eac00ad-5e6f-4fae-94fa-d22f6d096653-agent-6eac00ad-5e6f-4fae-94fa-d22f6d096653.json
+ create mode 100644 todos/706cc06f-b152-4ee6-a92d-9a9fe8b1c070-agent-706cc06f-b152-4ee6-a92d-9a9fe8b1c070.json
+ create mode 100644 todos/70e2dffc-2115-48cb-be04-63d9f4ec98a8-agent-70e2dffc-2115-48cb-be04-63d9f4ec98a8.json
+ create mode 100644 todos/7517df2d-3580-4c8e-995c-b55adbf5fe04-agent-7517df2d-3580-4c8e-995c-b55adbf5fe04.json
+ create mode 100644 todos/773b2f35-8393-4035-8fd9-6e2e028fd2c4-agent-773b2f35-8393-4035-8fd9-6e2e028fd2c4.json
+ create mode 100644 todos/78c253ee-ac7f-4426-9702-64923ef7b1ee-agent-78c253ee-ac7f-4426-9702-64923ef7b1ee.json
+ create mode 100644 todos/794f5661-5b3a-45a8-bc81-fa222ec7a8a2-agent-794f5661-5b3a-45a8-bc81-fa222ec7a8a2.json
+ create mode 100644 todos/79a54bf2-e6e6-4894-b7ae-3bd14302741b-agent-79a54bf2-e6e6-4894-b7ae-3bd14302741b.json
+ create mode 100644 todos/807b498e-42e3-4846-bb75-6c1a3508aa0f-agent-807b498e-42e3-4846-bb75-6c1a3508aa0f.json
+ create mode 100644 todos/8265eb3a-8a03-45fb-b507-fa7dcd4e4b7d-agent-8265eb3a-8a03-45fb-b507-fa7dcd4e4b7d.json
+ create mode 100644 todos/84f0edd4-4d2f-4145-928d-b7ba32675908-agent-84f0edd4-4d2f-4145-928d-b7ba32675908.json
+ create mode 100644 todos/85695ba4-b5bb-4cc6-8b97-e812a1a1a257-agent-85695ba4-b5bb-4cc6-8b97-e812a1a1a257.json
+ create mode 100644 todos/885a7ddf-d80f-4189-9a82-c1b522032f61-agent-885a7ddf-d80f-4189-9a82-c1b522032f61.json
+ create mode 100644 todos/8860d962-f431-4a15-8446-aa66f248f6f6-agent-8860d962-f431-4a15-8446-aa66f248f6f6.json
+ create mode 100644 todos/8aaad3f3-6711-4444-8669-1e818cebf5d4-agent-8aaad3f3-6711-4444-8669-1e818cebf5d4.json
+ create mode 100644 todos/8ad15c59-c40b-467d-b6b3-a95fcb7317a8-agent-8ad15c59-c40b-467d-b6b3-a95fcb7317a8.json
+ create mode 100644 todos/8ad9d922-2e82-4ab7-a98c-19f353893577-agent-8ad9d922-2e82-4ab7-a98c-19f353893577.json
+ create mode 100644 todos/8b7e1118-8cfc-4492-ae6e-490da8ebba8e-agent-8b7e1118-8cfc-4492-ae6e-490da8ebba8e.json
+ create mode 100644 todos/8ede35ef-f2cc-4664-a23a-c20d3b93bec9-agent-8ede35ef-f2cc-4664-a23a-c20d3b93bec9.json
+ create mode 100644 todos/8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984-agent-8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984.json
+ create mode 100644 todos/909ed4b5-237a-47b7-a754-abbba07430ad-agent-909ed4b5-237a-47b7-a754-abbba07430ad.json
+ create mode 100644 todos/90ed2e2a-68df-4728-91de-ff264cf3f6d1-agent-90ed2e2a-68df-4728-91de-ff264cf3f6d1.json
+ create mode 100644 todos/91fce59f-6431-4f3c-86ba-909dd56b36f9-agent-91fce59f-6431-4f3c-86ba-909dd56b36f9.json
+ create mode 100644 todos/97c9b9da-cf7d-4901-b143-cb357e9e5dcb-agent-97c9b9da-cf7d-4901-b143-cb357e9e5dcb.json
+ create mode 100644 todos/990bea0e-721f-4049-8bd5-00421f4840b4-agent-990bea0e-721f-4049-8bd5-00421f4840b4.json
+ create mode 100644 todos/995ca7ca-bbaa-47ac-894d-56193776fb96-agent-995ca7ca-bbaa-47ac-894d-56193776fb96.json
+ create mode 100644 todos/99d62c65-1d00-4518-80b9-2cea3b8b5765-agent-99d62c65-1d00-4518-80b9-2cea3b8b5765.json
+ create mode 100644 todos/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd-agent-9b217a31-b666-43a9-ba1d-bbcbdf9de5bd.json
+ create mode 100644 todos/9c3e3dcc-d26c-4d44-9cf7-cdc32a0b7ede-agent-9c3e3dcc-d26c-4d44-9cf7-cdc32a0b7ede.json
+ create mode 100644 todos/9c914a04-cab6-452c-9d60-da17a4115446-agent-9c914a04-cab6-452c-9d60-da17a4115446.json
+ create mode 100644 todos/9e7507c5-682d-4221-b845-81a260dd3dd0-agent-9e7507c5-682d-4221-b845-81a260dd3dd0.json
+ create mode 100644 todos/9f6ca09c-3de0-4828-bc69-f6f9540ce4d5-agent-9f6ca09c-3de0-4828-bc69-f6f9540ce4d5.json
+ create mode 100644 todos/a0ceb898-9372-4070-aaa5-68798f7f2185-agent-a0ceb898-9372-4070-aaa5-68798f7f2185.json
+ create mode 100644 todos/a30b0e66-d00a-4b1e-8ffd-5931354bd82e-agent-a30b0e66-d00a-4b1e-8ffd-5931354bd82e.json
+ create mode 100644 todos/a496b240-9447-4f08-92e1-dc5ba8515b38-agent-a496b240-9447-4f08-92e1-dc5ba8515b38.json
+ create mode 100644 todos/a52c8964-decb-42be-9074-f4d7c9b8886e-agent-a52c8964-decb-42be-9074-f4d7c9b8886e.json
+ create mode 100644 todos/a5e559b0-c544-4c2a-8c82-aa7fc47641b4-agent-a5e559b0-c544-4c2a-8c82-aa7fc47641b4.json
+ create mode 100644 todos/a68afd41-b907-4f5e-8ec0-698fb6455386-agent-a68afd41-b907-4f5e-8ec0-698fb6455386.json
+ create mode 100644 todos/aa006214-3048-40c2-8c58-918e0293edce-agent-aa006214-3048-40c2-8c58-918e0293edce.json
+ create mode 100644 todos/acf3f922-354f-419b-a297-d1f6510e3fdf-agent-acf3f922-354f-419b-a297-d1f6510e3fdf.json
+ create mode 100644 todos/af1ce7b6-4721-4281-81fd-a9b507d82e46-agent-af1ce7b6-4721-4281-81fd-a9b507d82e46.json
+ create mode 100644 todos/b112ee27-ad50-43fc-9014-d15b49b4bbb5-agent-b112ee27-ad50-43fc-9014-d15b49b4bbb5.json
+ create mode 100644 todos/b2e9e5da-87f1-4326-86f3-230f08ed21cd-agent-b2e9e5da-87f1-4326-86f3-230f08ed21cd.json
+ create mode 100644 todos/b3cd9b18-062b-4d3e-873d-11852ae4244c-agent-b3cd9b18-062b-4d3e-873d-11852ae4244c.json
+ create mode 100644 todos/b754452c-1f10-4608-9468-9ee3eb786c98-agent-b754452c-1f10-4608-9468-9ee3eb786c98.json
+ create mode 100644 todos/b908accd-2af4-42ff-8ca6-3f296d2857cb-agent-b908accd-2af4-42ff-8ca6-3f296d2857cb.json
+ create mode 100644 todos/b9dfa597-546e-4204-a9c6-b0e718f6f769-agent-b9dfa597-546e-4204-a9c6-b0e718f6f769.json
+ create mode 100644 todos/bb27974c-18bd-418a-91a8-c1a6c2045769-agent-bb27974c-18bd-418a-91a8-c1a6c2045769.json
+ create mode 100644 todos/be191252-6194-4d95-b020-50aa21ce176a-agent-be191252-6194-4d95-b020-50aa21ce176a.json
+ create mode 100644 todos/be6bbaa2-ba8a-442d-9417-3ef5e746a289-agent-be6bbaa2-ba8a-442d-9417-3ef5e746a289.json
+ create mode 100644 todos/bfd663fd-3a01-49fc-b511-a5ccb2be3650-agent-bfd663fd-3a01-49fc-b511-a5ccb2be3650.json
+ create mode 100644 todos/c3407ebb-56c8-4339-b8a7-a07654fb6fa0-agent-c3407ebb-56c8-4339-b8a7-a07654fb6fa0.json
+ create mode 100644 todos/c41fd6bc-1b45-4d93-ac5f-a18ba31cfa15-agent-c41fd6bc-1b45-4d93-ac5f-a18ba31cfa15.json
+ create mode 100644 todos/c5ab8097-dcd9-4991-8e19-aea2f620edf6-agent-c5ab8097-dcd9-4991-8e19-aea2f620edf6.json
+ create mode 100644 todos/c667ebc6-4074-43a8-b98b-45b2bbf7e963-agent-c667ebc6-4074-43a8-b98b-45b2bbf7e963.json
+ create mode 100644 todos/c69502a6-39a2-458f-8d7e-8dc314f4989c-agent-c69502a6-39a2-458f-8d7e-8dc314f4989c.json
+ create mode 100644 todos/c748fb7f-6b2c-4b3b-8976-ac703b636e69-agent-c748fb7f-6b2c-4b3b-8976-ac703b636e69.json
+ create mode 100644 todos/c768391a-cf5d-4c2a-abf2-1897d138a185-agent-c768391a-cf5d-4c2a-abf2-1897d138a185.json
+ create mode 100644 todos/c7f79a88-39fe-4931-862f-e0f94f847231-agent-c7f79a88-39fe-4931-862f-e0f94f847231.json
+ create mode 100644 todos/ca0abe78-5a98-4ae5-a529-80fcb6c5da95-agent-ca0abe78-5a98-4ae5-a529-80fcb6c5da95.json
+ create mode 100644 todos/cb8439f2-1e3b-464c-82f6-3f232f2fa7e2-agent-cb8439f2-1e3b-464c-82f6-3f232f2fa7e2.json
+ create mode 100644 todos/cc14e548-f9cd-43fe-80d8-6c5af1477300-agent-cc14e548-f9cd-43fe-80d8-6c5af1477300.json
+ create mode 100644 todos/cc90ec55-5c6e-41a9-b270-e3ef91da3fe2-agent-cc90ec55-5c6e-41a9-b270-e3ef91da3fe2.json
+ create mode 100644 todos/ccc75b82-f9a0-41de-9a7c-852054b21787-agent-ccc75b82-f9a0-41de-9a7c-852054b21787.json
+ create mode 100644 todos/cdd5fd1d-71f9-440d-bc1a-baa403660684-agent-cdd5fd1d-71f9-440d-bc1a-baa403660684.json
+ create mode 100644 todos/d121a914-16d7-49ab-af6c-67bc4ccd185e-agent-d121a914-16d7-49ab-af6c-67bc4ccd185e.json
+ create mode 100644 todos/d26e146e-02cb-4fec-b8f2-f578e39de8fc-agent-d26e146e-02cb-4fec-b8f2-f578e39de8fc.json
+ create mode 100644 todos/d30a8f7b-3b00-4a88-a534-7640c6bb5e61-agent-d30a8f7b-3b00-4a88-a534-7640c6bb5e61.json
+ create mode 100644 todos/d4745498-8ef9-43ed-8b60-8afd1cffea3d-agent-d4745498-8ef9-43ed-8b60-8afd1cffea3d.json
+ create mode 100644 todos/d57ac395-5381-4cbc-b86d-9a7ebf913011-agent-d57ac395-5381-4cbc-b86d-9a7ebf913011.json
+ create mode 100644 todos/d5bdfd1f-6c93-4bfb-9c36-515c6649377d-agent-d5bdfd1f-6c93-4bfb-9c36-515c6649377d.json
+ create mode 100644 todos/d88a328d-a80a-402b-8789-46555909ecf5-agent-d88a328d-a80a-402b-8789-46555909ecf5.json
+ create mode 100644 todos/da1bc57c-843a-4055-ad0c-02f0d480a39d-agent-da1bc57c-843a-4055-ad0c-02f0d480a39d.json
+ create mode 100644 todos/dc230429-c7c1-4121-969c-614ee314bd0a-agent-dc230429-c7c1-4121-969c-614ee314bd0a.json
+ create mode 100644 todos/de8f946e-c40d-44d5-926d-20ada7dd1d94-agent-de8f946e-c40d-44d5-926d-20ada7dd1d94.json
+ create mode 100644 todos/df5ef0be-6a9c-4ade-95b4-910d2166286a-agent-df5ef0be-6a9c-4ade-95b4-910d2166286a.json
+ create mode 100644 todos/dfd48db8-73f2-4936-b0c9-c3cb0b7ca950-agent-dfd48db8-73f2-4936-b0c9-c3cb0b7ca950.json
+ create mode 100644 todos/e13eee2f-7a70-458d-b8b4-438eec33e788-agent-e13eee2f-7a70-458d-b8b4-438eec33e788.json
+ create mode 100644 todos/e1c000db-34d6-49d4-a7d5-1510385c9735-agent-e1c000db-34d6-49d4-a7d5-1510385c9735.json
+ create mode 100644 todos/e406cbf6-dad1-4eda-9ca1-735dadadef88-agent-e406cbf6-dad1-4eda-9ca1-735dadadef88.json
+ create mode 100644 todos/e4677605-0676-4145-88c2-2a46c5eae19b-agent-e4677605-0676-4145-88c2-2a46c5eae19b.json
+ create mode 100644 todos/e4a409f6-fd97-4181-a366-378e9c489afb-agent-e4a409f6-fd97-4181-a366-378e9c489afb.json
+ create mode 100644 todos/e56ca5ed-e676-42eb-9ed3-2cd6390c8467-agent-e56ca5ed-e676-42eb-9ed3-2cd6390c8467.json
+ create mode 100644 todos/ea9f7cad-4ef4-4009-8dd4-c13e4c11f6e6-agent-ea9f7cad-4ef4-4009-8dd4-c13e4c11f6e6.json
+ create mode 100644 todos/ed501b7a-f412-41c8-b64c-4d3d6c0f7490-agent-ed501b7a-f412-41c8-b64c-4d3d6c0f7490.json
+ create mode 100644 todos/ed761f54-9d37-4629-b397-73c41ffad52e-agent-ed761f54-9d37-4629-b397-73c41ffad52e.json
+ create mode 100644 todos/ee56b025-bdf2-4a2a-b287-245797e44f0d-agent-ee56b025-bdf2-4a2a-b287-245797e44f0d.json
+ create mode 100644 todos/ef00d835-ef65-4000-a368-87721f352243-agent-ef00d835-ef65-4000-a368-87721f352243.json
+ create mode 100644 todos/ef48b339-0afb-4a0a-8c31-6bd970348f0e-agent-ef48b339-0afb-4a0a-8c31-6bd970348f0e.json
+ create mode 100644 todos/f48498f2-32a2-40ca-b887-b5ed768cda15-agent-f48498f2-32a2-40ca-b887-b5ed768cda15.json
+ create mode 100644 todos/f9d27e41-5672-4f13-b4f8-774014a44989-agent-f9d27e41-5672-4f13-b4f8-774014a44989.json
+ create mode 100644 todos/fa0a0ace-ee54-4523-88fe-b1c2b3b95580-agent-fa0a0ace-ee54-4523-88fe-b1c2b3b95580.json
+ create mode 100644 todos/fd95e15b-62c3-4cd4-80a0-d37625027f92-agent-fd95e15b-62c3-4cd4-80a0-d37625027f92.json
+ create mode 100644 todos/fdb5d4be-9606-406a-b062-bd6674364079-agent-fdb5d4be-9606-406a-b062-bd6674364079.json
+ create mode 100644 todos/ffe73735-909d-4eac-b372-6c8a6fba69e0-agent-ffe73735-909d-4eac-b372-6c8a6fba69e0.json
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'config.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'plugins/blocklist.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'plugins/known_marketplaces.json', LF will be replaced by CRLF the next time Git touches it
+warning: adding embedded git repository: plugins/marketplaces/claude-plugins-official
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint:
+hint: 	git submodule add <url> plugins/marketplaces/claude-plugins-official
+hint:
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint:
+hint: 	git rm --cached plugins/marketplaces/claude-plugins-official
+hint:
+hint: See "git help submodule" for more information.
+hint: Disable this message with "git config set advice.addEmbeddedRepo false"
+warning: in the working copy of 'projects/C--Users-Administrator-Documents-trae-projects-test/sessions-index.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-a205296.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-a84618d.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator-Documents-trae-projects/0a311a1c-f57e-4597-b6f1-bfc3dec3c092/subagents/agent-aa39be2.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/00aa49a7-042e-43ca-8f54-deb49cf59bc5.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/0148855f-2b7c-45a2-ab21-d7e867d9d2d4.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/0bb902c1-ceab-4f21-bfd2-fbec3f0705e3.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/0c64ed00-65d9-4dd0-9c15-4c038adc3811.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/0c64ed00-65d9-4dd0-9c15-4c038adc3811/tool-results/call_8a0e7414a0c54e67aeb691ff.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/0faebb44-1964-4c59-9047-32a3cfa7b89e.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/136ac1a2-4b72-431c-8b64-83874cefcfd7.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/15fbfdac-48ce-4911-b2c5-65d6ae28438b.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/1b3f0b87-eb41-4fb5-a096-e19a90600003.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/1edff147-bc10-453c-819c-56ed29924c7f.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/2628c195-d97f-422d-99db-9879fdb19e40.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/26a41fda-20ef-4b37-a035-fd71004122a8.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/26d79b8e-afa8-4383-944f-8cb776542de8.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/2c538c9b-5c7d-4891-ae0d-cdbca7dca09e.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/2ced4907-423b-4e24-b56a-bd95f3a3b452/subagents/agent-aaefeb2.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/2ced4907-423b-4e24-b56a-bd95f3a3b452/subagents/agent-acb530b.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/36350088-922f-4f40-81ba-c597ff4af0c0.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/38f1e783-69c6-483d-9689-834de236b8f3.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/393703e2-6e9c-461c-924b-5af24421f890.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/3a8f9140-1af4-4983-a681-797a6ec6f50c.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/3ba83a97-9253-42c5-9c3a-f84a3a3a97e9.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/44539549-11f1-4a64-9ea3-c8d6d2cd4557.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/448e265f-c589-4aa1-8eb8-60ea6409890c.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/48897704-0ba8-41e4-9633-39907d774c3e.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/48e99a70-cce6-4fa5-bf29-f45c34beb0ef.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-aa405c2.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-ab4d54a.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4a6cd390-57a4-4866-b8f4-de52010e0501/subagents/agent-ab7e9be.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4daa6324-8cb8-4623-82db-b3aa28912900.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a2e289b.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a66a51f.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/4ea1ecf8-5688-4493-8cf9-79c3975c9383/subagents/agent-a76214c.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-a7a4a3f.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-a8eb183.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/50657987-c3ae-4ae2-b39a-084411b12a14/subagents/agent-ae59eb8.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-a193a17.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-a268869.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/54592f04-7915-4143-89ca-7f23fb850e92/subagents/agent-af3307f.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/575ea348-8f17-49a9-a54e-10e9bcc91f73.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/5e5fbf2b-255e-4c81-98d2-85c85d5ed235.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/5ee35c62-66cf-4d3a-9425-401af61c2311.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/6042a5ca-fb59-47b3-aca4-b381c495dc96.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/6c558991-90dc-470e-8d8a-768dceb24596.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-a6bc6f6.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-a7cc159.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/6e7c1f5a-7df7-4e60-aa33-5a950b25d71b/subagents/agent-afacac1.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-a234cbb.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-a4168cf.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/70e2dffc-2115-48cb-be04-63d9f4ec98a8/subagents/agent-ab9682f.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/773b2f35-8393-4035-8fd9-6e2e028fd2c4.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/79a09c94-c73b-4b0d-b0f7-ffe665d44216.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/84f0edd4-4d2f-4145-928d-b7ba32675908.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/85695ba4-b5bb-4cc6-8b97-e812a1a1a257.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8860d962-f431-4a15-8446-aa66f248f6f6.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8ad15c59-c40b-467d-b6b3-a95fcb7317a8.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8ad15c59-c40b-467d-b6b3-a95fcb7317a8/tool-results/call_5bb8d6595e104fb4bfec7b86.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8ad9d922-2e82-4ab7-a98c-19f353893577.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8b7e1118-8cfc-4492-ae6e-490da8ebba8e.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8ede35ef-f2cc-4664-a23a-c20d3b93bec9.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/8f3cc3ad-2ac1-4ab8-9ea4-f9b445084984.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/90ed2e2a-68df-4728-91de-ff264cf3f6d1.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/97c9b9da-cf7d-4901-b143-cb357e9e5dcb.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/990bea0e-721f-4049-8bd5-00421f4840b4.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/995ca7ca-bbaa-47ac-894d-56193776fb96.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-a01c86a.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-ab1d897.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/9b217a31-b666-43a9-ba1d-bbcbdf9de5bd/subagents/agent-aee6172.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/a496b240-9447-4f08-92e1-dc5ba8515b38.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/a5e559b0-c544-4c2a-8c82-aa7fc47641b4.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-a1a927a.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-a912982.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/b2e9e5da-87f1-4326-86f3-230f08ed21cd/subagents/agent-ae7c164.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/bb27974c-18bd-418a-91a8-c1a6c2045769.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/bfd663fd-3a01-49fc-b511-a5ccb2be3650.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c3407ebb-56c8-4339-b8a7-a07654fb6fa0.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-a1c48d0.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-a620936.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c5ab8097-dcd9-4991-8e19-aea2f620edf6/subagents/agent-afa8425.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c768391a-cf5d-4c2a-abf2-1897d138a185.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/c7f79a88-39fe-4931-862f-e0f94f847231.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/ccc75b82-f9a0-41de-9a7c-852054b21787.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-a5f99cc.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-a7b956b.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d30a8f7b-3b00-4a88-a534-7640c6bb5e61/subagents/agent-afb25d7.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d3dc4090-dba0-4dd2-aa71-eaec93430629.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-ace59b6.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-ad0f2d6.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d57ac395-5381-4cbc-b86d-9a7ebf913011/subagents/agent-afffec3.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/d88a328d-a80a-402b-8789-46555909ecf5.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/dc230429-c7c1-4121-969c-614ee314bd0a.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/e406cbf6-dad1-4eda-9ca1-735dadadef88.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/ef48b339-0afb-4a0a-8c31-6bd970348f0e.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/f9d27e41-5672-4f13-b4f8-774014a44989.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/fdb5d4be-9606-406a-b062-bd6674364079.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/C--Users-Administrator/sessions-index.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'projects/c--Users-Administrator-Documents-trae-projects-trae-solo-PDF-WEB/5c5df4af-2c0a-4b3f-97d8-6849ab8895fa.jsonl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'settings.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'settings.local.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/algorithmic-art/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/algorithmic-art/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/algorithmic-art/templates/generator_template.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/algorithmic-art/templates/viewer.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/brand-guidelines/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/brand-guidelines/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/ArsenalSC-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/BigShoulders-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Boldonse-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/BricolageGrotesque-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/CrimsonPro-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/DMMono-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/EricaOne-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/GeistMono-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Gloock-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/IBMPlexMono-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/InstrumentSans-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Italiana-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/JetBrainsMono-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Jura-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/LibreBaskerville-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Lora-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/NationalPark-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/NothingYouCouldDo-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Outfit-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/PixelifySans-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/PoiretOne-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/RedHatMono-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Silkscreen-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/SmoochSans-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/Tektur-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/WorkSans-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/canvas-design/canvas-fonts/YoungSerif-OFL.txt', LF will be replaced by CRLF the next time Git touches it
+warning: adding embedded git repository: skills/claude-trading-skills
+warning: in the working copy of 'skills/doc-coauthoring/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/create_doc.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/docx-js.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/mce/mc.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-2010.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-2012.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-2018.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-cex-2018.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-cid-2016.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/schemas/microsoft/wml-symex-2015.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/pack.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/unpack.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validate.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validation/__init__.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validation/base.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validation/docx.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validation/pptx.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/ooxml/scripts/validation/redlining.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/__init__.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/document.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/templates/comments.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/templates/commentsExtended.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/templates/commentsExtensible.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/templates/commentsIds.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/templates/people.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/docx/scripts/utilities.py', LF will be replaced by CRLF the next time Git touches it
+warning: adding embedded git repository: skills/follow-builders
+warning: in the working copy of 'skills/frontend-design/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/frontend-design/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/knowledge-base/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/knowledge-base/references/api.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/knowledge-base/scripts/cos-upload.cjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/knowledge-base/scripts/preflight-check.cjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/notes/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/ima-skill/notes/references/api.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/examples/3p-updates.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/examples/company-newsletter.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/examples/faq-answers.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/internal-comms/examples/general-comms.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/reference/evaluation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/reference/mcp_best_practices.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/reference/node_mcp_server.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/reference/python_mcp_server.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/scripts/connections.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/scripts/evaluation.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/scripts/example_evaluation.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/mcp-builder/scripts/requirements.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/nano-pdf/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/nano-pdf/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/forms.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/reference.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/check_bounding_boxes.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/check_bounding_boxes_test.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/check_fillable_fields.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/convert_pdf_to_images.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/create_validation_image.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/extract_form_field_info.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/fill_fillable_fields.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pdf/scripts/fill_pdf_form_with_annotations.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/html2pptx.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chart.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-main.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-picture.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/pml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-math.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/sml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-main.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/wml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ISO-IEC29500-4_2016/xml.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-contentTypes.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-coreProperties.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-digSig.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/ecma/fouth-edition/opc-relationships.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/mce/mc.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-2010.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-2012.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-2018.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-cex-2018.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-cid-2016.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-sdtdatahash-2020.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/schemas/microsoft/wml-symex-2015.xsd', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/pack.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/unpack.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validate.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validation/__init__.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validation/base.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validation/docx.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validation/pptx.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/ooxml/scripts/validation/redlining.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/scripts/html2pptx.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/scripts/inventory.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/scripts/rearrange.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/scripts/replace.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/scripts/thumbnail.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/create-gradients.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/create-icons.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/create-ppt.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/create-scene-icons.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/gradients.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide01.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide02.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide03.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide04.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide05.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide06.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide07.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide08.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide09.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide1.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide10.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide11.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide12.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide13.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide14.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide15.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide16.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide17.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide18.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide19.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide2.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide20.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide21.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide22.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide23.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide24.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide25.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide26.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide27.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide28.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide29.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide3.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide30.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide4.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide5.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide6.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide7.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/slide8.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/pptx/workspace/热敏打印机产品培训方案.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/references/output-patterns.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/references/workflows.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/scripts/init_skill.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/scripts/package_skill.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/skill-creator/scripts/quick_validate.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/core/easing.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/core/frame_composer.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/core/gif_builder.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/core/validators.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/slack-gif-creator/requirements.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/summarize/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/summarize/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/tavily-search-free/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/tavily-search-free/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/tavily-search-free/scripts/tavily_search.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/tavily/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/tavily/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/arctic-frost.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/botanical-garden.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/desert-rose.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/forest-canopy.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/golden-hour.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/midnight-galaxy.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/modern-minimalist.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/ocean-depths.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/sunset-boulevard.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/theme-factory/themes/tech-innovation.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/weather/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/weather/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/web-artifacts-builder/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/web-artifacts-builder/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/web-artifacts-builder/scripts/bundle-artifact.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/web-artifacts-builder/scripts/init-artifact.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/examples/console_logging.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/examples/element_discovery.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/examples/static_html_automation.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/webapp-testing/scripts/with_server.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/whisper/.skillhub.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/whisper/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/whisper/references/languages.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/xlsx/LICENSE.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/xlsx/SKILL.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'skills/xlsx/recalc.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stats-cache.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'todos/3522c732-22bf-4415-9356-186fe002095d-agent-3522c732-22bf-4415-9356-186fe002095d.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'todos/d57ac395-5381-4cbc-b86d-9a7ebf913011-agent-d57ac395-5381-4cbc-b86d-9a7ebf913011.json', LF will be replaced by CRLF the next time Git touches it

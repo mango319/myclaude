@@ -1,0 +1,28 @@
+package com.rfid.admin;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+/**
+ * RFID标签管理系统-管理端启动类
+ */
+@SpringBootApplication(scanBasePackages = "com.rfid")
+@MapperScan("com.rfid.admin.mapper")
+@EnableScheduling
+public class RfidAdminApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(RfidAdminApplication.class, args);
+        System.out.println("""
+
+                ========================================
+                   RFID管理系统启动成功！
+                   管理端服务已就绪
+                   访问地址: http://localhost:8080
+                   文档地址: http://localhost:8080/doc.html
+                ========================================
+                """);
+    }
+}

@@ -1,0 +1,20 @@
+"""服务模块"""
+from .kb_service import KnowledgeBaseService, kb_service, get_kb_service
+from .order_service import OrderService, order_service, get_order_service
+from .escalation_service import EscalationService, escalation_service, get_escalation_service
+from .response_builder import ResponseBuilder, response_builder, get_response_builder
+
+__all__ = [
+    "KnowledgeBaseService",
+    "kb_service",
+    "get_kb_service",
+    "OrderService",
+    "order_service",
+    "get_order_service",
+    "EscalationService",
+    "escalation_service",
+    "get_escalation_service",
+    "ResponseBuilder",
+    "response_builder",
+    "get_response_builder"
+]

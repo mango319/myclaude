@@ -1,0 +1,411 @@
+"""
+回复构建器
+构建结构化的客服回复
+"""
+from typing import List, Dict, Any, Optional
+from datetime import datetime
+from loguru import logger
+
+from core.models import IntentType, Order
+from config.settings import settings
+
+
+class ResponseBuilder:
+    """回复构建器"""
+
+    def __init__(self):
+        """初始化回复构建器"""
+        self.response_templates = self._load_templates()
+
+    def _load_templates(self) -> Dict[str, str]:
+        """加载回复模板"""
+        return {
+            "greeting": "您好！我是智能客服助手，很高兴为您服务。请问有什么可以帮您？",
+            "unknown": "抱歉，我没有理解您的问题。您可以：\n1. 重新描述您的问题\n2. 提供更多详细信息\n3. 输入\"转人工\"联系人工客服",
+            "error": "抱歉，我遇到了一些问题。请稍后再试或联系人工客服。",
+            "escalation": "正在为您转接人工客服，请稍候...",
+            "order_not_found": "抱歉，没有找到订单 {order_id}。请检查订单号是否正确，或提供更多订单信息。",
+            "no_results": "抱歉，没有找到相关信息。",
+            "thanks": "不客气！还有其他可以帮您的吗？",
+            "goodbye": "感谢您的咨询，祝您生活愉快！",
+            "busy": "当前咨询人数较多，请您稍候或稍后再试。"
+        }
+
+    async def build_response(
+        self,
+        intent: IntentType,
+        content: str,
+        sources: Optional[List[str]] = None,
+        suggestions: Optional[List[str]] = None,
+        escalate: bool = False,
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        构建回复
+
+        Args:
+            intent: 意图类型
+            content: 回复内容
+            sources: 知识来源
+            suggestions: 建议操作
+            escalate: 是否转人工
+            metadata: 元数据
+
+        Returns:
+            回复字典
+        """
+        response = {
+            "content": content,
+            "intent": intent.value,
+            "sources": sources or [],
+            "suggestions": suggestions or [],
+            "escalate": escalate,
+            "timestamp": datetime.now().isoformat()
+        }
+
+        if metadata:
+            response["metadata"] = metadata
+
+        return response
+
+    def build_greeting(self, user_name: Optional[str] = None) -> str:
+        """
+        构建问候语
+
+        Args:
+            user_name: 用户名（可选）
+
+        Returns:
+            问候语文本
+        """
+        if user_name:
+            return f"您好，{user_name}！我是智能客服助手，有什么可以帮您的吗？"
+        return self.response_templates["greeting"]
+
+    def build_farewell(self) -> str:
+        """构建告别语"""
+        return self.response_templates["goodbye"]
+
+    def build_error_response(
+        self,
+        error_message: Optional[str] = None,
+        include_escalation: bool = True
+    ) -> str:
+        """
+        构建错误回复
+
+        Args:
+            error_message: 错误信息
+            include_escalation: 是否包含转人工选项
+
+        Returns:
+            错误回复文本
+        """
+        base = self.response_templates["error"]
+
+        if error_message:
+            base = f"{base}\n\n错误详情：{error_message}"
+
+        if include_escalation:
+            base += "\n\n如需帮助，您可以输入\"转人工\"联系人工客服。"
+
+        return base
+
+    def build_order_response(
+        self,
+        order: Order,
+        include_suggestions: bool = True
+    ) -> str:
+        """
+        构建订单查询回复
+
+        Args:
+            order: 订单对象
+            include_suggestions: 是否包含操作建议
+
+        Returns:
+            订单信息文本
+        """
+        lines = [
+            "📦 您的订单信息",
+            "━━━━━━━━━━━━━━━━",
+            f"订单号：{order.order_id}",
+            f"订单状态：{self._format_status(order.status)}",
+            f"下单时间：{self._format_datetime(order.created_at)}",
+            "",
+            "🛒 商品列表："
+        ]
+
+        for item in order.items:
+            lines.append(f"  • {item.name} x{item.quantity} = ¥{item.total_price:.2f}")
+
+        lines.extend([
+            "",
+            "💰 金额信息：",
+            f"  订单总额：¥{order.total_amount:.2f}",
+            f"  实付金额：¥{order.payment_amount:.2f}"
+        ])
+
+        # 物流信息
+        if order.logistics:
+            lines.extend([
+                "",
+                "🚚 物流信息：",
+                f"  承运商：{order.logistics.carrier}",
+                f"  物流单号：{order.logistics.tracking_number}",
+                f"  物流状态：{order.logistics.status}"
+            ])
+
+            # 最新轨迹
+            if order.logistics.traces:
+                latest = order.logistics.traces[-1]
+                lines.append(f"  最新动态：{latest.get('status', '')}")
+
+        # 操作建议
+        if include_suggestions:
+            lines.extend([
+                "",
+                "💡 温馨提示："
+            ])
+            lines.extend(self._get_order_suggestions(order.status))
+
+        return "\n".join(lines)
+
+    def _format_status(self, status) -> str:
+        """格式化状态"""
+        status_map = {
+            "pending_payment": "⏳ 待付款",
+            "paid": "✅ 已付款",
+            "shipped": "🚚 已发货",
+            "delivered": "📬 已送达",
+            "completed": "✨ 已完成",
+            "cancelled": "❌ 已取消",
+            "refunding": "⏳ 退款中",
+            "refunded": "💰 已退款"
+        }
+        return status_map.get(status.value if hasattr(status, 'value') else status, str(status))
+
+    def _format_datetime(self, dt: Optional[datetime]) -> str:
+        """格式化日期时间"""
+        if not dt:
+            return "未知"
+        return dt.strftime("%Y-%m-%d %H:%M")
+
+    def _get_order_suggestions(self, status) -> List[str]:
+        """获取订单操作建议"""
+        suggestions = []
+
+        status_val = status.value if hasattr(status, 'value') else status
+
+        if status_val == "pending_payment":
+            suggestions = [
+                "• 请尽快完成支付",
+                "• 如需修改订单，请联系客服"
+            ]
+        elif status_val == "shipped":
+            suggestions = [
+                "• 商品正在配送中",
+                "• 请保持电话畅通"
+            ]
+        elif status_val == "delivered":
+            suggestions = [
+                "• 请及时查收商品",
+                "• 收到后请检查确认"
+            ]
+        elif status_val == "completed":
+            suggestions = [
+                "• 感谢您的购买",
+                "• 如有售后问题，随时联系客服"
+            ]
+        else:
+            suggestions = [
+                "• 如有任何问题，请联系客服"
+            ]
+
+        return suggestions
+
+    def build_faq_response(
+        self,
+        answer: str,
+        sources: Optional[List[str]] = None,
+        related_questions: Optional[List[str]] = None
+    ) -> str:
+        """
+        构建FAQ回复
+
+        Args:
+            answer: 答案内容
+            sources: 知识来源
+            related_questions: 相关问题
+
+        Returns:
+            FAQ回复文本
+        """
+        lines = [answer]
+
+        if sources:
+            lines.append("\n📚 参考来源：")
+            for i, source in enumerate(sources[:3], 1):
+                lines.append(f"  {i}. {source}")
+
+        if related_questions:
+            lines.append("\n❓ 您可能还想了解：")
+            for q in related_questions[:3]:
+                lines.append(f"  • {q}")
+
+        return "\n".join(lines)
+
+    def build_escalation_response(
+        self,
+        ticket_id: Optional[str] = None,
+        estimated_wait: Optional[int] = None
+    ) -> str:
+        """
+        构建转人工回复
+
+        Args:
+            ticket_id: 工单ID
+            estimated_wait: 预计等待时间（分钟）
+
+        Returns:
+            转人工回复文本
+        """
+        lines = [
+            "🔄 正在为您转接人工客服...",
+            ""
+        ]
+
+        if ticket_id:
+            lines.append(f"工单编号：{ticket_id}")
+
+        if estimated_wait:
+            lines.append(f"预计等待时间：约 {estimated_wait} 分钟")
+
+        lines.extend([
+            "",
+            "请您稍候，客服人员将尽快为您服务。",
+            "在等待期间，您可以继续描述您的问题。"
+        ])
+
+        return "\n".join(lines)
+
+    def build_clarification_response(
+        self,
+        missing_fields: List[str],
+        intent_description: str
+    ) -> str:
+        """
+        构建请求澄清的回复
+
+        Args:
+            missing_fields: 缺失的字段
+            intent_description: 意图描述
+
+        Returns:
+            澄清请求文本
+        """
+        lines = [
+            f"为了更好地为您{intent_description}，请提供以下信息：",
+            ""
+        ]
+
+        for i, field in enumerate(missing_fields, 1):
+            field_desc = {
+                "order_id": "订单号",
+                "phone": "手机号",
+                "product_name": "商品名称",
+                "reason": "具体原因"
+            }.get(field, field)
+
+            lines.append(f"{i}. {field_desc}")
+
+        lines.extend([
+            "",
+            "例如：我的订单 123456789 什么时候发货？"
+        ])
+
+        return "\n".join(lines)
+
+    def build_suggestions(
+        self,
+        intent: IntentType,
+        context: Optional[Dict[str, Any]] = None
+    ) -> List[str]:
+        """
+        根据意图生成建议操作
+
+        Args:
+            intent: 意图类型
+            context: 上下文信息
+
+        Returns:
+            建议操作列表
+        """
+        suggestions = []
+
+        if intent == IntentType.ORDER_QUERY:
+            suggestions = [
+                "查询我的订单",
+                "查看物流信息",
+                "申请退款"
+            ]
+
+        elif intent == IntentType.FAQ:
+            suggestions = [
+                "退货政策",
+                "配送时间",
+                "支付方式"
+            ]
+
+        elif intent == IntentType.RETURN:
+            suggestions = [
+                "申请退货",
+                "退货流程",
+                "退款时间"
+            ]
+
+        elif intent == IntentType.COMPLAINT:
+            suggestions = [
+                "提交投诉",
+                "联系人工客服",
+                "查看售后政策"
+            ]
+
+        else:
+            suggestions = [
+                "咨询常见问题",
+                "查询订单",
+                "联系人工客服"
+            ]
+
+        return suggestions
+
+    def add_quick_actions(self, response: str, actions: List[str]) -> str:
+        """
+        添加快捷操作按钮
+
+        Args:
+            response: 回复文本
+            actions: 操作列表
+
+        Returns:
+            带快捷操作的回复
+        """
+        if not actions:
+            return response
+
+        action_lines = ["\n⚡ 快捷操作："]
+
+        for i, action in enumerate(actions, 1):
+            action_lines.append(f"  {i}. {action}")
+
+        return response + "\n".join(action_lines)
+
+
+# 全局回复构建器实例
+response_builder = ResponseBuilder()
+
+
+async def get_response_builder() -> ResponseBuilder:
+    """获取回复构建器实例（依赖注入用）"""
+    return response_builder

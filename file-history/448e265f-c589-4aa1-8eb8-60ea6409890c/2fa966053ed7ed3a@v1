@@ -1,0 +1,30 @@
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
+
+async function imageToBase64(imagePath) {
+  const buffer = await fs.promises.readFile(imagePath);
+  return `data:image/png;base64,${buffer.toString('base64')}`;
+}
+
+async function createHtmlWithBase64Images() {
+  const icons = {
+    document: await imageToBase64('document.png'),
+    retail: await imageToBase64('retail.png'),
+    supermarket: await imageToBase64('supermarket.png'),
+    cafe: await imageToBase64('cafe.png'),
+    logistics: await imageToBase64('logistics.png'),
+    factory: await imageToBase64('factory.png'),
+    home: await imageToBase64('home.png'),
+    shipping: await imageToBase64('shipping.png')
+  };
+
+  return icons;
+}
+
+createHtmlWithBase64Images().then(icons => {
+  console.log('Icons converted to base64');
+  console.log('Keys:', Object.keys(icons));
+}).catch(console.error);
+
+module.exports = { createHtmlWithBase64Images };

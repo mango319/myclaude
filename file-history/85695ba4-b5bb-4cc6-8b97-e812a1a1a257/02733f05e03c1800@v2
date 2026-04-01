@@ -1,0 +1,34 @@
+# Node modules
+extensions/*/node_modules/
+
+# Browser data (large local files)
+browser/*
+
+# Logs
+logs/*
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Delivery queue
+delivery-queue/*
+
+# Large compiled files
+*.tgz
+skillhub.tar.gz
+
+# Device specific
+devices/*
+identity
+
+# Workspace has its own git repository
+workspace/
+
+# Keep core data but ignore some subdirectories

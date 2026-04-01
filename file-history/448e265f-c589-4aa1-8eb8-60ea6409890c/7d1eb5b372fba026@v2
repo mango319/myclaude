@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60pt;
+  background: #2E4053;
+  display: flex;
+  align-items: center;
+  padding-left: 40pt;
+}
+.header h1 {
+  color: #FFFFFF;
+  font-size: 22pt;
+  margin: 0;
+  font-weight: bold;
+}
+.content {
+  margin-top: 80pt;
+  margin-left: 60pt;
+  margin-right: 60pt;
+}
+.speed-note {
+  color: #E67E22;
+  font-size: 14pt;
+  margin: 0 0 20pt 0;
+  font-weight: bold;
+}
+.section-box {
+  background: #FFFFFF;
+  border-left: 5pt solid #E67E22;
+  padding: 12pt 20pt;
+  margin-bottom: 12pt;
+  border-radius: 4pt;
+}
+.section-title {
+  color: #E67E22;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0 0 8pt 0;
+}
+.market-list {
+  margin: 0;
+  padding-left: 16pt;
+}
+.market-list li {
+  color: #2C3E50;
+  font-size: 12pt;
+  margin: 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>票据打印机（高速）</h1>
+</div>
+<div class="content">
+  <p class="speed-note">打印速度：160mm/s以上</p>
+  <div class="section-box">
+    <p class="section-title">58mm</p>
+    <ul class="market-list">
+      <li>应用：商超、外卖</li>
+      <li>市场：国内、东南亚</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">80mm（切刀）</p>
+    <ul class="market-list">
+      <li>应用：商超</li>
+      <li>市场：欧美</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

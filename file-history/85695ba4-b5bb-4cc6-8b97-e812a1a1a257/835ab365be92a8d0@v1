@@ -1,0 +1,80 @@
+# OpenClaw 自动同步备份脚本 (PowerShell)
+# 使用方法：右键 -> 使用 PowerShell 运行
+
+Write-Host "========================================"  -ForegroundColor Cyan
+Write-Host "   OpenClaw 自动同步备份脚本"           -ForegroundColor Cyan
+Write-Host "========================================"  -ForegroundColor Cyan
+Write-Host ""
+
+$ErrorActionPreference = "Stop"
+$Date = Get-Date -Format "yyyy-MM-dd HH:mm"
+
+# 函数：同步 git 仓库
+function Sync-GitRepo {
+    param(
+        [string]$Path,
+        [string]$Name
+    )
+
+    Write-Host "[$Name]" -ForegroundColor Yellow
+    Set-Location $Path
+
+    # 检查是否有变更
+    $status = git status --porcelain
+    if ([string]::IsNullOrEmpty($status)) {
+        Write-Host "  ℹ️  无变化，跳过" -ForegroundColor Gray
+        return
+    }
+
+    # 添加并提交
+    git add .
+    git commit -m "自动备份 $Date"
+    Write-Host "  ✅ 已提交" -ForegroundColor Green
+
+    # 推送
+    git push
+    Write-Host "  ✅ 已推送到 GitHub" -ForegroundColor Green
+    Write-Host ""
+}
+
+# 同步主配置
+try {
+    Sync-GitRepo "$env:USERPROFILE\.openclaw" "主配置"
+} catch {
+    Write-Host "  ❌ 主配置同步失败: $_" -ForegroundColor Red
+}
+
+# 同步工作区
+try {
+    Sync-GitRepo "$env:USERPROFILE\.openclaw\workspace" "工作区"
+} catch {
+    Write-Host "  ❌ 工作区同步失败: $_" -ForegroundColor Red
+}
+
+# 创建本地压缩备份
+Write-Host "创建本地压缩备份..." -ForegroundColor Yellow
+$BackupName = "openclaw-backup-$(Get-Date -Format 'yyyyMMdd').tar.gz"
+$BackupPath = "$env:USERPROFILE\$BackupName"
+
+if (Test-Path $BackupPath) { Remove-Item $BackupPath }
+tar -czf $BackupPath "$env:USERPROFILE\.openclaw"
+Write-Host "  ✅ 已创建: $BackupName" -ForegroundColor Green
+
+# 清理旧备份（保留最近 3 个）
+Write-Host "清理旧备份..." -ForegroundColor Yellow
+$OldBackups = Get-ChildItem "$env:USERPROFILE\openclaw-backup-*.tar.gz" |
+    Sort-Object LastWriteTime -Descending |
+    Select-Object -Skip 3
+
+foreach ($file in $OldBackups) {
+    Remove-Item $file.FullName
+    Write-Host "  🗑️  已删除: $($file.Name)" -ForegroundColor Gray
+}
+
+Write-Host ""
+Write-Host "========================================"  -ForegroundColor Cyan
+Write-Host "   同步完成！"                          -ForegroundColor Green
+Write-Host "========================================"  -ForegroundColor Cyan
+Write-Host ""
+Write-Host "按任意键退出..."
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

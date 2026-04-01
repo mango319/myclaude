@@ -1,0 +1,325 @@
+"""
+中间件模块
+包含日志、认证、限流等中间件
+"""
+import time
+import json
+from typing import Callable
+from fastapi import Request, Response
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.types import ASGIApp
+from loguru import logger
+
+from config.settings import settings
+from core.exceptions import BaseAppException
+
+
+# ==================== 日志中间件 ====================
+
+class LoggingMiddleware(BaseHTTPMiddleware):
+    """请求日志中间件"""
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        """处理请求并记录日志"""
+
+        start_time = time.time()
+
+        # 记录请求信息
+        logger.info(
+            f"Request: {request.method} {request.url.path} "
+            f"from {request.client.host if request.client else 'unknown'}"
+        )
+
+        # 处理请求
+        try:
+            response = await call_next(request)
+            process_time = time.time() - start_time
+
+            # 记录响应信息
+            logger.info(
+                f"Response: {response.status_code} "
+                f"in {process_time:.3f}s"
+            )
+
+            # 添加处理时间头
+            response.headers["X-Process-Time"] = str(process_time)
+
+            return response
+
+        except Exception as e:
+            process_time = time.time() - start_time
+            logger.error(
+                f"Error in {request.method} {request.url.path}: {str(e)} "
+                f"in {process_time:.3f}s"
+            )
+            raise
+
+
+# ==================== 错误处理中间件 ====================
+
+class ErrorHandlingMiddleware(BaseHTTPMiddleware):
+    """全局错误处理中间件"""
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        """处理请求并捕获异常"""
+
+        try:
+            response = await call_next(request)
+            return response
+
+        except BaseAppException as e:
+            # 业务异常
+            from fastapi.responses import JSONResponse
+
+            logger.warning(f"Business exception: {e.code} - {e.message}")
+
+            return JSONResponse(
+                status_code=self._get_status_code(e.code),
+                content={
+                    "success": False,
+                    "error": {
+                        "code": e.code,
+                        "message": e.message,
+                        "details": e.details
+                    }
+                }
+            )
+
+        except Exception as e:
+            # 未知异常
+            from fastapi.responses import JSONResponse
+
+            logger.error(f"Unhandled exception: {str(e)}", exc_info=True)
+
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "success": False,
+                    "error": {
+                        "code": "INTERNAL_ERROR",
+                        "message": "服务器内部错误" if not settings.DEBUG else str(e)
+                    }
+                }
+            )
+
+    @staticmethod
+    def _get_status_code(error_code: str) -> int:
+        """根据错误码获取HTTP状态码"""
+
+        status_map = {
+            "VALIDATION_ERROR": 400,
+            "NOT_FOUND": 404,
+            "PLATFORM_API_ERROR": 502,
+            "KNOWLEDGE_BASE_ERROR": 503,
+            "ORDER_QUERY_ERROR": 502,
+            "CONFIGURATION_ERROR": 500,
+        }
+
+        return status_map.get(error_code, 500)
+
+
+# ==================== 平台认证中间件 ====================
+
+class PlatformAuthMiddleware(BaseHTTPMiddleware):
+    """平台回调认证中间件"""
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        """验证平台回调签名"""
+
+        # 只对webhook路径进行签名验证
+        if "/webhook/" not in request.url.path:
+            return await call_next(request)
+
+        try:
+            # 从URL提取平台类型
+            platform = request.url.path.split("/")[-1]
+
+            # 验证签名
+            if not await self._verify_signature(request, platform):
+                from fastapi.responses import JSONResponse
+
+                logger.warning(f"Invalid signature for platform: {platform}")
+
+                return JSONResponse(
+                    status_code=401,
+                    content={
+                        "success": False,
+                        "error": {
+                            "code": "INVALID_SIGNATURE",
+                            "message": "签名验证失败"
+                        }
+                    }
+                )
+
+            return await call_next(request)
+
+        except Exception as e:
+            logger.error(f"Auth error: {str(e)}")
+            raise
+
+    @staticmethod
+    async def _verify_signature(request: Request, platform: str) -> bool:
+        """验证平台签名"""
+
+        # TODO: 实现各平台的签名验证逻辑
+        # 天猫: MD5(app_secret + params...)
+        # 京东: 自定义签名算法
+        # 亚马逊: AWS签名
+
+        # 开发环境跳过验证
+        if settings.DEBUG:
+            return True
+
+        # 生产环境需要实现实际验证逻辑
+        return True
+
+
+# ==================== 限流中间件 ====================
+
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    """简单的限流中间件（基于Redis）"""
+
+    def __init__(
+        self,
+        app: ASGIApp,
+        redis_client=None,
+        requests_per_minute: int = 60
+    ):
+        super().__init__(app)
+        self.redis_client = redis_client
+        self.requests_per_minute = requests_per_minute
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        """处理请求并限流"""
+
+        # 跳过健康检查等端点
+        if request.url.path in ["/health", "/metrics"]:
+            return await call_next(request)
+
+        # 如果没有Redis客户端，跳过限流
+        if not self.redis_client:
+            return await call_next(request)
+
+        try:
+            # 获取客户端标识
+            client_id = self._get_client_id(request)
+
+            # 检查限流
+            if not await self._check_rate_limit(client_id):
+                from fastapi.responses import JSONResponse
+
+                logger.warning(f"Rate limit exceeded for: {client_id}")
+
+                return JSONResponse(
+                    status_code=429,
+                    content={
+                        "success": False,
+                        "error": {
+                            "code": "RATE_LIMIT_EXCEEDED",
+                            "message": "请求过于频繁，请稍后再试"
+                        }
+                    }
+                )
+
+            return await call_next(request)
+
+        except Exception as e:
+            logger.error(f"Rate limit error: {str(e)}")
+            # 限流出错时不阻塞请求
+            return await call_next(request)
+
+    @staticmethod
+    def _get_client_id(request: Request) -> str:
+        """获取客户端标识"""
+
+        # 优先使用API密钥
+        api_key = request.headers.get("X-API-Key")
+        if api_key:
+            return f"api_key:{api_key}"
+
+        # 其次使用用户ID
+        user_id = request.headers.get("X-User-ID")
+        if user_id:
+            return f"user:{user_id}"
+
+        # 最后使用IP
+        return f"ip:{request.client.host if request.client else 'unknown'}"
+
+    async def _check_rate_limit(self, client_id: str) -> bool:
+        """检查是否超过限流阈值"""
+
+        import time
+
+        key = f"rate_limit:{client_id}"
+        current_time = int(time.time())
+        window_start = current_time - 60  # 1分钟窗口
+
+        try:
+            # 使用Redis的sorted set实现滑动窗口
+            pipe = self.redis_client.pipeline()
+            pipe.zremrangebyscore(key, 0, window_start)
+            pipe.zadd(key, {str(current_time): current_time})
+            pipe.zcard(key)
+            pipe.expire(key, 60)
+
+            results = await pipe.execute()
+            request_count = results[2]
+
+            return request_count <= self.requests_per_minute
+
+        except Exception as e:
+            logger.error(f"Rate limit check error: {str(e)}")
+            return True  # 出错时不限制
+
+
+# ==================== 请求ID中间件 ====================
+
+class RequestIDMiddleware(BaseHTTPMiddleware):
+    """请求ID中间件"""
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        """添加请求ID"""
+
+        import uuid
+
+        # 生成或获取请求ID
+        request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+
+        # 添加到请求状态
+        request.state.request_id = request_id
+
+        # 处理请求
+        response = await call_next(request)
+
+        # 添加响应头
+        response.headers["X-Request-ID"] = request_id
+
+        return response
+
+
+# ==================== 中间件工厂函数 ====================
+
+def setup_middlewares(app):
+    """设置所有中间件"""
+
+    # CORS
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"] if settings.DEBUG else ["https://yourdomain.com"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # 请求ID
+    app.add_middleware(RequestIDMiddleware)
+
+    # 日志
+    app.add_middleware(LoggingMiddleware)
+
+    # 错误处理
+    app.add_middleware(ErrorHandlingMiddleware)
+
+    # 平台认证（仅webhook）
+    app.add_middleware(PlatformAuthMiddleware)

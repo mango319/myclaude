@@ -1,0 +1,297 @@
+"""
+数据模型定义
+包含所有业务数据模型
+"""
+from datetime import datetime
+from typing import Optional, List, Dict, Any, Literal
+from pydantic import BaseModel, Field, validator
+from enum import Enum
+
+
+class PlatformType(str, Enum):
+    """平台类型枚举"""
+    TMALL = "tmall"
+    JD = "jd"
+    AMAZON = "amazon"
+
+
+class IntentType(str, Enum):
+    """意图类型枚举"""
+    FAQ = "faq"
+    ORDER_QUERY = "order_query"
+    COMPLAINT = "complaint"
+    RETURN = "return"
+    ESCALATION = "escalation"
+    UNKNOWN = "unknown"
+
+
+class SentimentType(str, Enum):
+    """情感类型枚举"""
+    POSITIVE = "positive"
+    NEUTRAL = "neutral"
+    NEGATIVE = "negative"
+
+
+class MessageRole(str, Enum):
+    """消息角色枚举"""
+    USER = "user"
+    ASSISTANT = "assistant"
+    SYSTEM = "system"
+
+
+class OrderStatus(str, Enum):
+    """订单状态枚举"""
+    PENDING_PAYMENT = "pending_payment"      # 待付款
+    PAID = "paid"                             # 已付款
+    SHIPPED = "shipped"                       # 已发货
+    DELIVERED = "delivered"                   # 已送达
+    COMPLETED = "completed"                   # 已完成
+    CANCELLED = "cancelled"                   # 已取消
+    REFUNDING = "refunding"                   # 退款中
+    REFUNDED = "refunded"                     # 已退款
+
+
+# ==================== 基础模型 ====================
+
+class BaseModelExt(BaseModel):
+    """扩展基础模型"""
+    class Config:
+        use_enum_values = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
+
+
+# ==================== 消息模型 ====================
+
+class Message(BaseModelExt):
+    """消息基础模型"""
+    id: str = Field(..., description="消息ID")
+    platform: PlatformType = Field(..., description="平台类型")
+    user_id: str = Field(..., description="用户ID")
+    session_id: str = Field(..., description="会话ID")
+    role: MessageRole = Field(..., description="消息角色")
+    content: str = Field(..., description="消息内容")
+    timestamp: datetime = Field(default_factory=datetime.now, description="消息时间戳")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="元数据")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": "msg_123456",
+                "platform": "tmall",
+                "user_id": "user_789",
+                "session_id": "session_abc",
+                "role": "user",
+                "content": "我的订单什么时候能到？",
+                "timestamp": "2024-01-15T10:30:00",
+                "metadata": {"source": "web"}
+            }
+        }
+
+
+class IncomingMessage(Message):
+    """接收消息模型"""
+    message_type: str = Field(default="text", description="消息类型")
+    platform_message_id: Optional[str] = Field(None, description="平台消息ID")
+    raw_data: Dict[str, Any] = Field(default_factory=dict, description="原始数据")
+
+
+class OutgoingMessage(Message):
+    """发送消息模型"""
+    response_id: str = Field(..., description="回复ID")
+    intent: Optional[IntentType] = Field(None, description="识别的意图")
+    confidence: float = Field(default=0.0, description="置信度")
+    sources: List[str] = Field(default_factory=list, description="知识来源")
+    escalate: bool = Field(default=False, description="是否转人工")
+
+
+# ==================== 意图识别模型 ====================
+
+class IntentResult(BaseModelExt):
+    """意图识别结果"""
+    intent: IntentType = Field(..., description="识别的意图")
+    confidence: float = Field(..., ge=0, le=1, description="置信度")
+    reasoning: str = Field(default="", description="判断理由")
+    alternative_intents: Dict[str, float] = Field(default_factory=dict, description="备选意图")
+
+    @validator('confidence')
+    def validate_confidence(cls, v):
+        if not 0 <= v <= 1:
+            raise ValueError('置信度必须在0-1之间')
+        return v
+
+
+# ==================== 实体提取模型 ====================
+
+class ExtractedEntity(BaseModelExt):
+    """提取的实体"""
+    entity_type: str = Field(..., description="实体类型")
+    value: str = Field(..., description="实体值")
+    confidence: float = Field(..., ge=0, le=1, description="置信度")
+    start_pos: int = Field(default=0, description="起始位置")
+    end_pos: int = Field(default=0, description="结束位置")
+
+
+class EntityExtractionResult(BaseModelExt):
+    """实体提取结果"""
+    entities: List[ExtractedEntity] = Field(default_factory=list, description="提取的实体列表")
+    confidence: float = Field(default=0.0, description="整体置信度")
+
+
+# ==================== 订单模型 ====================
+
+class OrderItem(BaseModelExt):
+    """订单商品项"""
+    sku_id: str = Field(..., description="商品SKU")
+    name: str = Field(..., description="商品名称")
+    quantity: int = Field(..., ge=1, description="数量")
+    price: float = Field(..., ge=0, description="单价")
+    total_price: float = Field(..., ge=0, description="小计")
+    image_url: Optional[str] = Field(None, description="商品图片")
+
+
+class LogisticsInfo(BaseModelExt):
+    """物流信息"""
+    tracking_number: str = Field(..., description="物流单号")
+    carrier: str = Field(..., description="承运商")
+    status: str = Field(..., description="物流状态")
+    estimated_delivery: Optional[datetime] = Field(None, description="预计送达时间")
+    traces: List[Dict[str, Any]] = Field(default_factory=list, description="物流轨迹")
+
+
+class Order(BaseModelExt):
+    """订单模型"""
+    order_id: str = Field(..., description="订单号")
+    platform: PlatformType = Field(..., description="平台")
+    platform_order_id: str = Field(..., description="平台订单ID")
+    user_id: str = Field(..., description="用户ID")
+    status: OrderStatus = Field(..., description="订单状态")
+    items: List[OrderItem] = Field(default_factory=list, description="商品列表")
+    total_amount: float = Field(..., ge=0, description="订单总额")
+    payment_amount: float = Field(..., ge=0, description="实付金额")
+    currency: str = Field(default="CNY", description="货币")
+    created_at: datetime = Field(..., description="下单时间")
+    updated_at: datetime = Field(..., description="更新时间")
+    paid_at: Optional[datetime] = Field(None, description="付款时间")
+    shipped_at: Optional[datetime] = Field(None, description="发货时间")
+    delivered_at: Optional[datetime] = Field(None, description="送达时间")
+    logistics: Optional[LogisticsInfo] = Field(None, description="物流信息")
+    recipient_address: Dict[str, str] = Field(default_factory=dict, description="收货地址")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="其他信息")
+
+
+# ==================== 知识库模型 ====================
+
+class DocumentChunk(BaseModelExt):
+    """文档分块"""
+    chunk_id: str = Field(..., description="分块ID")
+    document_id: str = Field(..., description="文档ID")
+    content: str = Field(..., description="内容")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="元数据")
+    embedding: Optional[List[float]] = Field(None, description="向量表示")
+    score: Optional[float] = Field(None, description="检索分数")
+
+
+class Document(BaseModelExt):
+    """文档模型"""
+    document_id: str = Field(..., description="文档ID")
+    title: str = Field(..., description="标题")
+    content: str = Field(..., description="内容")
+    source: str = Field(..., description="来源")
+    document_type: str = Field(default="text", description="文档类型")
+    chunks: List[DocumentChunk] = Field(default_factory=list, description="分块列表")
+    created_at: datetime = Field(default_factory=datetime.now, description="创建时间")
+    updated_at: datetime = Field(default_factory=datetime.now, description="更新时间")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="元数据")
+
+
+class SearchResult(BaseModelExt):
+    """搜索结果"""
+    chunk: DocumentChunk = Field(..., description="文档分块")
+    score: float = Field(..., description="相关度分数")
+
+
+# ==================== 会话模型 ====================
+
+class ChatSession(BaseModelExt):
+    """对话会话"""
+    session_id: str = Field(..., description="会话ID")
+    platform: PlatformType = Field(..., description="平台")
+    user_id: str = Field(..., description="用户ID")
+    messages: List[Message] = Field(default_factory=list, description="消息列表")
+    current_intent: Optional[IntentType] = Field(None, description="当前意图")
+    entities: Dict[str, Any] = Field(default_factory=dict, description="提取的实体")
+    context: Dict[str, Any] = Field(default_factory=dict, description="会话上下文")
+    failure_count: int = Field(default=0, description="连续失败次数")
+    escalated: bool = Field(default=False, description="是否已转人工")
+    created_at: datetime = Field(default_factory=datetime.now, description="创建时间")
+    updated_at: datetime = Field(default_factory=datetime.now, description="更新时间")
+
+
+# ==================== 人工转接模型 ====================
+
+class EscalationTicket(BaseModelExt):
+    """人工转接工单"""
+    ticket_id: str = Field(..., description="工单ID")
+    session_id: str = Field(..., description="会话ID")
+    platform: PlatformType = Field(..., description="平台")
+    user_id: str = Field(..., description="用户ID")
+    summary: str = Field(..., description="问题摘要")
+    priority: Literal["low", "medium", "high", "urgent"] = Field(..., description="优先级")
+    reason: str = Field(..., description="转接原因")
+    context: Dict[str, Any] = Field(default_factory=dict, description="对话上下文")
+    assigned_to: Optional[str] = Field(None, description="分配给")
+    status: Literal["pending", "assigned", "resolved", "closed"] = Field(
+        default="pending", description="状态"
+    )
+    created_at: datetime = Field(default_factory=datetime.now, description="创建时间")
+    resolved_at: Optional[datetime] = Field(None, description="解决时间")
+
+
+# ==================== API请求/响应模型 ====================
+
+class ChatRequest(BaseModelExt):
+    """聊天请求"""
+    message: str = Field(..., min_length=1, description="用户消息")
+    session_id: Optional[str] = Field(None, description="会话ID（可选）")
+    platform: PlatformType = Field(..., description="平台类型")
+    user_id: str = Field(..., description="用户ID")
+    metadata: Dict[str, Any] = Field(default_factory=dict, description="元数据")
+
+
+class ChatResponse(BaseModelExt):
+    """聊天响应"""
+    response_id: str = Field(..., description="响应ID")
+    session_id: str = Field(..., description="会话ID")
+    message: str = Field(..., description="回复消息")
+    intent: IntentType = Field(..., description="识别的意图")
+    confidence: float = Field(..., description="置信度")
+    sources: List[str] = Field(default_factory=list, description="知识来源")
+    escalate: bool = Field(default=False, description="是否转人工")
+    suggested_actions: List[str] = Field(default_factory=list, description="建议操作")
+    timestamp: datetime = Field(default_factory=datetime.now, description="时间戳")
+
+
+class HealthResponse(BaseModelExt):
+    """健康检查响应"""
+    status: str = Field(..., description="状态")
+    version: str = Field(..., description="版本")
+    timestamp: datetime = Field(default_factory=datetime.now, description="时间戳")
+    services: Dict[str, str] = Field(default_factory=dict, description="服务状态")
+
+
+# ==================== 统计模型 ====================
+
+class ConversationMetrics(BaseModelExt):
+    """对话统计"""
+    total_conversations: int = Field(default=0, description="总会话数")
+    escalated_conversations: int = Field(default=0, description="转人工会话数")
+    avg_response_time: float = Field(default=0.0, description="平均响应时间(秒)")
+    resolution_rate: float = Field(default=0.0, description="解决率")
+    sentiment_distribution: Dict[str, int] = Field(
+        default_factory=dict, description="情感分布"
+    )
+    intent_distribution: Dict[str, int] = Field(
+        default_factory=dict, description="意图分布"
+    )

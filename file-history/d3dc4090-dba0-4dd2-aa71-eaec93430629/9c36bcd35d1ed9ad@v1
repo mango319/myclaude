@@ -1,0 +1,373 @@
+"""
+订单查询服务
+统一处理各平台订单查询
+"""
+from typing import Optional, Dict, Any, List
+from datetime import datetime, timedelta
+from loguru import logger
+
+from core.models import Order, PlatformType, OrderStatus
+from gateway.router import router
+from config.settings import settings
+
+
+class OrderService:
+    """订单查询服务"""
+
+    def __init__(self, cache_client=None):
+        """
+        初始化订单服务
+
+        Args:
+            cache_client: 缓存客户端（Redis）
+        """
+        self.cache = cache_client
+        self.cache_ttl = settings.REDIS_CACHE_TTL
+
+    async def get_order(
+        self,
+        platform: PlatformType,
+        order_id: str,
+        user_id: str,
+        use_cache: bool = True
+    ) -> Order:
+        """
+        获取订单信息
+
+        Args:
+            platform: 平台类型
+            order_id: 订单号
+            user_id: 用户ID
+            use_cache: 是否使用缓存
+
+        Returns:
+            订单信息
+
+        Raises:
+            core.exceptions.OrderNotFoundError: 订单未找到
+        """
+        from core.exceptions import OrderNotFoundError
+
+        # 尝试从缓存获取
+        if use_cache:
+            cached_order = await self._get_from_cache(platform, order_id)
+            if cached_order:
+                logger.info(f"从缓存获取订单: {order_id}")
+                return cached_order
+
+        # 从平台获取
+        try:
+            order = await router.get_platform_order(platform, order_id, user_id)
+
+            # 存入缓存
+            if use_cache:
+                await self._set_to_cache(platform, order_id, order)
+
+            return order
+
+        except Exception as e:
+            logger.error(f"获取订单失败 {order_id}: {str(e)}")
+
+            # 检查是否是订单不存在错误
+            if "not found" in str(e).lower() or "不存在" in str(e):
+                raise OrderNotFoundError(
+                    f"订单 {order_id} 不存在",
+                    platform=platform.value
+                )
+
+            raise
+
+    async def get_order_logistics(
+        self,
+        platform: PlatformType,
+        order_id: str
+    ) -> Dict[str, Any]:
+        """
+        获取订单物流信息
+
+        Args:
+            platform: 平台类型
+            order_id: 订单号
+
+        Returns:
+            物流信息
+        """
+        try:
+            logistics = await router.get_platform_logistics(platform, order_id)
+
+            # 存入缓存（物流信息变化较快，缓存时间较短）
+            cache_key = f"logistics:{platform.value}:{order_id}"
+            if self.cache:
+                await self.cache.setex(
+                    cache_key,
+                    300,  # 5分钟
+                    str(logistics)
+                )
+
+            return logistics
+
+        except Exception as e:
+            logger.error(f"获取物流失败 {order_id}: {str(e)}")
+
+            # 返回默认物流信息
+            return {
+                "tracking_number": "",
+                "carrier": "未知",
+                "status": "物流信息查询失败",
+                "traces": []
+            }
+
+    async def get_user_orders(
+        self,
+        platform: PlatformType,
+        user_id: str,
+        status: Optional[OrderStatus] = None,
+        limit: int = 10
+    ) -> List[Order]:
+        """
+        获取用户订单列表
+
+        Args:
+            platform: 平台类型
+            user_id: 用户ID
+            status: 订单状态过滤（可选）
+            limit: 返回数量限制
+
+        Returns:
+            订单列表
+        """
+        # TODO: 实现获取用户订单列表的逻辑
+        # 这通常需要调用平台的订单列表API
+        logger.warning(f"获取用户订单列表功能待实现: {user_id}")
+
+        return []
+
+    async def format_order_response(
+        self,
+        order: Order,
+        include_logistics: bool = True
+    ) -> str:
+        """
+        格式化订单信息为友好的文本
+
+        Args:
+            order: 订单对象
+            include_logistics: 是否包含物流信息
+
+        Returns:
+            格式化后的文本
+        """
+        lines = [
+            f"📦 订单信息",
+            f"━━━━━━━━━━━━━━━━",
+            f"订单号: {order.order_id}",
+            f"订单状态: {self._format_status(order.status)}",
+            f"下单时间: {self._format_datetime(order.created_at)}",
+        ]
+
+        # 商品信息
+        lines.append("\n🛒 商品信息:")
+        for item in order.items:
+            lines.append(
+                f"  • {item.name} x {item.quantity} "
+                f"= ¥{item.total_price:.2f}"
+            )
+
+        # 金额信息
+        lines.append("\n💰 金额信息:")
+        lines.append(f"  订单总额: ¥{order.total_amount:.2f}")
+        lines.append(f"  实付金额: ¥{order.payment_amount:.2f}")
+
+        # 物流信息
+        if include_logistics and order.logistics:
+            lines.append("\n🚚 物流信息:")
+            lines.append(f"  物流公司: {order.logistics.carrier}")
+            lines.append(f"  物流单号: {order.logistics.tracking_number}")
+            lines.append(f"  物流状态: {order.logistics.status}")
+
+            # 最新物流轨迹
+            if order.logistics.traces:
+                latest = order.logistics.traces[-1]
+                lines.append(f"  最新动态: {latest.get('status', '')}")
+                lines.append(f"  更新时间: {latest.get('time', '')}")
+
+        # 操作建议
+        lines.append("\n💡 温馨提示:")
+        lines.extend(self._get_operation_suggestions(order.status))
+
+        return "\n".join(lines)
+
+    def _format_status(self, status: OrderStatus) -> str:
+        """格式化订单状态"""
+        status_map = {
+            OrderStatus.PENDING_PAYMENT: "⏳ 待付款",
+            OrderStatus.PAID: "✅ 已付款",
+            OrderStatus.SHIPPED: "🚚 已发货",
+            OrderStatus.DELIVERED: "📬 已送达",
+            OrderStatus.COMPLETED: "✨ 已完成",
+            OrderStatus.CANCELLED: "❌ 已取消",
+            OrderStatus.REFUNDING: "⏳ 退款中",
+            OrderStatus.REFUNDED: "💰 已退款",
+        }
+        return status_map.get(status, status.value)
+
+    def _format_datetime(self, dt: Optional[datetime]) -> str:
+        """格式化日期时间"""
+        if not dt:
+            return "未知"
+
+        return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+    def _get_operation_suggestions(self, status: OrderStatus) -> List[str]:
+        """根据状态获取操作建议"""
+        suggestions = []
+
+        if status == OrderStatus.PENDING_PAYMENT:
+            suggestions = [
+                "• 请尽快完成支付，订单将自动保留",
+                "• 如需修改订单，请联系客服"
+            ]
+
+        elif status == OrderStatus.PAID:
+            suggestions = [
+                "• 商家正在准备发货，请耐心等待",
+                "• 发货后会第一时间通知您"
+            ]
+
+        elif status == OrderStatus.SHIPPED:
+            suggestions = [
+                "• 商品正在配送中，请保持电话畅通",
+                "• 可在订单详情查看物流轨迹",
+                "• 如需修改收货地址，请联系快递员"
+            ]
+
+        elif status == OrderStatus.DELIVERED:
+            suggestions = [
+                "• 请及时查收商品",
+                "• 收到商品后请检查，有问题及时申请售后"
+            ]
+
+        elif status == OrderStatus.COMPLETED:
+            suggestions = [
+                "• 感谢您的购买，欢迎再次光临",
+                "• 如有售后问题，可随时联系客服"
+            ]
+
+        elif status == OrderStatus.CANCELLED:
+            suggestions = [
+                "• 订单已取消",
+                "• 如有疑问，请联系客服"
+            ]
+
+        elif status in [OrderStatus.REFUNDING, OrderStatus.REFUNDED]:
+            suggestions = [
+                "• 退款正在处理中，请耐心等待",
+                "• 退款到账时间以银行处理时间为准",
+                "• 如有疑问，请联系客服"
+            ]
+
+        else:
+            suggestions = [
+                "• 如有任何问题，请随时联系客服"
+            ]
+
+        return suggestions
+
+    async def _get_from_cache(
+        self,
+        platform: PlatformType,
+        order_id: str
+    ) -> Optional[Order]:
+        """从缓存获取订单"""
+        if not self.cache:
+            return None
+
+        try:
+            cache_key = f"order:{platform.value}:{order_id}"
+            cached_data = await self.cache.get(cache_key)
+
+            if cached_data:
+                import json
+                order_dict = json.loads(cached_data)
+                return Order(**order_dict)
+
+        except Exception as e:
+            logger.warning(f"从缓存获取订单失败: {str(e)}")
+
+        return None
+
+    async def _set_to_cache(
+        self,
+        platform: PlatformType,
+        order_id: str,
+        order: Order
+    ):
+        """将订单存入缓存"""
+        if not self.cache:
+            return
+
+        try:
+            cache_key = f"order:{platform.value}:{order_id}"
+            import json
+
+            order_dict = order.model_dump()
+            cached_data = json.dumps(order_dict, ensure_ascii=False)
+
+            await self.cache.setex(cache_key, self.cache_ttl, cached_data)
+
+        except Exception as e:
+            logger.warning(f"存入缓存失败: {str(e)}")
+
+    async def invalidate_cache(
+        self,
+        platform: PlatformType,
+        order_id: str
+    ):
+        """使订单缓存失效"""
+        if not self.cache:
+            return
+
+        try:
+            cache_key = f"order:{platform.value}:{order_id}"
+            await self.cache.delete(cache_key)
+
+            # 同时删除物流缓存
+            logistics_key = f"logistics:{platform.value}:{order_id}"
+            await self.cache.delete(logistics_key)
+
+            logger.info(f"订单缓存已清除: {order_id}")
+
+        except Exception as e:
+            logger.warning(f"清除缓存失败: {str(e)}")
+
+    async def search_orders_by_phone(
+        self,
+        platform: PlatformType,
+        phone: str,
+        user_id: str
+    ) -> List[Order]:
+        """
+        根据手机号搜索订单
+
+        Args:
+            platform: 平台类型
+            phone: 手机号
+            user_id: 用户ID
+
+        Returns:
+            订单列表
+        """
+        # TODO: 实现根据手机号搜索订单的逻辑
+        # 这需要验证用户身份并调用平台API
+        logger.warning(f"根据手机号搜索订单功能待实现: {phone}")
+
+        return []
+
+
+# 全局订单服务实例
+order_service = OrderService()
+
+
+async def get_order_service() -> OrderService:
+    """获取订单服务实例（依赖注入用）"""
+    return order_service

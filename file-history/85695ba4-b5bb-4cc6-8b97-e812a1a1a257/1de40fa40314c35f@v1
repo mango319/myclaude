@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Large audio files
+*.wav
+*.mp3
+*.m4a
+*.ogg
+
+# Temporary files
+*.tmp
+*.temp
+temp_*
+segment_*
+
+# Logs
+*.log
+
+# Cache
+memory/
+
+# Large zip files
+*.zip
+
+# Test outputs
+*_test.*
+test_*
+scanner_output.txt
+scan_results.*
+diagnostic_*
+
+# Data files (can be regenerated)
+*.csv
+*.xlsx
+*.pptx
+*.docx

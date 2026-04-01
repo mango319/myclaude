@@ -1,0 +1,376 @@
+"""
+实体提取器
+提取订单号、手机号、日期等关键实体
+"""
+import re
+import json
+from typing import List, Dict, Any, Optional
+from datetime import datetime, timedelta
+from loguru import logger
+
+from core.models import ExtractedEntity, EntityExtractionResult
+from config.settings import settings
+
+
+class EntityExtractor:
+    """实体提取器"""
+
+    def __init__(self, llm_client=None):
+        """
+        初始化实体提取器
+
+        Args:
+            llm_client: LLM客户端（可选）
+        """
+        self.llm_client = llm_client
+
+        # 正则表达式模式
+        self._patterns = self._init_patterns()
+
+    def _init_patterns(self) -> Dict[str, List[re.Pattern]]:
+        """初始化正则表达式模式"""
+        return {
+            "order_id": [
+                # 天猫订单号: 数字开头，12-20位
+                re.compile(r'\b\d{12,20}\b'),
+                # 京东订单号: JD开头 + 数字
+                re.compile(r'\bJD\d{10,18}\b', re.IGNORECASE),
+                # 亚马逊订单号: 数字开头，7位-3位-7位
+                re.compile(r'\b\d{7}-\d{3}-\d{7}\b'),
+                # 通用订单格式
+                re.compile(r'\b(?:订单号?|order)[：:]\s*(\w+)\b', re.IGNORECASE)
+            ],
+            "phone": [
+                # 中国手机号
+                re.compile(r'\b1[3-9]\d{9}\b'),
+                # 座机号
+                re.compile(r'\b0\d{2,3}-?\d{7,8}\b'),
+                # 400/800电话
+                re.compile(r'\b[48]00\d{7}\b')
+            ],
+            "sku_id": [
+                # SKU编号
+                re.compile(r'\b(?:SKU|sku|商品编号?)[：:]\s*([A-Za-z0-9_-]+)\b'),
+                # 纯字母数字组合
+                re.compile(r'\b[A-Z]{2,}\d{4,}\b')
+            ],
+            "tracking_number": [
+                # 物流单号
+                re.compile(r'\b(?:快递|物流|运单|单号)[：:]\s*(\w+)\b'),
+                # 顺丰单号
+                re.compile(r'\bSF\d{12,}\b', re.IGNORECASE),
+                # 中通单号
+                re.compile(r'\b\d{12,20}\b')
+            ],
+            "amount": [
+                # 金额
+                re.compile(r'\b(\d+(?:\.\d{1,2})?)\s*(?:元|块|CNY|RMB|USD|\$)\b'),
+                # 价格
+                re.compile(r'(?:价格|金额|钱)[：:]\s*(\d+(?:\.\d{1,2})?)')
+            ]
+        }
+
+    async def extract(
+        self,
+        text: str,
+        intent: Optional[str] = None
+    ) -> EntityExtractionResult:
+        """
+        提取实体
+
+        Args:
+            text: 输入文本
+            intent: 意图类型（可选，用于指导提取）
+
+        Returns:
+            实体提取结果
+        """
+        all_entities = []
+
+        # 使用正则表达式提取
+        regex_entities = self._extract_by_regex(text)
+        all_entities.extend(regex_entities)
+
+        # 如果配置了LLM且没有提取到足够实体，使用LLM提取
+        if self.llm_client and len(all_entities) < 2:
+            try:
+                llm_entities = await self._extract_by_llm(text, intent)
+                # 合并结果（去重）
+                existing_types = {e.entity_type for e in all_entities}
+                for entity in llm_entities:
+                    if entity.entity_type not in existing_types:
+                        all_entities.append(entity)
+            except Exception as e:
+                logger.error(f"LLM实体提取失败: {str(e)}")
+
+        # 计算整体置信度
+        overall_confidence = 0.0
+        if all_entities:
+            overall_confidence = sum(e.confidence for e in all_entities) / len(all_entities)
+
+        logger.info(
+            f"实体提取完成: 提取到{len(all_entities)}个实体, "
+            f"整体置信度: {overall_confidence:.2f}"
+        )
+
+        return EntityExtractionResult(
+            entities=all_entities,
+            confidence=overall_confidence
+        )
+
+    def _extract_by_regex(self, text: str) -> List[ExtractedEntity]:
+        """
+        使用正则表达式提取实体
+
+        Args:
+            text: 输入文本
+
+        Returns:
+            提取的实体列表
+        """
+        entities = []
+
+        for entity_type, patterns in self._patterns.items():
+            for pattern in patterns:
+                matches = pattern.finditer(text)
+
+                for match in matches:
+                    # 获取匹配的值
+                    value = match.group(1) if match.lastindex else match.group(0)
+
+                    # 验证并清理
+                    if self._validate_entity(entity_type, value):
+                        entities.append(ExtractedEntity(
+                            entity_type=entity_type,
+                            value=value.strip(),
+                            confidence=0.85,  # 正则表达式匹配置信度较高
+                            start_pos=match.start(),
+                            end_pos=match.end()
+                        ))
+
+        return entities
+
+    async def _extract_by_llm(
+        self,
+        text: str,
+        intent: Optional[str] = None
+    ) -> List[ExtractedEntity]:
+        """
+        使用LLM提取实体
+
+        Args:
+            text: 输入文本
+            intent: 意图类型
+
+        Returns:
+            提取的实体列表
+        """
+        system_prompt = """你是一个专业的实体提取助手。从用户输入中提取关键实体信息。
+
+需要提取的实体类型：
+- order_id: 订单号(如：TB123456789、JD987654321)
+- phone: 手机号码
+- date: 日期(如：今天、昨天、2024-01-15)
+- product_name: 商品名称
+- amount: 金额数量
+
+请以JSON格式返回结果：
+{
+  "entities": {
+    "order_id": ["提取的订单号"],
+    "phone": ["提取的手机号"]
+  }
+}"""
+
+        user_prompt = f"用户输入：{text}\n意图类型：{intent or '未知'}"
+
+        try:
+            response = await self.llm_client.generate(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                temperature=0.2,
+                max_tokens=300
+            )
+
+            # 解析响应
+            result_data = self._parse_llm_response(response)
+            entities_dict = result_data.get("entities", {})
+
+            entities = []
+            for entity_type, values in entities_dict.items():
+                if isinstance(values, list):
+                    for value in values:
+                        if value and self._validate_entity(entity_type, value):
+                            entities.append(ExtractedEntity(
+                                entity_type=entity_type,
+                                value=value,
+                                confidence=0.75  # LLM提取置信度中等
+                            ))
+
+            return entities
+
+        except Exception as e:
+            logger.error(f"LLM实体提取失败: {str(e)}")
+            return []
+
+    def _validate_entity(self, entity_type: str, value: str) -> bool:
+        """
+        验证实体值
+
+        Args:
+            entity_type: 实体类型
+            value: 实体值
+
+        Returns:
+            是否有效
+        """
+        if not value or not value.strip():
+            return False
+
+        value = value.strip()
+
+        if entity_type == "phone":
+            # 验证手机号
+            return bool(re.match(r'^1[3-9]\d{9}$', value))
+
+        if entity_type == "order_id":
+            # 验证订单号长度
+            return 6 <= len(value) <= 30
+
+        if entity_type == "amount":
+            # 验证金额
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
+
+        # 其他实体类型默认通过
+        return True
+
+    def _parse_llm_response(self, response: str) -> Dict[str, Any]:
+        """
+        解析LLM响应
+
+        Args:
+            response: LLM返回的文本
+
+        Returns:
+            解析后的数据字典
+        """
+        try:
+            # 尝试直接解析JSON
+            return json.loads(response)
+        except json.JSONDecodeError:
+            pass
+
+        try:
+            # 尝试提取JSON部分
+            start = response.find("{")
+            end = response.rfind("}") + 1
+            if start >= 0 and end > start:
+                json_str = response[start:end]
+                return json.loads(json_str)
+        except Exception:
+            pass
+
+        return {"entities": {}}
+
+    def extract_entities_as_dict(
+        self,
+        text: str,
+        intent: Optional[str] = None
+    ) -> Dict[str, List[str]]:
+        """
+        提取实体并返回字典格式
+
+        Args:
+            text: 输入文本
+            intent: 意图类型
+
+        Returns:
+            实体字典 {类型: [值列表]}
+        """
+        result = await self.extract(text, intent)
+
+        entities_dict = {}
+        for entity in result.entities:
+            if entity.entity_type not in entities_dict:
+                entities_dict[entity.entity_type] = []
+            entities_dict[entity.entity_type].append(entity.value)
+
+        return entities_dict
+
+    def normalize_date(self, date_str: str) -> Optional[datetime]:
+        """
+        将日期字符串标准化为datetime对象
+
+        Args:
+            date_str: 日期字符串
+
+        Returns:
+            datetime对象或None
+        """
+        today = datetime.now().date()
+
+        # 相对日期映射
+        relative_dates = {
+            "今天": today,
+            "明日": today + timedelta(days=1),
+            "后天": today + timedelta(days=2),
+            "昨天": today - timedelta(days=1),
+            "前天": today - timedelta(days=2),
+        }
+
+        if date_str in relative_dates:
+            return datetime.combine(relative_dates[date_str], datetime.min.time())
+
+        # 数字+天
+        match = re.match(r'(\d+)\s*天后?', date_str)
+        if match:
+            days = int(match.group(1))
+            return datetime.combine(today + timedelta(days=days), datetime.min.time())
+
+        # 标准日期格式
+        date_formats = [
+            "%Y-%m-%d",
+            "%Y/%m/%d",
+            "%Y年%m月%d日",
+            "%m-%d",
+            "%m/%d"
+        ]
+
+        for fmt in date_formats:
+            try:
+                parsed = datetime.strptime(date_str, fmt)
+                # 如果没有年份，使用当前年份
+                if parsed.year == 1900:
+                    parsed = parsed.replace(year=today.year)
+                return parsed
+            except ValueError:
+                continue
+
+        return None
+
+
+class DateParser:
+    """日期解析器"""
+
+    @staticmethod
+    def parse_relative_date(date_str: str) -> Optional[str]:
+        """
+        解析相对日期为标准格式
+
+        Args:
+            date_str: 日期字符串
+
+        Returns:
+            ISO格式日期字符串或None
+        """
+        extractor = EntityExtractor()
+        dt = extractor.normalize_date(date_str)
+
+        if dt:
+            return dt.isoformat()
+
+        return None

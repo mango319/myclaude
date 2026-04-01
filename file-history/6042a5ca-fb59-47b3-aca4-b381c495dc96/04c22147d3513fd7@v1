@@ -1,0 +1,977 @@
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+        AlignmentType, HeadingLevel, BorderStyle, WidthType, ShadingType,
+        VerticalAlign, LevelFormat, Header, Footer, PageNumber, PageBreak } = require('docx');
+
+// Table border style
+const tableBorder = { style: BorderStyle.SINGLE, size: 1, color: "CCCCCC" };
+const cellBorders = { top: tableBorder, bottom: tableBorder, left: tableBorder, right: tableBorder };
+
+// Helper function to create table row
+function createRow(cells, isHeader = false) {
+  return new TableRow({
+    tableHeader: isHeader,
+    children: cells.map((cellText, index) => {
+      const isFirst = index === 0;
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: isFirst ? 2500 : 6500, type: WidthType.DXA },
+        shading: isHeader ? { fill: "E8F4F8", type: ShadingType.CLEAR } : undefined,
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: AlignmentType.LEFT,
+          spacing: { before: 80, after: 80 },
+          children: [new TextRun({ text: cellText, bold: isHeader, size: 22 })]
+        })]
+      });
+    })
+  });
+}
+
+function createThreeColRow(cells, isHeader = false) {
+  return new TableRow({
+    tableHeader: isHeader,
+    children: cells.map((cellText, index) => {
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: 3000, type: WidthType.DXA },
+        shading: isHeader ? { fill: "E8F4F8", type: ShadingType.CLEAR } : undefined,
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 80, after: 80 },
+          children: [new TextRun({ text: cellText, bold: isHeader, size: 22 })]
+        })]
+      });
+    })
+  });
+}
+
+function createFourColRow(cells, isHeader = false, widths = [2000, 2500, 2500, 2500]) {
+  return new TableRow({
+    tableHeader: isHeader,
+    children: cells.map((cellText, index) => {
+      return new TableCell({
+        borders: cellBorders,
+        width: { size: widths[index], type: WidthType.DXA },
+        shading: isHeader ? { fill: "E8F4F8", type: ShadingType.CLEAR } : undefined,
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+          alignment: index === 0 ? AlignmentType.LEFT : AlignmentType.CENTER,
+          spacing: { before: 80, after: 80 },
+          children: [new TextRun({ text: cellText, bold: isHeader, size: 22 })]
+        })]
+      });
+    })
+  });
+}
+
+const doc = new Document({
+  styles: {
+    default: {
+      document: {
+        run: { font: "Microsoft YaHei", size: 22 }
+      }
+    },
+    paragraphStyles: [
+      {
+        id: "Title",
+        name: "Title",
+        basedOn: "Normal",
+        run: { size: 40, bold: true, color: "1F4E78", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 200, after: 200 }, alignment: AlignmentType.CENTER }
+      },
+      {
+        id: "Heading1",
+        name: "Heading 1",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 32, bold: true, color: "2E5090", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 280, after: 140 }, outlineLevel: 0 }
+      },
+      {
+        id: "Heading2",
+        name: "Heading 2",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 26, bold: true, color: "385623", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 200, after: 100 }, outlineLevel: 1 }
+      },
+      {
+        id: "Heading3",
+        name: "Heading 3",
+        basedOn: "Normal",
+        next: "Normal",
+        quickFormat: true,
+        run: { size: 24, bold: true, color: "595959", font: "Microsoft YaHei" },
+        paragraph: { spacing: { before: 160, after: 80 }, outlineLevel: 2 }
+      }
+    ]
+  },
+  numbering: {
+    config: [
+      {
+        reference: "bullet-list",
+        levels: [
+          {
+            level: 0,
+            format: LevelFormat.BULLET,
+            text: "●",
+            alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } }
+          }
+        ]
+      },
+      {
+        reference: "numbered-list",
+        levels: [
+          {
+            level: 0,
+            format: LevelFormat.DECIMAL,
+            text: "%1.",
+            alignment: AlignmentType.LEFT,
+            style: { paragraph: { indent: { left: 720, hanging: 360 } } }
+          }
+        ]
+      }
+    ]
+  },
+  sections: [{
+    properties: {
+      page: {
+        margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+      }
+    },
+    headers: {
+      default: new Header({
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.RIGHT,
+            children: [new TextRun({ text: "热敏打印机技术培训手册", size: 20, color: "7F8C8D" })]
+          })
+        ]
+      })
+    },
+    footers: {
+      default: new Footer({
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            children: [
+              new TextRun({ text: "第 ", size: 20 }),
+              new TextRun({ children: [PageNumber.CURRENT] }),
+              new TextRun({ text: " 页  共 ", size: 20 }),
+              new TextRun({ children: [PageNumber.TOTAL_PAGES] }),
+              new TextRun({ text: " 页", size: 20 })
+            ]
+          })
+        ]
+      })
+    },
+    children: [
+      // 封面
+      new Paragraph({
+        heading: HeadingLevel.TITLE,
+        children: [new TextRun("热敏打印机技术培训手册")]
+      }),
+      new Paragraph({
+        heading: HeadingLevel.TITLE,
+        spacing: { after: 400 },
+        children: [new TextRun("Thermal Printer Technical Training Manual")]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "赋能技术服务 · 驱动产品价值", size: 24, color: "7F8C8D", bold: true })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 800 },
+        children: [new TextRun({ text: "智能物联事业部", size: 22, color: "595959" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "2026年度技术培训交流会", size: 22, color: "595959" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "汉印智能物联事业部", size: 20, color: "95A5A6" })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 目录
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("目录")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第一章  培训概述", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第二章  产品线介绍", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第三章  安装与调试实操", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第四章  维修与故障排查", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第五章  软件设置与驱动配置", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第六章  工具与应用技巧", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第七章  考核与认证", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "第八章  附录", size: 22 })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第一章 培训概述
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第一章  培训概述")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("1.1 培训目标")]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "全面提升技术人员对智能物联产品的技术掌握能力", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "实现硬件+软件+服务的全维度技术覆盖", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打造学-练-考-证闭环的技术赋能体系", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "培养标准化、专业化的技术服务团队", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("1.2 培训内容框架")]
+      }),
+      new Table({
+        columnWidths: [2500, 6500],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createRow(["安装与调试实操", "设备安装步骤、色带和纸张安装、易损件和选配件安装、标准化安装流程"]),
+          createRow(["维修与故障排查", "卡纸、打印模糊、通信异常、传感器失灵等故障成因分析与修复"]),
+          createRow(["软件设置与驱动配置", "控制软件操作、Windows及国产系统驱动安装与适配"]),
+          createRow(["工具与应用技巧", "专业维修工具、软件工具使用方法及效率提升技巧"])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第二章 产品线介绍
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第二章  产品线介绍")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("2.1 智能物联产品分类")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["产品类型", "应用场景与特点"], true, [3000, 6300]),
+          createThreeColRow(["桌面打印机", "适用于零售、餐饮、办公等场景；体积小巧、操作简便、支持多种打印模式"], [3000, 6300]),
+          createThreeColRow(["工业打印机", "适用于工厂、物流、仓储等高强度场景；耐用性强、打印速度快、支持连续打印"], [3000, 6300]),
+          createThreeColRow(["便携打印机", "适用于移动办公、现场执法等场景；轻便易携、无线连接、电池供电"], [3000, 6300]),
+          createThreeColRow(["贴标机", "适用于产品标识、资产管理等场景；自动贴标、精准定位、高效批量处理"], [3000, 6300]),
+          createThreeColRow(["扫码枪", "适用于商品扫码、库存管理等场景；快速识别、多码制支持、数据实时传输"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("2.2 热敏打印机工作原理")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "热敏打印机通过加热热敏头，使热敏纸上的涂层发生化学反应而显色，从而形成图像或文字。主要特点：", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "无需色带或墨水，使用热敏纸直接打印", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打印速度快、噪音低、维护简单", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "适用于收银条、快递单、标签等短期保存的打印需求", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打印内容会随时间推移和环境因素（高温、光照）逐渐褪色", size: 22 })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第三章 安装与调试实操
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第三章  安装与调试实操")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("3.1 标准化安装流程")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun("3.1.1 开箱检查")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["检查项目", "检查内容"], true, [3000, 6300]),
+          createThreeColRow(["外观检查", "确认设备无破损、变形，所有接口完好"], [3000, 6300]),
+          createThreeColRow(["配件清点", "主机、电源适配器、数据线、说明书、保修卡等"], [3000, 6300]),
+          createThreeColRow(["型号核对", "核对设备型号是否与订单一致"], [3000, 6300]),
+          createThreeColRow(["配件完整性", "色带架、纸轴、标签纸架等配件齐全"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("3.1.2 纸张安装步骤")]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打开打印机上盖，确认纸仓内无异物", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "将热敏纸卷正确放置在纸轴上，注意纸张出纸方向", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "将纸轴推入纸仓固定位置，确保锁紧", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "拉出纸张约10cm，按正确路径穿过打印头", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "合上上盖，按走纸键使纸张平整", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "进行测试打印，确认出纸正常", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("3.1.3 色带安装（适用于热转印打印机）")]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "确认色带规格与打印机型号匹配", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打开色带仓门，取出旧色带架（如有）", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "将新色带架按正确方向放入色带仓", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "调整色带张紧度，确保色带平整无褶皱", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "关闭色带仓门，确认锁紧", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("3.2 设备连接与初始化")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["连接类型", "操作说明"], true, [3000, 6300]),
+          createThreeColRow(["USB连接", "使用USB数据线连接电脑与打印机，安装驱动后识别为USB打印设备"], [3000, 6300]),
+          createThreeColRow(["串口连接", "使用串口线连接，需设置正确的波特率、数据位、停止位等参数"], [3000, 6300]),
+          createThreeColRow(["并口连接", "使用并口线连接，适用于老式设备，现已较少使用"], [3000, 6300]),
+          createThreeColRow(["网络连接", "通过网线连接到局域网，配置IP地址后实现网络打印"], [3000, 6300]),
+          createThreeColRow(["蓝牙连接", "开启打印机蓝牙，配对后实现无线打印（适用于便携打印机）"], [3000, 6300]),
+          createThreeColRow(["WiFi连接", "连接到WiFi网络，支持多设备共享打印"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第四章 维修与故障排查
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第四章  维修与故障排查")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("4.1 常见故障类型与排查")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun("4.1.1 卡纸故障")]
+      }),
+      new Table({
+        columnWidths: [2500, 4000, 2800],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createFourColRow(["故障现象", "可能原因", "解决方法"], true, [2500, 4000, 2800]),
+          createFourColRow(["纸张无法进纸", "①纸张未正确安装 ②纸张受潮粘连 ③进纸传感器脏污", "①重新安装纸张 ②更换干燥纸张 ③清洁传感器"], [2500, 4000, 2800]),
+          createFourColRow(["纸张偏斜出纸", "①纸轴未固定到位 ②导纸板有异物 ③纸张规格不符", "①重新固定纸轴 ②清理异物 ③更换规格纸张"], [2500, 4000, 2800]),
+          createFourColRow(["纸张中途停止", "①打印头过热 ②纸张用完 ③传感器故障", "①等待冷却 ②更换纸卷 ③检修传感器"], [2500, 4000, 2800]),
+          createFourColRow(["出纸后纸张褶皱", "①出纸路径有阻碍 ②滚筒磨损 ③纸张质量差", "①检查出纸路径 ②更换滚筒 ③更换优质纸张"], [2500, 4000, 2800])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("4.1.2 打印质量问题")]
+      }),
+      new Table({
+        columnWidths: [2500, 4000, 2800],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createFourColRow(["故障现象", "可能原因", "解决方法"], true, [2500, 4000, 2800]),
+          createFourColRow(["打印模糊/淡白", "①打印头脏污 ②温度设置过低 ③纸张质量问题", "①清洁打印头 ②调高打印温度 ③更换纸张"], [2500, 4000, 2800]),
+          createFourColRow(["打印有白线", "①打印头部分元件损坏 ②打印头有异物 ③纸张不平整", "①更换打印头 ②清理打印头 ③检查纸张"], [2500, 4000, 2800]),
+          createFourColRow(["打印偏位", "①纸张未对齐 ②纸张传感器偏移 ③软件设置错误", "①重新调整纸张 ②校准传感器 ③检查软件设置"], [2500, 4000, 2800]),
+          createFourColRow(["打印有污渍", "①胶辊脏污 ②色带渗漏 ③打印头过热", "①清洁胶辊 ②更换色带 ③降低打印浓度"], [2500, 4000, 2800])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("4.1.3 通信异常")]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "常见问题：", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "电脑无法识别打印机", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打印任务无法发送", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "打印中断或延迟", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "网络打印机离线", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { before: 100, after: 100 },
+        children: [new TextRun({ text: "排查步骤：检查连接线 → 检查驱动程序 → 检查端口设置 → 检查网络连接 → 重启设备", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("4.1.4 传感器故障")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["传感器类型", "故障表现与处理"], true, [3000, 6300]),
+          createThreeColRow(["纸尽传感器", "故障：有纸显示无纸；处理：清洁传感器、调整灵敏度"], [3000, 6300]),
+          createThreeColRow(["纸宽传感器", "故障：无法识别纸张宽度；处理：清洁传感器窗口、校准"], [3000, 6300]),
+          createThreeColRow(["色带传感器", "故障：色带状态误报；处理：检查色带架安装、清洁传感器"], [3000, 6300]),
+          createThreeColRow(["打印头温度传感器", "故障：误报过热；处理：清洁传感器、检查风扇"], [3000, 6300]),
+          createThreeColRow(["透射传感器", "故障：标签定位不准；处理：清洁传感器、调节位置"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("4.2 预防性维护")]
+      }),
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun("4.2.1 日常维护项目")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["维护项目", "频率与说明"], true, [3000, 6300]),
+          createThreeColRow(["打印头清洁", "每天：使用酒精棉片轻轻擦拭打印头表面"], [3000, 6300]),
+          createThreeColRow(["胶辊清洁", "每周：使用清洁剂清洁胶辊，检查磨损情况"], [3000, 6300]),
+          createThreeColRow(["传感器清洁", "每月：使用软毛刷或吹气球清洁各传感器"], [3000, 6300]),
+          createThreeColRow(["机身清洁", "每周：使用干净抹布擦拭机身，保持设备整洁"], [3000, 6300]),
+          createThreeColRow(["内部除尘", "每月：使用气吹清理设备内部灰尘"], [3000, 6300]),
+          createThreeColRow(["连接检查", "每月：检查各连接线是否松动"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第五章 软件设置与驱动配置
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第五章  软件设置与驱动配置")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("5.1 驱动程序安装")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun("5.1.1 Windows系统驱动安装")]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "连接打印机到电脑（USB/串口/并口/网络）", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "系统自动识别或手动运行驱动安装程序", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "选择正确的打印机型号和端口", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "完成安装后进行测试打印", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "在打印首选项中设置纸张规格、打印浓度等参数", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        spacing: { before: 200 },
+        children: [new TextRun("5.1.2 国产操作系统适配")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "支持的国产系统：", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "统信UOS", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "银河麒麟", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "深度Deepin", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "中科方德", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { before: 100, after: 100 },
+        children: [new TextRun({ text: "安装流程与Windows系统类似，使用对应系统的驱动安装包，注意选择正确的架构版本（x86/ARM/MIPS等）", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("5.2 高级设置界面操作")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["设置项目", "功能说明"], true, [3000, 6300]),
+          createThreeColRow(["打印浓度/温度", "调整打印头加热温度，影响打印深浅"], [3000, 6300]),
+          createThreeColRow(["打印速度", "设置打印速度，速度越快打印越淡", [3000, 6300]),
+          createThreeColRow(["纸张规格", "设置纸张宽度、长度、间距等参数"], [3000, 6300]),
+          createThreeColRow(["打印模式", "选择热敏/热转印、剥离/切刀等模式"], [3000, 6300]),
+          createThreeColRow(["传感器校准", "自动校准纸张和标签传感器"], [3000, 6300]),
+          createThreeColRow(["端口配置", "配置串口参数（波特率、数据位、停止位）"], [3000, 6300]),
+          createThreeColRow(["网络设置", "配置IP地址、子网掩码、网关等网络参数"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("5.3 打印模板设置")]
+      }),
+      new Paragraph({
+        heading: HeadingLevel.HEADING_3,
+        children: [new TextRun("5.3.1 模板编辑功能")]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "文本元素：添加固定文本、可变文本、日期时间等", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "条码元素：支持一维码（Code128、EAN等）、二维码", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "图片元素：插入Logo、图标等图片", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "线条与形状：添加分割线、边框、矩形等", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "数据库连接：连接Excel、CSV、数据库等实现批量打印", size: 22 })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第六章 工具与应用技巧
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第六章  工具与应用技巧")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("6.1 专业维修工具")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["工具类别", "工具清单与用途"], true, [3000, 6300]),
+          createThreeColRow(["清洁工具", "酒精棉片、无尘布、清洁剂、气吹、软毛刷"], [3000, 6300]),
+          createThreeColRow(["拆装工具", "螺丝刀套装、镊子、撬棒、六角扳手"], [3000, 6300]),
+          createThreeColRow(["检测工具", "万用表、示波器、温度计、传感器检测仪"], [3000, 6300]),
+          createThreeColRow(["调试治具", "测试标签纸、测试色带、模拟传感器信号发生器"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("6.2 软件工具")]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["工具类型", "功能说明"], true, [3000, 6300]),
+          createThreeColRow(["诊断工具", "设备状态检测、故障诊断、日志分析"], [3000, 6300]),
+          createThreeColRow(["固件升级工具", "设备固件升级、功能扩展、问题修复"], [3000, 6300]),
+          createThreeColRow(["配置导入导出", "设备配置参数的备份、恢复、批量配置"], [3000, 6300]),
+          createThreeColRow(["远程管理工具", "远程监控、远程配置、故障远程诊断"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("6.3 效率提升技巧")]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "使用配置模板快速部署新设备", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "建立故障知识库，记录常见问题及解决方案", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "定期进行设备巡检，提前发现潜在问题", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "使用远程管理工具减少现场服务次数", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "建立备件库存，缩短维修等待时间", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "numbered-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "标准化维修流程，提高工作效率和质量", size: 22 })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第七章 考核与认证
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第七章  考核与认证")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("7.1 理论考核")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "考核内容涵盖以下知识点：", size: 22 })]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["知识领域", "考核要点"], true, [3000, 6300]),
+          createThreeColRow(["硬件参数", "设备规格、技术指标、接口类型、耗材规格"], [3000, 6300]),
+          createThreeColRow(["设置逻辑", "驱动配置、端口设置、参数调整、模板设计"], [3000, 6300]),
+          createThreeColRow(["故障原因", "常见故障现象、故障成因分析、排查思路"], [3000, 6300]),
+          createThreeColRow(["工具用途", "专业工具使用方法、软件工具功能、维护技巧"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("7.2 实操考核")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "模拟真实应用场景进行考核，包括：", size: 22 })]
+      }),
+      new Table({
+        columnWidths: [3000, 6300],
+        margins: { top: 100, bottom: 100, left: 100, right: 100 },
+        rows: [
+          createThreeColRow(["考核项目", "考核内容"], true, [3000, 6300]),
+          createThreeColRow(["客户现场设备调试", "开箱安装、连接配置、测试验证、客户培训"], [3000, 6300]),
+          createThreeColRow(["突发故障排查", "故障诊断、原因分析、快速修复、预防措施"], [3000, 6300]),
+          createThreeColRow(["定期维护保养", "清洁保养、易损件更换、性能检测、维护报告"], [3000, 6300]),
+          createThreeColRow(["软件配置优化", "参数调优、模板制作、批量配置、问题排查"], [3000, 6300])
+        ]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("7.3 认证证书")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "理论考核和实操考核均通过后，将颁发：", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "「汉印售后维修工程师认证证书」", size: 24, bold: true, color: "1F4E78" })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "证书标注：姓名、认证类别、有效期", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "认证价值：官方技术能力背书，提升职业竞争力", size: 22 })]
+      }),
+      new Paragraph({
+        numbering: { reference: "bullet-list", level: 0 },
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "有效期管理：定期复审，确保技术能力持续更新", size: 22 })]
+      }),
+
+      new Paragraph({ children: [new PageBreak()] }),
+
+      // 第八章 附录
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        children: [new TextRun("第八章  附录")]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("8.1 常见问题FAQ")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "Q1: 热敏纸打印的内容保存时间有多长？", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 150 },
+        children: [new TextRun({ text: "A: 一般情况下，热敏纸打印内容在常温避光环境下可保存6-12个月。具体保存时间受纸张质量、环境温度、光照条件等因素影响。如需长期保存，建议使用热转印打印或进行复印存档。", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "Q2: 如何判断打印头是否需要更换？", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 150 },
+        children: [new TextRun({ text: "A: 出现以下情况时需要更换打印头：1）打印出现明显横向白线且清洁无效；2）部分加热点完全失效；3）打印头磨损严重，接触不良；4）打印头物理损坏。建议联系厂家售后进行更换。", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "Q3: 打印机发出滴滴响声是什么原因？", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 150 },
+        children: [new TextRun({ text: "A: 滴滴声通常表示：1）纸张用完（纸尽传感器报警）；2）机盖未关好（安全开关）；3）打印头过热保护；4）卡纸或纸张路径异常；5）设备内部故障。请根据具体提示信息进行处理。", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "Q4: 网络打印机如何固定IP地址？", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 150 },
+        children: [new TextRun({ text: "A: 可通过以下方式设置：1）使用设备配套工具软件进行网络配置；2）通过Web界面登录设备管理页面设置；3）使用串口连接进入配置菜单设置。建议根据网络环境规划，为每台设备分配固定的IP地址，便于管理和维护。", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("8.2 联系方式与支持")]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "技术支持热线：400-XXX-XXXX", size: 22, bold: true })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "技术支持邮箱：support@haninprinter.com", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "官方网站：www.haninprinter.com", size: 22 })]
+      }),
+      new Paragraph({
+        spacing: { after: 80 },
+        children: [new TextRun({ text: "在线技术论坛：bbs.haninprinter.com", size: 22 })]
+      }),
+
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 200 },
+        children: [new TextRun("8.3 培训反馈与建议")]
+      }),
+      new Paragraph({
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "欢迎各位学员就培训内容、方式、时间安排等方面提出宝贵意见和建议，帮助我们持续改进培训质量，提供更优质的技术赋能服务。", size: 22 })]
+      }),
+
+      // 封底
+      new Paragraph({ children: [new PageBreak()] }),
+      new Paragraph({
+        spacing: { before: 2000 },
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "让打印更简单", size: 32, bold: true, color: "1F4E78" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 100 },
+        children: [new TextRun({ text: "让生活更精彩", size: 32, bold: true, color: "1F4E78" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 400 },
+        children: [new TextRun({ text: "—— 汉印智能物联事业部 ——", size: 24, color: "7F8C8D" })]
+      }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: "2026年度技术培训交流会", size: 20, color: "95A5A6" })]
+      })
+    ]
+  }]
+});
+
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync("C:\\Users\\Administrator\\热敏打印机技术培训手册.docx", buffer);
+  console.log("培训手册生成成功！");
+  console.log("文件路径：C:\\Users\\Administrator\\热敏打印机技术培训手册.docx");
+});

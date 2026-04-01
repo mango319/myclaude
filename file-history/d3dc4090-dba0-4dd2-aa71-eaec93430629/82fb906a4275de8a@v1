@@ -1,0 +1,413 @@
+"""
+RAG问答引擎
+基于检索增强生成的问答系统
+"""
+from typing import List, Dict, Any, Optional
+from loguru import logger
+
+from core.models import DocumentChunk, SearchResult
+from config.settings import settings
+
+
+class RAGEngine:
+    """RAG问答引擎"""
+
+    def __init__(
+        self,
+        knowledge_base_service=None,
+        llm_client=None,
+        embedding_client=None
+    ):
+        """
+        初始化RAG引擎
+
+        Args:
+            knowledge_base_service: 知识库服务
+            llm_client: LLM客户端
+            embedding_client: 向量化客户端
+        """
+        self.kb_service = knowledge_base_service
+        self.llm_client = llm_client
+        self.embedding_client = embedding_client
+
+        self.top_k = settings.RAG_TOP_K
+        self.score_threshold = settings.RAG_SCORE_THRESHOLD
+
+    async def query(
+        self,
+        question: str,
+        chat_history: Optional[List[Dict[str, str]]] = None,
+        filters: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        执行RAG查询
+
+        Args:
+            question: 用户问题
+            chat_history: 对话历史
+            filters: 检索过滤器
+
+        Returns:
+            问答结果
+        """
+        # 1. 检索相关文档
+        search_results = await self._retrieve(question, filters)
+
+        if not search_results:
+            logger.warning(f"未找到相关知识: {question}")
+            return {
+                "answer": "抱歉，我没有找到相关的知识来回答您的问题。您可以尝试转人工客服获取帮助。",
+                "sources": [],
+                "confidence": 0.0
+            }
+
+        # 2. 构建上下文
+        context = self._build_context(search_results)
+
+        # 3. 生成回答
+        answer = await self._generate_answer(
+            question=question,
+            context=context,
+            chat_history=chat_history
+        )
+
+        # 4. 提取来源
+        sources = self._extract_sources(search_results)
+
+        return {
+            "answer": answer,
+            "sources": sources,
+            "confidence": self._calculate_confidence(search_results),
+            "context_used": len(search_results)
+        }
+
+    async def _retrieve(
+        self,
+        query: str,
+        filters: Optional[Dict[str, Any]] = None
+    ) -> List[SearchResult]:
+        """
+        检索相关文档
+
+        Args:
+            query: 查询文本
+            filters: 过滤条件
+
+        Returns:
+            检索结果列表
+        """
+        try:
+            # 调用知识库服务进行语义检索
+            results = await self.kb_service.search(
+                query=query,
+                top_k=self.top_k,
+                filters=filters
+            )
+
+            # 过滤低分结果
+            filtered_results = [
+                r for r in results
+                if r.score >= self.score_threshold
+            ]
+
+            logger.info(
+                f"检索完成: 查询='{query}', "
+                f"检索到{len(results)}条, 过滤后{len(filtered_results)}条"
+            )
+
+            return filtered_results
+
+        except Exception as e:
+            logger.error(f"文档检索失败: {str(e)}")
+            return []
+
+    def _build_context(self, search_results: List[SearchResult]) -> str:
+        """
+        构建上下文字符串
+
+        Args:
+            search_results: 检索结果
+
+        Returns:
+            上下文字符串
+        """
+        context_parts = []
+
+        for i, result in enumerate(search_results, 1):
+            chunk = result.chunk
+            source = chunk.metadata.get("source", "未知来源")
+
+            context_parts.append(
+                f"[来源{i}: {source}]\n{chunk.content}\n"
+            )
+
+        return "\n".join(context_parts)
+
+    async def _generate_answer(
+        self,
+        question: str,
+        context: str,
+        chat_history: Optional[List[Dict[str, str]]] = None
+    ) -> str:
+        """
+        生成回答
+
+        Args:
+            question: 用户问题
+            context: 检索到的上下文
+            chat_history: 对话历史
+
+        Returns:
+            生成的回答
+        """
+        system_prompt = """你是一个专业的电商客服助手。根据提供的知识库内容，为用户提供准确、友好的回答。
+
+回答要求：
+1. 优先使用提供的知识库内容回答
+2. 如果知识库内容不足以回答，诚实地说明并建议转人工
+3. 回答要简洁明了，避免冗余
+4. 保持友好专业的语气
+5. 如果涉及退换货、退款等敏感问题，提醒用户注意事项
+6. 必要时引用来源（如：[来源1]）
+
+回答格式：
+- 直接回答用户问题
+- 如果有多步骤，分点说明
+- 需要用户提供信息时，明确列出需要的信息"""
+
+        # 构建对话历史
+        history_str = ""
+        if chat_history:
+            history_items = [
+                f"{msg.get('role', 'user')}: {msg.get('content', '')}"
+                for msg in chat_history[-5:]  # 只取最近5轮
+            ]
+            history_str = "\n".join(history_items)
+
+        user_prompt = f"""用户问题：{question}
+
+检索到的相关知识：
+{context}
+
+{f"对话历史：\n{history_str}" if history_str else ""}
+
+请基于以上知识回答用户问题。"""
+
+        try:
+            response = await self.llm_client.generate(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                temperature=0.7,
+                max_tokens=settings.LLM_MAX_TOKENS
+            )
+
+            # 清理响应（移除多余的思考标签）
+            response = self._clean_response(response)
+
+            return response
+
+        except Exception as e:
+            logger.error(f"回答生成失败: {str(e)}")
+            return "抱歉，我遇到了一些技术问题，请稍后再试或转人工客服。"
+
+    def _clean_response(self, response: str) -> str:
+        """
+        清理LLM响应
+
+        Args:
+            response: 原始响应
+
+        Returns:
+            清理后的响应
+        """
+        # 移除可能的思考标签
+        response = response.replace("<思考>", "").replace("</思考>", "")
+        response = response.replace("<thinking>", "").replace("</thinking>", "")
+
+        # 移除多余的换行
+        response = "\n".join(line for line in response.split("\n") if line.strip())
+
+        return response.strip()
+
+    def _extract_sources(self, search_results: List[SearchResult]) -> List[str]:
+        """
+        提取来源信息
+
+        Args:
+            search_results: 检索结果
+
+        Returns:
+            来源列表
+        """
+        sources = []
+        seen = set()
+
+        for result in search_results:
+            chunk = result.chunk
+            source = chunk.metadata.get("source", "未知来源")
+
+            # 去重
+            if source not in seen:
+                sources.append(source)
+                seen.add(source)
+
+        return sources
+
+    def _calculate_confidence(self, search_results: List[SearchResult]) -> float:
+        """
+        计算整体置信度
+
+        Args:
+            search_results: 检索结果
+
+        Returns:
+            置信度分数
+        """
+        if not search_results:
+            return 0.0
+
+        # 使用最高分作为整体置信度
+        return max(r.score for r in search_results)
+
+    async def query_with_fallback(
+        self,
+        question: str,
+        chat_history: Optional[List[Dict[str, str]]] = None,
+        fallback_answer: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        带回退的RAG查询
+
+        Args:
+            question: 用户问题
+            chat_history: 对话历史
+            fallback_answer: 回退答案
+
+        Returns:
+            问答结果
+        """
+        try:
+            result = await self.query(question, chat_history)
+
+            # 如果置信度太低，使用回退答案
+            if result["confidence"] < 0.3:
+                logger.warning(f"RAG置信度过低: {result['confidence']}")
+
+                if fallback_answer:
+                    return {
+                        "answer": fallback_answer,
+                        "sources": [],
+                        "confidence": 0.5,
+                        "fallback": True
+                    }
+
+            return result
+
+        except Exception as e:
+            logger.error(f"RAG查询失败: {str(e)}")
+
+            return {
+                "answer": fallback_answer or "抱歉，我遇到了一些问题。您可以转人工客服获取帮助。",
+                "sources": [],
+                "confidence": 0.0,
+                "fallback": True,
+                "error": str(e)
+            }
+
+    async def batch_query(
+        self,
+        questions: List[str],
+        chat_history: Optional[List[Dict[str, str]]] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        批量查询
+
+        Args:
+            questions: 问题列表
+            chat_history: 对话历史
+
+        Returns:
+            问答结果列表
+        """
+        results = []
+
+        for question in questions:
+            result = await self.query(question, chat_history)
+            results.append(result)
+
+        return results
+
+
+class HybridRetriever:
+    """混合检索器（语义+关键词）"""
+
+    def __init__(
+        self,
+        semantic_retriever=None,
+        keyword_retriever=None,
+        semantic_weight: float = 0.7
+    ):
+        """
+        初始化混合检索器
+
+        Args:
+            semantic_retriever: 语义检索器
+            keyword_retriever: 关键词检索器
+            semantic_weight: 语义检索权重
+        """
+        self.semantic_retriever = semantic_retriever
+        self.keyword_retriever = keyword_retriever
+        self.semantic_weight = semantic_weight
+        self.keyword_weight = 1 - semantic_weight
+
+    async def retrieve(
+        self,
+        query: str,
+        top_k: int = 5
+    ) -> List[SearchResult]:
+        """
+        混合检索
+
+        Args:
+            query: 查询文本
+            top_k: 返回结果数量
+
+        Returns:
+            检索结果
+        """
+        # 并行执行两种检索
+        import asyncio
+
+        tasks = []
+
+        if self.semantic_retriever:
+            tasks.append(self.semantic_retriever.search(query, top_k * 2))
+
+        if self.keyword_retriever:
+            tasks.append(self.keyword_retriever.search(query, top_k * 2))
+
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # 合并和重排序
+        merged = self._merge_and_rerank(results, query)
+
+        return merged[:top_k]
+
+    def _merge_and_rerank(
+        self,
+        results: List[Any],
+        query: str
+    ) -> List[SearchResult]:
+        """
+        合并和重排序检索结果
+
+        Args:
+            results: 检索结果列表
+            query: 查询文本
+
+        Returns:
+            合并后的结果
+        """
+        # TODO: 实现结果合并和重排序逻辑
+        # 可以使用RRF (Reciprocal Rank Fusion) 等算法
+        return []

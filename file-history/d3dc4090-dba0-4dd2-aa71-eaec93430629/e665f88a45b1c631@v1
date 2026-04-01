@@ -1,0 +1,258 @@
+"""
+意图分类器
+使用LLM进行意图识别
+"""
+import json
+from typing import List, Dict, Any, Optional
+from loguru import logger
+
+from core.models import IntentType, IntentResult
+from config.settings import settings
+from config.prompts import load_prompt
+
+
+class IntentClassifier:
+    """意图分类器"""
+
+    def __init__(self, llm_client=None):
+        """
+        初始化意图分类器
+
+        Args:
+            llm_client: LLM客户端（可选）
+        """
+        self.llm_client = llm_client
+        self.confidence_threshold = settings.INTENT_CONFIDENCE_THRESHOLD
+        self.max_retries = settings.INTENT_MAX_RETRIES
+        self.fallback_intent = IntentType.FAQ
+        self.prompts = load_prompt("intent_classification")
+
+        # 关键词规则映射（作为后备方案）
+        self._keyword_rules = self._init_keyword_rules()
+
+    def _init_keyword_rules(self) -> Dict[str, List[str]]:
+        """初始化关键词规则"""
+        return {
+            "ORDER_QUERY": [
+                "订单", "我的订单", "查询订单", "订单状态",
+                "发货", "物流", "快递", "配送", "到哪里了",
+                "什么时候到", "发货了吗", "物流信息"
+            ],
+            "FAQ": [
+                "怎么", "如何", "什么", "是否", "能否",
+                "退货", "换货", "退款", "支付", "发票",
+                "优惠券", "积分", "会员", "保价"
+            ],
+            "COMPLAINT": [
+                "投诉", "不满意", "问题", "错误",
+                "太差", "很差", "垃圾", "骗子",
+                "质量差", "服务差", "态度差"
+            ],
+            "RETURN": [
+                "退货", "退款", "换货", "申请退货",
+                "我要退货", "我要退款", "申请退款",
+                "不想要了", "尺寸不对", "颜色不对"
+            ],
+            "ESCALATION": [
+                "转人工", "人工客服", "找客服",
+                "转接", "人工", "客服人员", "经理"
+            ]
+        }
+
+    async def classify(
+        self,
+        text: str,
+        chat_history: Optional[List[Dict[str, str]]] = None
+    ) -> IntentResult:
+        """
+        分类用户意图
+
+        Args:
+            text: 用户输入文本
+            chat_history: 对话历史（可选）
+
+        Returns:
+            意图识别结果
+        """
+        # 尝试基于规则的快速分类
+        rule_result = self._classify_by_rules(text)
+        if rule_result and rule_result.confidence >= 0.9:
+            logger.debug(f"规则分类成功: {rule_result.intent} (置信度: {rule_result.confidence})")
+            return rule_result
+
+        # 使用LLM分类
+        for attempt in range(self.max_retries):
+            try:
+                result = await self._classify_by_llm(text, chat_history)
+
+                # 检查置信度
+                if result.confidence >= self.confidence_threshold:
+                    logger.info(
+                        f"意图分类成功: {result.intent} "
+                        f"(置信度: {result.confidence}, 理由: {result.reasoning})"
+                    )
+                    return result
+
+                # 置信度不足，返回备选意图
+                if result.alternative_intents:
+                    best_alt = max(
+                        result.alternative_intents.items(),
+                        key=lambda x: x[1]
+                    )
+                    if best_alt[1] >= self.confidence_threshold:
+                        logger.info(f"使用备选意图: {best_alt[0]}")
+                        return IntentResult(
+                            intent=IntentType(best_alt[0]),
+                            confidence=best_alt[1],
+                            reasoning=f"备选意图: {result.reasoning}"
+                        )
+
+                # 置信度不足，返回默认意图
+                logger.warning(
+                    f"LLM置信度不足: {result.confidence}, "
+                    f"使用默认意图: {self.fallback_intent}"
+                )
+                return IntentResult(
+                    intent=self.fallback_intent,
+                    confidence=0.5,
+                    reasoning="LLM置信度不足，使用默认意图"
+                )
+
+            except Exception as e:
+                logger.error(f"意图分类失败 (尝试 {attempt + 1}/{self.max_retries}): {str(e)}")
+
+                if attempt == self.max_retries - 1:
+                    # 最后一次尝试失败，使用规则分类
+                    rule_result = self._classify_by_rules(text)
+                    if rule_result:
+                        return rule_result
+
+                    # 规则也失败，返回默认意图
+                    return IntentResult(
+                        intent=self.fallback_intent,
+                        confidence=0.3,
+                        reasoning="所有分类方法均失败，使用默认意图"
+                    )
+
+    def _classify_by_rules(self, text: str) -> Optional[IntentResult]:
+        """
+        基于规则进行意图分类
+
+        Args:
+            text: 用户输入文本
+
+        Returns:
+            意图识别结果（如果规则匹配）
+        """
+        text_lower = text.lower()
+
+        # 计算每个意图的匹配分数
+        scores = {}
+        for intent, keywords in self._keyword_rules.items():
+            score = sum(1 for kw in keywords if kw in text_lower)
+            if score > 0:
+                scores[intent] = score
+
+        if not scores:
+            return None
+
+        # 返回最高分的意图
+        best_intent = max(scores.items(), key=lambda x: x[1])
+        confidence = min(0.95, 0.6 + best_intent[1] * 0.1)  # 基础0.6，每匹配一个关键词+0.1
+
+        return IntentResult(
+            intent=IntentType(best_intent[0]),
+            confidence=confidence,
+            reasoning=f"关键词匹配: {best_intent[1]}个关键词"
+        )
+
+    async def _classify_by_llm(
+        self,
+        text: str,
+        chat_history: Optional[List[Dict[str, str]]] = None
+    ) -> IntentResult:
+        """
+        使用LLM进行意图分类
+
+        Args:
+            text: 用户输入文本
+            chat_history: 对话历史
+
+        Returns:
+            意图识别结果
+        """
+        if not self.llm_client:
+            raise ValueError("LLM客户端未配置")
+
+        # 构建提示词
+        history_str = json.dumps(chat_history or [], ensure_ascii=False)
+        user_prompt = self.prompts["user"].format(
+            user_input=text,
+            chat_history=history_str
+        )
+
+        try:
+            # 调用LLM
+            response = await self.llm_client.generate(
+                system_prompt=self.prompts["system"],
+                user_prompt=user_prompt,
+                temperature=0.3,  # 低温度以获得稳定结果
+                max_tokens=200
+            )
+
+            # 解析JSON响应
+            result_data = self._parse_llm_response(response)
+
+            return IntentResult(
+                intent=IntentType(result_data.get("intent", "FAQ")),
+                confidence=float(result_data.get("confidence", 0.5)),
+                reasoning=result_data.get("reasoning", ""),
+                alternative_intents=result_data.get("alternative_intents", {})
+            )
+
+        except Exception as e:
+            logger.error(f"LLM意图分类失败: {str(e)}")
+            raise
+
+    def _parse_llm_response(self, response: str) -> Dict[str, Any]:
+        """
+        解析LLM响应
+
+        Args:
+            response: LLM返回的文本
+
+        Returns:
+            解析后的数据字典
+        """
+        # 尝试直接解析JSON
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            pass
+
+        # 尝试提取JSON部分
+        try:
+            start = response.find("{")
+            end = response.rfind("}") + 1
+            if start >= 0 and end > start:
+                json_str = response[start:end]
+                return json.loads(json_str)
+        except Exception:
+            pass
+
+        # 解析失败，返回默认值
+        logger.warning(f"LLM响应解析失败: {response[:200]}")
+        return {
+            "intent": "FAQ",
+            "confidence": 0.5,
+            "reasoning": "响应解析失败，使用默认值"
+        }
+
+    def get_supported_intents(self) -> List[str]:
+        """
+        获取支持的意图列表
+
+        Returns:
+            意图列表
+        """
+        return [intent.value for intent in IntentType]

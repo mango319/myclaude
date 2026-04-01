@@ -1,0 +1,424 @@
+"""
+亚马逊平台适配器
+集成Amazon Selling Partner API
+"""
+import hashlib
+import hmac
+import time
+from typing import Dict, Any, Optional
+from datetime import datetime
+
+import httpx
+from botocore.auth import SigV4Auth
+from botocore.awsrequest import AWSRequest
+
+from core.models import (
+    PlatformType,
+    IncomingMessage,
+    OutgoingMessage,
+    Order,
+    OrderItem,
+    LogisticsInfo,
+    MessageRole
+)
+from core.exceptions import PlatformAPIError
+from gateway.base import BasePlatformAdapter
+from config.settings import settings
+from loguru import logger
+
+
+class AmazonAdapter(BasePlatformAdapter):
+    """亚马逊平台适配器"""
+
+    def __init__(self, config: Dict[str, Any]):
+        super().__init__(config)
+        self.seller_id = config.get("seller_id") or settings.AMAZON_SELLER_ID
+        self.marketplace_id = config.get("marketplace_id") or settings.AMAZON_MARKETPLACE_ID
+        self.aws_access_key = config.get("aws_access_key") or settings.AWS_ACCESS_KEY_ID
+        self.aws_secret_key = config.get("aws_secret_key") or settings.AWS_SECRET_ACCESS_KEY
+        self.regions = config.get("regions", {})
+
+        if not all([self.seller_id, self.marketplace_id, self.aws_access_key, self.aws_secret_key]):
+            raise PlatformAPIError(
+                "亚马逊配置不完整，请检查seller_id、marketplace_id、AWS密钥等配置",
+                platform="amazon"
+            )
+
+        # 默认使用北美区域
+        self.region_config = self.regions.get("NA", {})
+        self.endpoint = self.region_config.get("endpoint", "https://sellingpartnerapi-na.amazon.com")
+
+    def _get_platform_type(self) -> PlatformType:
+        return PlatformType.AMAZON
+
+    def _get_gateway_url(self) -> str:
+        return self.endpoint
+
+    def set_region(self, region: str):
+        """
+        设置AWS区域
+
+        Args:
+            region: 区域代码 (NA/EU/FE)
+        """
+        if region in self.regions:
+            self.region_config = self.regions[region]
+            self.endpoint = self.region_config.get("endpoint")
+            self.marketplace_id = self.region_config.get("marketplace_id")
+
+    async def validate_signature(self, payload: Dict[str, Any], signature: str) -> bool:
+        """
+        验证亚马逊回调签名
+
+        Args:
+            payload: 回调数据
+            signature: 签名
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 亚马逊使用AWS Signature V4
+            # 这里简化处理，实际需要完整实现SigV4验证
+            expected_signature = self._calculate_signature(payload)
+
+            return hmac.compare_digest(expected_signature, signature)
+
+        except Exception as e:
+            logger.error(f"Amazon signature validation error: {str(e)}")
+            return False
+
+    async def parse_incoming_message(self, raw_data: Dict[str, Any]) -> IncomingMessage:
+        """
+        解析亚马逊消息
+
+        Args:
+            raw_data: 亚马逊原始消息
+
+        Returns:
+            标准化消息对象
+        """
+        try:
+            # 亚马逊消息结构（通过Messaging API）
+            message_data = raw_data.get("message", {})
+
+            content = message_data.get("text", "")
+            if not content:
+                content = message_data.get("attachment", {}).get("uploadFileId", "")
+
+            return IncomingMessage(
+                id=raw_data.get("messageId", f"amazon_{int(time.time() * 1000)}"),
+                platform=PlatformType.AMAZON,
+                user_id=str(raw_data.get("buyerId", "")),
+                session_id=str(raw_data.get("conversationId", raw_data.get("buyerId", ""))),
+                role=MessageRole.USER,
+                content=content,
+                message_type="text" if message_data.get("text") else "attachment",
+                platform_message_id=raw_data.get("messageId"),
+                raw_data=raw_data,
+                metadata={
+                    "marketplace_id": raw_data.get("marketplaceId"),
+                    "amazon_order_id": raw_data.get("amazonOrderId"),
+                    "buyer_name": raw_data.get("buyer", {}).get("name")
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"Amazon message parsing error: {str(e)}")
+            raise PlatformAPIError(
+                f"消息解析失败: {str(e)}",
+                platform="amazon"
+            )
+
+    async def send_message(self, message: OutgoingMessage) -> Dict[str, Any]:
+        """
+        发送消息到亚马逊
+
+        Args:
+            message: 待发送消息
+
+        Returns:
+            发送结果
+        """
+        try:
+            # 调用亚马逊Messaging API
+            api_path = f"/messaging/v1/messages"
+
+            payload = {
+                "text": message.content
+            }
+
+            result = await self._call_api(
+                "POST",
+                api_path,
+                payload,
+                headers={
+                    "x-amz-access-token": message.metadata.get("access_token", "")
+                }
+            )
+
+            return {
+                "success": True,
+                "message_id": result.get("messageId"),
+                "platform_message_id": result.get("messageId")
+            }
+
+        except Exception as e:
+            logger.error(f"Amazon send message error: {str(e)}")
+            raise PlatformAPIError(
+                f"发送消息失败: {str(e)}",
+                platform="amazon"
+            )
+
+    async def get_order(self, order_id: str, user_id: str) -> Order:
+        """
+        获取亚马逊订单信息
+
+        Args:
+            order_id: 订单号
+            user_id: 用户ID
+
+        Returns:
+            订单信息
+        """
+        try:
+            # 调用亚马逊Orders API
+            api_path = f"/orders/v0/orders/{order_id}"
+
+            order_data = await self._call_api("GET", api_path)
+
+            # 获取订单商品
+            items_api = f"/orders/v0/orders/{order_id}/orderItems"
+            items_data = await self._call_api("GET", items_api)
+
+            # 转换订单商品
+            items = []
+            for item in items_data.get("OrderItems", []):
+                items.append(OrderItem(
+                    sku_id=str(item.get("SellerSKU", "")),
+                    name=item.get("Title", ""),
+                    quantity=int(item.get("QuantityOrdered", 0)),
+                    price=float(item.get("ItemPrice", {}).get("Amount", 0)),
+                    total_price=float(item.get("ItemPrice", {}).get("Amount", 0)) * int(item.get("QuantityOrdered", 0))
+                ))
+
+            return Order(
+                order_id=order_id,
+                platform=PlatformType.AMAZON,
+                platform_order_id=order_id,
+                user_id=user_id,
+                status=self._normalize_order_status(order_data.get("OrderStatus", "")),
+                items=items,
+                total_amount=float(order_data.get("OrderTotal", {}).get("Amount", 0)),
+                payment_amount=float(order_data.get("OrderTotal", {}).get("Amount", 0)),
+                currency=order_data.get("OrderTotal", {}).get("CurrencyCode", "USD"),
+                created_at=self._parse_datetime(order_data.get("PurchaseDate")),
+                updated_at=self._parse_datetime(order_data.get("LastUpdateDate")),
+                shipped_at=self._parse_datetime(order_data.get("ShipDate")),
+                recipient_address={
+                    "name": order_data.get("ShippingAddress", {}).get("Name"),
+                    "phone": order_data.get("ShippingAddress", {}).get("Phone"),
+                    "address": order_data.get("ShippingAddress", {}).get("AddressLine1", ""),
+                    "city": order_data.get("ShippingAddress", {}).get("City"),
+                    "state": order_data.get("ShippingAddress", {}).get("StateOrRegion"),
+                    "postal_code": order_data.get("ShippingAddress", {}).get("PostalCode"),
+                    "country": order_data.get("ShippingAddress", {}).get("CountryCode")
+                },
+                metadata={
+                    "fulfillment_channel": order_data.get("FulfillmentChannel"),
+                    "sales_channel": order_data.get("SalesChannel"),
+                    "order_type": order_data.get("OrderType")
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"Amazon get order error: {str(e)}")
+            raise PlatformAPIError(
+                f"获取订单失败: {str(e)}",
+                platform="amazon"
+            )
+
+    async def get_order_logistics(self, order_id: str) -> Dict[str, Any]:
+        """
+        获取亚马逊订单物流信息
+
+        Args:
+            order_id: 订单号
+
+        Returns:
+            物流信息
+        """
+        try:
+            # 亚马逊物流信息在订单详情中
+            api_path = f"/orders/v0/orders/{order_id}"
+
+            order_data = await self._call_api("GET", api_path)
+
+            # 转换物流信息
+            return LogisticsInfo(
+                tracking_number=order_data.get("TrackingNumber", ""),
+                carrier=order_data.get("Carrier", ""),
+                status=order_data.get("OrderStatus", ""),
+                traces=[]  # 亚马逊API不提供详细轨迹
+            )
+
+        except Exception as e:
+            logger.error(f"Amazon get logistics error: {str(e)}")
+            return LogisticsInfo(
+                tracking_number="",
+                carrier="",
+                status="物流信息查询失败",
+                traces=[]
+            )
+
+    async def verify_user(self, user_id: str) -> bool:
+        """
+        验证亚马逊用户
+
+        Args:
+            user_id: 用户ID
+
+        Returns:
+            验证结果
+        """
+        try:
+            # 亚马逊通过买家的访问令牌验证
+            # 实际使用时需要获取并验证access_token
+            return True
+
+        except Exception as e:
+            logger.error(f"Amazon verify user error: {str(e)}")
+            return False
+
+    async def _call_api(
+        self,
+        method: str,
+        path: str,
+        data: Optional[Dict[str, Any]] = None,
+        params: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None
+    ) -> Dict[str, Any]:
+        """
+        调用亚马逊API
+
+        Args:
+            method: HTTP方法
+            path: API路径
+            data: 请求体数据
+            params: URL参数
+            headers: 额外的请求头
+
+        Returns:
+            API响应
+        """
+        url = self.endpoint + path
+
+        # 创建AWS请求
+        request = AWSRequest(method=method, url=url)
+
+        # 设置请求体
+        if data:
+            request.data = json.dumps(data).encode("utf-8")
+            request.headers["Content-Type"] = "application/json"
+
+        # 设置URL参数
+        if params:
+            request.params = params
+
+        # 添加必需的请求头
+        request.headers["x-amz-date"] = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+        request.headers["host"] = request.url.split("://")[1].split("/")[0]
+
+        # 添加自定义请求头
+        if headers:
+            request.headers.update(headers)
+
+        # 添加AWS签名
+        sig_v4 = SigV4Auth(
+            {
+                "aws_access_key_id": self.aws_access_key,
+                "aws_secret_access_key": self.aws_secret_key
+            },
+            "execute-api",
+            "us-east-1"  # 亚马逊SP-API使用的区域
+        )
+        sig_v4.add_auth(request)
+
+        # 发送请求
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.send(
+                httpx.Request(
+                    method=request.method,
+                    url=str(request.url),
+                    headers=dict(request.headers),
+                    content=request.data
+                )
+            )
+            response.raise_for_status()
+
+            result = response.json()
+
+            # 检查错误响应
+            if "errors" in result:
+                error = result["errors"][0]
+                raise PlatformAPIError(
+                    error.get("message", "API调用失败"),
+                    platform="amazon",
+                    details={"code": error.get("code")}
+                )
+
+            return result
+
+    def _calculate_signature(self, payload: Dict[str, Any]) -> str:
+        """
+        计算AWS签名
+
+        Args:
+            payload: 请求数据
+
+        Returns:
+            签名字符串
+        """
+        # 简化实现，实际应使用完整的AWS SigV4
+        payload_str = json.dumps(payload, sort_keys=True)
+
+        return hmac.new(
+            self.aws_secret_key.encode("utf-8"),
+            payload_str.encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest()
+
+    @staticmethod
+    def _parse_datetime(date_str: Optional[str]) -> Optional[Any]:
+        """
+        解析亚马逊日期字符串
+
+        Args:
+            date_str: 日期字符串
+
+        Returns:
+            datetime对象
+        """
+        if not date_str:
+            return None
+
+        try:
+            from datetime import datetime
+
+            # 亚马逊日期格式: 2024-01-15T10:30:00Z
+            if date_str.endswith("Z"):
+                return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+            else:
+                return datetime.fromisoformat(date_str)
+
+        except Exception:
+            return None
+
+    async def _test_connection(self) -> bool:
+        """测试亚马逊API连接"""
+        try:
+            # 调用一个简单的API测试
+            await self._call_api("GET", "/orders/v0/orders", {"CreatedAfter": "2024-01-01"})
+            return True
+        except Exception:
+            return False

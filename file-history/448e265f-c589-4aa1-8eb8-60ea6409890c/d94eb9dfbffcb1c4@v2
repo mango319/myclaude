@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60pt;
+  background: #2E4053;
+  display: flex;
+  align-items: center;
+  padding-left: 40pt;
+}
+.header h1 {
+  color: #FFFFFF;
+  font-size: 24pt;
+  margin: 0;
+  font-weight: bold;
+}
+.content {
+  margin-top: 75pt;
+  margin-left: 50pt;
+  margin-right: 50pt;
+}
+.section-box {
+  background: #FFFFFF;
+  border-left: 5pt solid #E67E22;
+  padding: 10pt 18pt;
+  margin-bottom: 10pt;
+  border-radius: 4pt;
+}
+.section-title {
+  color: #E67E22;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+}
+.app-list {
+  margin: 0;
+  padding-left: 16pt;
+}
+.app-list li {
+  color: #2C3E50;
+  font-size: 11pt;
+  margin: 2pt 0;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>家用办公打印机</h1>
+</div>
+<div class="content">
+  <div class="section-box">
+    <p class="section-title">半寸</p>
+    <ul class="app-list">
+      <li>收纳、分类、标识</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">2寸</p>
+    <ul class="app-list">
+      <li>AI打印机（语音转图片）</li>
+      <li>家用标签、错题机、收纳、手帐、儿童拍立得</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">8寸</p>
+    <ul class="app-list">
+      <li>A4办公文档、作业、文身工作室、贴纸</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

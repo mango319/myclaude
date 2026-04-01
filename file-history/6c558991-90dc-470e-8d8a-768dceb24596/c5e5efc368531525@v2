@@ -1,0 +1,389 @@
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+        AlignmentType, HeadingLevel, BorderStyle, WidthType, ShadingType,
+        VerticalAlign, LevelFormat, PageBreak } = require('docx');
+
+const tableBorder = { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' };
+const cellBorders = { top: tableBorder, bottom: tableBorder, left: tableBorder, right: tableBorder };
+
+const doc = new Document({
+  styles: {
+    default: { document: { run: { font: 'Arial', size: 24 } } },
+    paragraphStyles: [
+      { id: 'Title', name: 'Title', basedOn: 'Normal',
+        run: { size: 56, bold: true, color: '000000', font: 'Arial' },
+        paragraph: { spacing: { before: 240, after: 120 }, alignment: AlignmentType.CENTER } },
+      { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 32, bold: true, color: '000000', font: 'Arial' },
+        paragraph: { spacing: { before: 240, after: 240 }, outlineLevel: 0 } },
+      { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 28, bold: true, color: '000000', font: 'Arial' },
+        paragraph: { spacing: { before: 180, after: 180 }, outlineLevel: 1 } },
+      { id: 'Heading3', name: 'Heading 3', basedOn: 'Normal', next: 'Normal', quickFormat: true,
+        run: { size: 26, bold: true, color: '333333', font: 'Arial' },
+        paragraph: { spacing: { before: 120, after: 120 }, outlineLevel: 2 } }
+    ]
+  },
+  numbering: {
+    config: [
+      { reference: 'bullet-list',
+        levels: [{ level: 0, format: LevelFormat.BULLET, text: '\u2022', alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+      { reference: 'phase-list',
+        levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+      { reference: 'intent-list',
+        levels: [{ level: 0, format: LevelFormat.BULLET, text: '\u2022', alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+      { reference: 'tech-stack-list',
+        levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] },
+      { reference: 'layer-list',
+        levels: [{ level: 0, format: LevelFormat.BULLET, text: '\u2022', alignment: AlignmentType.LEFT,
+          style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] }
+    ]
+  },
+  sections: [{
+    properties: {
+      page: { margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } }
+    },
+    children: [
+      // Title
+      new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun('知识库智能问答接入电商平台客服方案')] }),
+      new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 },
+        children: [new TextRun({ text: '文档生成日期：2026年3月26日', size: 20, color: '666666' })] }),
+
+      // Section 1
+      new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('1. 项目概述')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('1.1 项目目标')] }),
+      new Paragraph({ children: [new TextRun('构建统一的智能客服知识库系统，对接天猫、京东、亚马逊三大电商平台的客服接口，实现：')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('统一知识库：集中管理产品FAQ、售后政策、常见问题等')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('智能问答：基于LLM的语义理解和精准回复')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('多平台接入：一套系统服务三大电商平台')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('人工协作：AI无法处理时无缝转接人工客服')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('1.2 技术架构')] }),
+
+      new Paragraph({ children: [new TextRun({ text: '客户端层', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('天猫客服 (千牛/旺旺)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('京东客服 (咚咚)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('亚马逊客服 (Messaging API)')] }),
+
+      new Paragraph({ spacing: { before: 120 }, children: [new TextRun({ text: '接入适配层', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('Tmall SDK (消息格式转换)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('JD SDK (消息格式转换)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('Amazon Messaging API (消息格式转换)')] }),
+
+      new Paragraph({ spacing: { before: 120 }, children: [new TextRun({ text: '核心业务层', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('意图识别 (NLU/LLM)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('知识检索 (RAG/向量)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('答案生成 (LLM)')] }),
+
+      new Paragraph({ spacing: { before: 120 }, children: [new TextRun({ text: '数据存储层', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('向量数据库 (Milvus/Pinecone)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('知识库 (MySQL/Postgres)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('对话记录 (MongoDB/Elastic)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('用户画像 (Redis/MySQL)')] }),
+
+      // Section 2
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('2. 各平台接入方案')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('2.1 天猫/淘宝')] }),
+      new Table({ columnWidths: [2340, 7020], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '项目', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '说明', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('接入方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('阿里云旺旺开放平台 / 千牛开放平台')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('API类型')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('消息接收、消息发送、富媒体消息')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('认证方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('AppKey + AppSecret')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('消息格式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('JSON')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('特殊要求')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('需要企业店铺资质')] })] })
+          ] })
+        ]
+      }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 180 }, children: [new TextRun('2.2 京东')] }),
+      new Table({ columnWidths: [2340, 7020], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '项目', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '说明', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('接入方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('京东开放平台 - 咚咚客服开放接口')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('API类型')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('接收消息、发送消息、订单查询')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('认证方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('AppKey + AppSecret + AES加密')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('消息格式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('JSON')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('特殊要求')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('需要京东商家账号')] })] })
+          ] })
+        ]
+      }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 180 }, children: [new TextRun('2.3 亚马逊')] }),
+      new Table({ columnWidths: [2340, 7020], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '项目', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '说明', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('接入方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Amazon Messaging API')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('API类型')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('GetMessages, SendMessage, CreateAttachment')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('认证方式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('AWS IAM + Marketplace Web Service')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('消息格式')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('JSON')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('特殊要求')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 7020, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('需要亚马逊卖家账号，通过AWS Marketplace注册')] })] })
+          ] })
+        ]
+      }),
+
+      // Section 3
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('3. 核心功能模块')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('3.1 知识库管理')] }),
+      new Paragraph({ children: [new TextRun('知识库结构设计：')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('产品信息：产品规格说明、使用教程')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('售后服务：退换货政策、保修条款')] }),
+      new Paragraph({ numbering: { reference: 'bullet-list', level: 0 }, children: [new TextRun('常见问题：订单查询、支付方式、物流配送等')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 180 }, children: [new TextRun('3.2 RAG检索增强')] }),
+      new Paragraph({ children: [new TextRun('检索流程：')] }),
+      new Paragraph({ numbering: { reference: 'phase-list', level: 0 }, children: [new TextRun('用户问题 → 向量化处理 (Embedding Model)')] }),
+      new Paragraph({ numbering: { reference: 'phase-list', level: 0 }, children: [new TextRun('向量相似度检索 (Milvus/Pinecone)')] }),
+      new Paragraph({ numbering: { reference: 'phase-list', level: 0 }, children: [new TextRun('Top-K结果召回')] }),
+      new Paragraph({ numbering: { reference: 'phase-list', level: 0 }, children: [new TextRun('LLM答案生成 (GPT-4 / Claude / DeepSeek)')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 180 }, children: [new TextRun('3.3 意图识别路由')] }),
+      new Paragraph({ children: [new TextRun('意图分类：')] }),
+      new Paragraph({ numbering: { reference: 'intent-list', level: 0 }, children: [new TextRun({ text: 'order_query：', bold: true }), new TextRun(' 订单、查询、物流、配送')] }),
+      new Paragraph({ numbering: { reference: 'intent-list', level: 0 }, children: [new TextRun({ text: 'product_info：', bold: true }), new TextRun(' 产品、规格、参数、功能')] }),
+      new Paragraph({ numbering: { reference: 'intent-list', level: 0 }, children: [new TextRun({ text: 'after_sales：', bold: true }), new TextRun(' 退货、换货、退款、投诉')] }),
+      new Paragraph({ numbering: { reference: 'intent-list', level: 0 }, children: [new TextRun({ text: 'price_info：', bold: true }), new TextRun(' 价格、优惠、折扣、活动')] }),
+      new Paragraph({ numbering: { reference: 'intent-list', level: 0 }, children: [new TextRun({ text: 'human_service：', bold: true }), new TextRun(' 人工、转接、客服')] }),
+
+      // Section 4
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('4. 技术栈推荐')] }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('4.1 后端技术栈')] }),
+      new Table({ columnWidths: [2340, 2340, 4680], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '组件', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '技术选型', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '说明', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('开发语言')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Python 3.10+')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('AI生态完善')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Web框架')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('FastAPI')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('高性能异步API')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('消息队列')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('RabbitMQ / Redis')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('异步任务处理')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('向量数据库')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Milvus / Pinecone')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('RAG检索')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('关系数据库')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('PostgreSQL')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('业务数据存储')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('缓存')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Redis')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('会话、热点数据')] })] })
+          ] })
+        ]
+      }),
+
+      new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 180 }, children: [new TextRun('4.2 AI模型选型')] }),
+      new Table({ columnWidths: [2340, 3120, 3900], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '用途', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3120, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '模型选择', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3900, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '说明', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('对话生成')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3120, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('GPT-4 / Claude 3.5 / DeepSeek')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3900, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('主要对话模型')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('向量嵌入')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3120, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('text-embedding-3-large / bge-m3')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3900, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('语义向量化')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 2340, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('意图识别')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3120, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('自训练分类器 / LLM分类')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3900, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('精准意图识别')] })] })
+          ] })
+        ]
+      }),
+
+      // Section 5
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('5. 部署架构')] }),
+      new Paragraph({ children: [new TextRun({ text: '负载均衡器 (Nginx/ALB)', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('应用服务器 1 (FastAPI)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('应用服务器 2 (FastAPI)')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('应用服务器 N (FastAPI)')] }),
+      new Paragraph({ spacing: { before: 120 }, children: [new TextRun({ text: '数据存储', bold: true })] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('PostgreSQL 集群')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('Milvus 向量数据库')] }),
+      new Paragraph({ numbering: { reference: 'layer-list', level: 0 }, children: [new TextRun('Redis 缓存集群')] }),
+
+      // Section 6
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('6. 实施步骤')] }),
+      new Table({ columnWidths: [1400, 4680, 3280], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '阶段', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '任务', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '工期', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 1')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('需求调研、平台API对接申请')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('1周')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 2')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('基础架构搭建、数据库设计')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('2周')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 3')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('单平台接入（先天猫）')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('2周')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 4')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('知识库构建、RAG实现')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('2周')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 5')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('其他平台接入（京东、亚马逊）')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('2周')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 1400, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('Phase 6')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('测试、优化、上线')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 3280, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('1周')] })] })
+          ] })
+        ]
+      }),
+
+      // Section 7
+      new Paragraph({ heading: HeadingLevel.HEADING_1, spacing: { before: 240 }, children: [new TextRun('7. 成本估算')] }),
+      new Table({ columnWidths: [4680, 4680], margins: { top: 100, bottom: 100, left: 180, right: 180 },
+        rows: [
+          new TableRow({ tableHeader: true, children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '项目', bold: true, size: 22 })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, shading: { fill: 'D5E8F0', type: ShadingType.CLEAR }, verticalAlign: VerticalAlign.CENTER,
+              children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: '月成本（估算）', bold: true, size: 22 })] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('云服务器（4核8G x 3）')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun('¥1,500')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('数据库服务')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun('¥800')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('向量数据库')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun('¥1,200')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun('API调用（LLM）')] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun('¥2,000-5,000')] })] })
+          ] }),
+          new TableRow({ children: [
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun({ text: '合计', bold: true })] })] }),
+            new TableCell({ borders: cellBorders, width: { size: 4680, type: WidthType.DXA }, children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text: '¥5,500 - ¥8,500/月', bold: true })] })] })
+          ] })
+        ]
+      }),
+
+      // Footer
+      new Paragraph({ spacing: { before: 240 }, alignment: AlignmentType.CENTER,
+        children: [new TextRun({ text: '--- 文档结束 ---', size: 20, color: '999999', italics: true })] })
+    ]
+  }]
+});
+
+Packer.toBuffer(doc).then(buffer => {
+  fs.writeFileSync('知识库智能问答接入电商平台客服方案.docx', buffer);
+  console.log('Word 文档已生成！');
+}).catch(err => {
+  console.error('生成文档时出错:', err);
+});

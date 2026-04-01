@@ -1,0 +1,415 @@
+const fs = require('fs');
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+        AlignmentType, HeadingLevel, BorderStyle, WidthType, ShadingType,
+        VerticalAlign, LevelFormat, PageBreak, TableOfContents } = require('docx');
+
+const tableBorder = { style: BorderStyle.SINGLE, size: 1, color: "CCCCCC" };
+const cellBorders = { top: tableBorder, bottom: tableBorder, left: tableBorder, right: tableBorder };
+
+function createCell(text, bold = false, width = 4680) {
+    return new TableCell({
+        borders: cellBorders,
+        width: { size: width, type: WidthType.DXA },
+        shading: { fill: "FFFFFF", type: ShadingType.CLEAR },
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+            alignment: AlignmentType.LEFT,
+            children: [new TextRun({ text, bold, size: 22 })]
+        })]
+    });
+}
+
+function createHeaderCell(text, width = 4680) {
+    return new TableCell({
+        borders: cellBorders,
+        width: { size: width, type: WidthType.DXA },
+        shading: { fill: "D5E8F0", type: ShadingType.CLEAR },
+        verticalAlign: VerticalAlign.CENTER,
+        children: [new Paragraph({
+            alignment: AlignmentType.CENTER,
+            children: [new TextRun({ text, bold: true, size: 22 })]
+        })]
+    });
+}
+
+const doc = new Document({
+    styles: {
+        default: { document: { run: { font: "Arial", size: 24 } } },
+        paragraphStyles: [
+            { id: "Title", name: "Title", basedOn: "Normal",
+                run: { size: 56, bold: true, color: "000000", font: "Arial" },
+                paragraph: { spacing: { before: 240, after: 120 }, alignment: AlignmentType.CENTER } },
+            { id: "Heading1", name: "Heading 1", basedOn: "Normal", next: "Normal", quickFormat: true,
+                run: { size: 32, bold: true, color: "000000", font: "Arial" },
+                paragraph: { spacing: { before: 240, after: 120 }, outlineLevel: 0 } },
+            { id: "Heading2", name: "Heading 2", basedOn: "Normal", next: "Normal", quickFormat: true,
+                run: { size: 28, bold: true, color: "000000", font: "Arial" },
+                paragraph: { spacing: { before: 180, after: 100 }, outlineLevel: 1 } },
+            { id: "Heading3", name: "Heading 3", basedOn: "Normal", next: "Normal", quickFormat: true,
+                run: { size: 26, bold: true, color: "000000", font: "Arial" },
+                paragraph: { spacing: { before: 120, after: 80 }, outlineLevel: 2 } }
+        ]
+    },
+    numbering: {
+        config: [
+            { reference: "bullet-list",
+                levels: [{ level: 0, format: LevelFormat.BULLET, text: "•", alignment: AlignmentType.LEFT,
+                    style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] }
+        ]
+    },
+    sections: [{
+        properties: {
+            page: { margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } }
+        },
+        children: [
+            new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun("NETUM 打印APP UI重构 PRD")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("1. 项目背景")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("1.1 当前 APP 现状")] }),
+            new Paragraph({ children: [new TextRun("NETUM 无线便携打印配套 APP 是个人消费者使用 NETUM 打印机硬件的核心工具，支持以下四大打印场景：")] }),
+            new Table({
+                columnWidths: [2340, 7020],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("场景", 2340), createHeaderCell("说明", 7020)] }),
+                    new TableRow({ children: [createCell("文档打印", false, 2340), createCell("PDF/Word/Excel 等办公文档", false, 7020)] }),
+                    new TableRow({ children: [createCell("文身打印", false, 2340), createCell("临时纹身贴纸打印", false, 7020)] }),
+                    new TableRow({ children: [createCell("照片打印", false, 2340), createCell("手机相册照片直接打印", false, 7020)] }),
+                    new TableRow({ children: [createCell("素材打印", false, 2340), createCell("APP 内置素材模板打印", false, 7020)] })
+                ]
+            }),
+            new Paragraph({ children: [new TextRun("当前 APP 上线已久，用户界面呈现老旧、粗糙的状态，与现代移动应用设计水平存在明显差距。")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("1.2 用户反馈")] }),
+            new Paragraph({ children: [new TextRun("从应用商店评论及用户反馈中发现，界面问题是用户主要抱怨点之一：")] }),
+            new Paragraph({ children: [new TextRun({ text: "\"界面太土了，像几年前的软件\"", italics: true })] }),
+            new Paragraph({ children: [new TextRun({ text: "\"操作不直观，找功能很费劲\"", italics: true })] }),
+            new Paragraph({ children: [new TextRun({ text: "\"设计粗糙，看起来不专业\"", italics: true })] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("1.3 竞品对比压力")] }),
+            new Paragraph({ children: [new TextRun("主要竞品（XPlife、爱印、爱立熊、汉小印等）均已进行 UI 现代化升级：")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("视觉风格：清新简洁，符合当前主流设计趋势")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("交互体验：流程顺畅，操作直观")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("品牌感知：专业可靠，用户体验佳")] }),
+            new Paragraph({ children: [new TextRun("相比之下，NETUM APP 在第一印象上已处于劣势。")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("1.4 业务影响")] }),
+            new Paragraph({ children: [new TextRun("界面问题直接影响：")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("用户体验 - 操作门槛高，学习成本大")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("硬件销售 - 用户试用 APP 后的负面体验影响购买决策")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("品牌口碑 - 界面品质降低用户对硬件产品的信任度")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("2. 项目目标")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("2.1 用户体验目标")] }),
+            new Table({
+                columnWidths: [3120, 3120, 3120],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("指标", 3120), createHeaderCell("现状", 3120), createHeaderCell("目标", 3120)] }),
+                    new TableRow({ children: [createCell("首次打印完成时间", true, 3120), createCell("较长，多步骤", false, 3120), createCell("3 步内完成", false, 3120)] }),
+                    new TableRow({ children: [createCell("功能查找难度", true, 3120), createCell("需要探索", false, 3120), createCell("一目了然", false, 3120)] }),
+                    new TableRow({ children: [createCell("操作学习成本", true, 3120), createCell("高", false, 3120), createCell("零学习成本", false, 3120)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("2.2 视觉现代化")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("界面风格符合 2025 年移动应用设计趋势")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("采用极简设计语言，去除冗余装饰")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("色彩、字体、间距符合现代审美标准")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("2.3 四大场景优化")] }),
+            new Table({
+                columnWidths: [2340, 7020],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("场景", 2340), createHeaderCell("优化目标", 7020)] }),
+                    new TableRow({ children: [createCell("文档打印", true, 2340), createCell("快速选择、预览清晰、一键打印", false, 7020)] }),
+                    new TableRow({ children: [createCell("文身打印", true, 2340), createCell("素材丰富、编辑简单、效果直观", false, 7020)] }),
+                    new TableRow({ children: [createCell("照片打印", true, 2340), createCell("相册便捷、滤镜可选、色彩准确", false, 7020)] }),
+                    new TableRow({ children: [createCell("素材打印", true, 2340), createCell("分类清晰、模板精美、定制灵活", false, 7020)] })
+                ]
+            }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("3. 竞品分析")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("3.1 主要竞品对比")] }),
+            new Table({
+                columnWidths: [1560, 2340, 5460],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("竞品", 1560), createHeaderCell("视觉风格", 2340), createHeaderCell("核心特点", 5460)] }),
+                    new TableRow({ children: [createCell("XPlife", true, 1560), createCell("现代扁平化，色彩明快", false, 2340), createCell("年轻化设计语言，符合潮流审美", false, 5460)] }),
+                    new TableRow({ children: [createCell("爱印", true, 1560), createCell("简约商务风", false, 2340), createCell("打印预览区域突出，减少误操作", false, 5460)] }),
+                    new TableRow({ children: [createCell("爱立熊", true, 1560), createCell("卡通可爱风", false, 2340), createCell("功能图标直观，文字精简", false, 5460)] }),
+                    new TableRow({ children: [createCell("汉小印", true, 1560), createCell("极简白底", false, 2340), createCell("素材展示图片化，吸引力强", false, 5460)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("3.2 共同趋势总结")] }),
+            new Table({
+                columnWidths: [3120, 6240],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("趋势", 3120), createHeaderCell("说明", 6240)] }),
+                    new TableRow({ children: [createCell("首页场景化", true, 3120), createCell("四大场景入口清晰展示，而非菜单隐藏", false, 6240)] }),
+                    new TableRow({ children: [createCell("扁平化设计", true, 3120), createCell("去除拟物和阴影，简洁干净", false, 6240)] }),
+                    new TableRow({ children: [createCell("大图标按钮", true, 3120), createCell("核心操作区域大，点击便捷", false, 6240)] }),
+                    new TableRow({ children: [createCell("底部 Tab 导航", true, 3120), createCell("一级导航固定底部，切换方便", false, 6240)] }),
+                    new TableRow({ children: [createCell("预览优先", true, 3120), createCell("打印预览区域突出，所见即所得", false, 6240)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("3.3 我们的差距")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计陈旧 - 界面风格停留在 3-5 年前")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("信息过载 - 单屏信息过多，缺乏重点")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("层级混乱 - 功能优先级不明确，用户困惑")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("交互繁琐 - 打印流程步骤过多，不够顺畅")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("视觉粗糙 - 图标、间距、色彩不够精致")] }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("4. 设计方向")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("4.1 设计理念")] }),
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "\"极简、高效、可靠\"", bold: true, size: 28 })] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("4.2 视觉风格定义")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("扁平化设计 - 去除拟物元素，采用 2D 扁平风格")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("极简主义 - 大量留白，信息密度适中")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("现代审美 - 符合 2025 年移动应用设计趋势")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("专业可靠 - 视觉呈现传达品质感，匹配 NETUM 硬件定位")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("4.3 配色方案")] }),
+            new Table({
+                columnWidths: [2340, 3120, 3900],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("色彩类型", 2340), createHeaderCell("色值", 3120), createHeaderCell("应用场景", 3900)] }),
+                    new TableRow({ children: [createCell("主色调", true, 2340), createCell("待确认（基于 NETUM 品牌 VI）", false, 3120), createCell("核心按钮、选中状态、品牌标识", false, 3900)] }),
+                    new TableRow({ children: [createCell("中性色", true, 2340), createCell("#000000 / #333333 / #666666", false, 3120), createCell("文字、分割线、背景", false, 3900)] }),
+                    new TableRow({ children: [createCell("功能色", true, 2340), createCell("成功#52C41A / 错误#FF4D4F", false, 3120), createCell("状态提示", false, 3900)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("4.4 布局原则")] }),
+            new Paragraph({ children: [new TextRun({ text: "栅格系统：", bold: true }), new TextRun("采用 8px 基础栅格单位，左右边距 16px，卡片间距 12px，模块间距 24px")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("4.5 交互原则")] }),
+            new Table({
+                columnWidths: [3120, 6240],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("原则", 3120), createHeaderCell("说明", 6240)] }),
+                    new TableRow({ children: [createCell("即时反馈", true, 3120), createCell("所有操作 100ms 内有视觉反馈", false, 6240)] }),
+                    new TableRow({ children: [createCell("可预期性", true, 3120), createCell("按钮外观符合用户认知", false, 6240)] }),
+                    new TableRow({ children: [createCell("容错设计", true, 3120), createCell("支持撤销、二次确认关键操作", false, 6240)] }),
+                    new TableRow({ children: [createCell("页面过渡", true, 3120), createCell("采用流畅的共享元素转场动画", false, 6240)] })
+                ]
+            }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("5. 功能范围")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("5.1 核心页面清单（P0 - 必须改版）")] }),
+            new Table({
+                columnWidths: [3120, 6240],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("页面", 3120), createHeaderCell("说明", 6240)] }),
+                    new TableRow({ children: [createCell("启动页", true, 3120), createCell("品牌展示 + 加载动画", false, 6240)] }),
+                    new TableRow({ children: [createCell("首页", true, 3120), createCell("四大场景入口 + 设备状态 + 快捷操作", false, 6240)] }),
+                    new TableRow({ children: [createCell("文档打印页", true, 3120), createCell("文件选择 + 预览 + 打印设置", false, 6240)] }),
+                    new TableRow({ children: [createCell("文身打印页", true, 3120), createCell("素材选择 + 编辑 + 预览", false, 6240)] }),
+                    new TableRow({ children: [createCell("照片打印页", true, 3120), createCell("相册入口 + 滤镜 + 裁剪 + 预览", false, 6240)] }),
+                    new TableRow({ children: [createCell("素材打印页", true, 3120), createCell("分类 + 模板选择 + 定制", false, 6240)] }),
+                    new TableRow({ children: [createCell("打印预览页", true, 3120), createCell("通用预览 + 参数设置 + 确认打印", false, 6240)] }),
+                    new TableRow({ children: [createCell("设备连接页", true, 3120), createCell("蓝牙配对 + 设备列表 + 连接状态", false, 6240)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("5.2 首页设计")] }),
+            new Paragraph({ children: [new TextRun({ text: "布局结构：", bold: true }), new TextRun("顶部栏（品牌 LOGO + 设备状态） + 中部（四大场景宫格入口） + 底部 Tab 导航")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("5.3 外包设计交付物")] }),
+            new Table({
+                columnWidths: [2340, 2340, 4680],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("交付物", 2340), createHeaderCell("数量", 2340), createHeaderCell("说明", 4680)] }),
+                    new TableRow({ children: [createCell("核心页面设计稿", true, 2340), createCell("8 页", false, 2340), createCell("P0 页面高保真设计", false, 4680)] }),
+                    new TableRow({ children: [createCell("设计规范文档", true, 2340), createCell("1 份", false, 2340), createCell("配色、字体、组件规范", false, 4680)] }),
+                    new TableRow({ children: [createCell("图标资源", true, 2340), createCell("20-30 个", false, 2340), createCell("主要功能图标", false, 4680)] }),
+                    new TableRow({ children: [createCell("切图资源", true, 2340), createCell("1 套", false, 2340), createCell("iOS/Android 两倍图/三倍图", false, 4680)] })
+                ]
+            }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("6. 项目计划")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("6.1 整体时间线")] }),
+            new Table({
+                columnWidths: [2340, 1560, 1560, 2340],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("阶段", 2340), createHeaderCell("时长", 1560), createHeaderCell("开始", 1560), createHeaderCell("结束", 2340)] }),
+                    new TableRow({ children: [createCell("设计阶段", true, 2340), createCell("1 周", false, 1560), createCell("Week 1", false, 1560), createCell("Week 1", false, 2340)] }),
+                    new TableRow({ children: [createCell("设计评审", true, 2340), createCell("2 天", false, 1560), createCell("Week 2", false, 1560), createCell("Week 2", false, 2340)] }),
+                    new TableRow({ children: [createCell("开发准备", true, 2340), createCell("3 天", false, 1560), createCell("Week 2", false, 1560), createCell("Week 2", false, 2340)] }),
+                    new TableRow({ children: [createCell("核心页面开发", true, 2340), createCell("2 周", false, 1560), createCell("Week 3", false, 1560), createCell("Week 4", false, 2340)] }),
+                    new TableRow({ children: [createCell("次要页面开发", true, 2340), createCell("1 周", false, 1560), createCell("Week 5", false, 1560), createCell("Week 5", false, 2340)] }),
+                    new TableRow({ children: [createCell("联调测试", true, 2340), createCell("1 周", false, 1560), createCell("Week 6", false, 1560), createCell("Week 6", false, 2340)] }),
+                    new TableRow({ children: [createCell("Bug 修复", true, 2340), createCell("3 天", false, 1560), createCell("Week 7", false, 1560), createCell("Week 7", false, 2340)] }),
+                    new TableRow({ children: [createCell("上线发布", true, 2340), createCell("2 天", false, 1560), createCell("Week 7", false, 1560), createCell("Week 7", false, 2340)] }),
+                    new TableRow({ children: [createCell("总计", true, 2340), createCell("7 周", false, 1560), createCell("", false, 1560), createCell("", false, 2340)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("6.2 人员分工")] }),
+            new Table({
+                columnWidths: [2340, 1560, 3900],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("角色", 2340), createHeaderCell("人数", 1560), createHeaderCell("职责", 3900)] }),
+                    new TableRow({ children: [createCell("产品经理", true, 2340), createCell("1", false, 1560), createCell("需求定义、设计评审、验收测试", false, 3900)] }),
+                    new TableRow({ children: [createCell("外包设计师", true, 2340), createCell("1", false, 1560), createCell("UI 设计、设计规范、切图交付", false, 3900)] }),
+                    new TableRow({ children: [createCell("前端开发 A", true, 2340), createCell("1", false, 1560), createCell("首页、文档/文身打印流程", false, 3900)] }),
+                    new TableRow({ children: [createCell("前端开发 B", true, 2340), createCell("1", false, 1560), createCell("照片/素材打印流程、公共页面", false, 3900)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("6.3 风险预估")] }),
+            new Table({
+                columnWidths: [3120, 1560, 1560, 3120],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("风险", 3120), createHeaderCell("可能性", 1560), createHeaderCell("影响", 1560), createHeaderCell("应对措施", 3120)] }),
+                    new TableRow({ children: [createCell("外包设计质量不达预期", false, 3120), createCell("中", false, 1560), createCell("高", false, 1560), createCell("提前提供详细需求简报，预留评审修改时间", false, 3120)] }),
+                    new TableRow({ children: [createCell("设计交付物不完整", false, 3120), createCell("中", false, 1560), createCell("中", false, 1560), createCell("明确交付物清单，开发前检查", false, 3120)] }),
+                    new TableRow({ children: [createCell("开发工期延期", false, 3120), createCell("中", false, 1560), createCell("中", false, 1560), createCell("预留 10% 缓冲时间，P1 页面可后置", false, 3120)] }),
+                    new TableRow({ children: [createCell("硬件联调问题", false, 3120), createCell("低", false, 1560), createCell("高", false, 1560), createCell("提前与硬件团队确认接口，预留联调时间", false, 3120)] })
+                ]
+            }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("7. 成功指标")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("7.1 用户体验指标")] }),
+            new Table({
+                columnWidths: [2800, 2340, 2340, 1876],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("指标", 2800), createHeaderCell("当前基线", 2340), createHeaderCell("目标", 2340), createHeaderCell("衡量方式", 1876)] }),
+                    new TableRow({ children: [createCell("首次打印完成时间", true, 2800), createCell("多步骤，耗时较长", false, 2340), createCell("3 步内完成", false, 2340), createCell("埋点统计", false, 1876)] }),
+                    new TableRow({ children: [createCell("打印任务成功率", true, 2800), createCell("待统计", false, 2340), createCell("≥ 95%", false, 2340), createCell("埋点统计", false, 1876)] }),
+                    new TableRow({ children: [createCell("操作错误率", true, 2800), createCell("待统计", false, 2340), createCell("≤ 5%", false, 2340), createCell("埋点统计", false, 1876)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("7.2 用户满意度")] }),
+            new Table({
+                columnWidths: [3120, 2340, 3900],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("指标", 3120), createHeaderCell("目标", 2340), createHeaderCell("衡量周期", 3900)] }),
+                    new TableRow({ children: [createCell("应用商店评分", true, 3120), createCell("+0.5 分", false, 2340), createCell("上线后 3 个月", false, 3900)] }),
+                    new TableRow({ children: [createCell("正面评价占比", true, 3120), createCell("\"界面美观/易用\"提及率提升", false, 2340), createCell("上线后 3 个月", false, 3900)] }),
+                    new TableRow({ children: [createCell("新用户首日留存", true, 3120), createCell("提升 10%", false, 2340), createCell("上线后 1 个月", false, 3900)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("7.3 设计质量指标")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("UI 还原度 ≥ 95%")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计规范遵循度 100%")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("iOS/Android 一致性 ≥ 90%")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("无 P0/P1 级 Bug")] }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("8. 预算与资源")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("8.1 设计预算")] }),
+            new Table({
+                columnWidths: [3120, 2340, 3900],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("项目", 3120), createHeaderCell("金额", 2340), createHeaderCell("说明", 3900)] }),
+                    new TableRow({ children: [createCell("外包 UI 设计", true, 3120), createCell("¥2,000", false, 2340), createCell("8 个核心页面 + 设计规范 + 图标切图", false, 3900)] }),
+                    new TableRow({ children: [createCell("设计小计", true, 3120), createCell("¥2,000", false, 2340), createCell("", false, 3900)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("8.2 开发资源")] }),
+            new Table({
+                columnWidths: [2800, 1560, 2340, 3120],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("角色", 2800), createHeaderCell("人数", 1560), createHeaderCell("投入时间", 2340), createHeaderCell("说明", 3120)] }),
+                    new TableRow({ children: [createCell("前端开发 A", true, 2800), createCell("1 人", false, 1560), createCell("5 周", false, 2340), createCell("首页、文档/文身打印流程", false, 3120)] }),
+                    new TableRow({ children: [createCell("前端开发 B", true, 2800), createCell("1 人", false, 1560), createCell("5 周", false, 2340), createCell("照片/素材打印流程、公共页面", false, 3120)] }),
+                    new TableRow({ children: [createCell("开发工时合计", true, 2800), createCell("2 人", false, 1560), createCell("10 人周", false, 2340), createCell("约 50 人天", false, 3120)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("8.3 预算汇总")] }),
+            new Table({
+                columnWidths: [3120, 6240],
+                margins: { top: 100, bottom: 100, left: 180, right: 180 },
+                rows: [
+                    new TableRow({ children: [createHeaderCell("类别", 3120), createHeaderCell("金额", 6240)] }),
+                    new TableRow({ children: [createCell("设计费用", true, 3120), createCell("¥2,000（外包 UI 设计）", false, 6240)] }),
+                    new TableRow({ children: [createCell("开发费用", true, 3120), createCell("¥0（内部人力）", false, 6240)] }),
+                    new TableRow({ children: [createCell("工具费用", true, 3120), createCell("¥0（使用现有工具）", false, 6240)] }),
+                    new TableRow({ children: [createCell("项目总预算", true, 3120), createCell("¥2,000", false, 6240)] })
+                ]
+            }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("8.4 ROI 分析")] }),
+            new Paragraph({ children: [new TextRun({ text: "总投入：", bold: true }), new TextRun("¥2,000（现金）+ 10 人周（人力）")] }),
+            new Paragraph({ children: [new TextRun({ text: "预期收益：", bold: true }), new TextRun("硬件销售转化提升 + 用户口碑改善")] }),
+            new Paragraph({ children: [new TextRun({ text: "收益周期：", bold: true }), new TextRun("上线后 3-6 个月开始显现")] }),
+
+            new Paragraph({ children: [new PageBreak()] }),
+            new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("附录")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("A. 外包设计需求简报要点")] }),
+            new Paragraph({ children: [new TextRun("与外包设计师对接时需明确提供：")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("项目背景：无线便携打印 APP UI 全面升级")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("目标风格：极简、现代、专业可靠")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计范围：8 个核心页面 + 设计规范 + 图标切图")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("品牌信息：NETUM LOGO 和品牌 VI（如有）")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("竞品参考：XPlife、爱印、爱立熊、汉小印")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("交付要求：高保真设计稿 + 切图 + 规范文档")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("时间要求：1 周内完成")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("预算约束：2000 元")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("B. 设计评审检查清单")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("视觉风格符合极简现代定位")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("四大场景入口清晰直观")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("配色方案与 NETUM 品牌一致")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计规范完整（配色、字体、间距、组件）")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("图标风格统一")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("交互逻辑合理，操作路径短")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("适配 iOS/Android 双平台")] }),
+
+            new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun("C. 开发启动检查清单")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计稿已评审通过")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("设计规范文档已确认")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("切图资源已导入项目")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("Flutter 组件库已搭建")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("开发规范已对齐")] }),
+            new Paragraph({ numbering: { reference: "bullet-list", level: 0 }, children: [new TextRun("硬件接口已确认")] }),
+
+            new Paragraph({ spacing: { before: 400 } }),
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "———", size: 20 })] }),
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "文档版本：v1.0", size: 20 })] }),
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "创建日期：2025-03-20", size: 20 })] }),
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "文档状态：待评审", size: 20 })] })
+        ]
+    }]
+});
+
+Packer.toBuffer(doc).then(buffer => {
+    fs.writeFileSync("C:\\Users\\Administrator\\UI重构PRD.docx", buffer);
+    console.log("Word document created successfully!");
+});

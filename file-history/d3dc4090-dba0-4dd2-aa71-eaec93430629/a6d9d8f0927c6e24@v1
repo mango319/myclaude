@@ -1,0 +1,190 @@
+"""
+平台基类定义
+所有电商平台适配器的基类
+"""
+from abc import ABC, abstractmethod
+from typing import Optional, Dict, Any, List
+from datetime import datetime
+
+from core.models import (
+    PlatformType,
+    IncomingMessage,
+    OutgoingMessage,
+    Order,
+    OrderStatus
+)
+from core.exceptions import PlatformAPIError
+
+
+class BasePlatformAdapter(ABC):
+    """电商平台适配器基类"""
+
+    def __init__(self, config: Dict[str, Any]):
+        """
+        初始化平台适配器
+
+        Args:
+            config: 平台配置
+        """
+        self.config = config
+        self.platform_type = self._get_platform_type()
+        self.is_sandbox = config.get("sandbox", False)
+        self.gateway_url = self._get_gateway_url()
+
+    @abstractmethod
+    def _get_platform_type(self) -> PlatformType:
+        """获取平台类型"""
+        pass
+
+    @abstractmethod
+    def _get_gateway_url(self) -> str:
+        """获取API网关地址"""
+        pass
+
+    @abstractmethod
+    async def validate_signature(self, payload: Dict[str, Any], signature: str) -> bool:
+        """验证回调签名"""
+        pass
+
+    @abstractmethod
+    async def parse_incoming_message(self, raw_data: Dict[str, Any]) -> IncomingMessage:
+        """解析接收的消息"""
+        pass
+
+    @abstractmethod
+    async def send_message(self, message: OutgoingMessage) -> Dict[str, Any]:
+        """发送消息到平台"""
+        pass
+
+    @abstractmethod
+    async def get_order(self, order_id: str, user_id: str) -> Order:
+        """获取订单信息"""
+        pass
+
+    @abstractmethod
+    async def get_order_logistics(self, order_id: str) -> Dict[str, Any]:
+        """获取订单物流信息"""
+        pass
+
+    @abstractmethod
+    async def verify_user(self, user_id: str) -> bool:
+        """验证用户身份"""
+        pass
+
+    async def health_check(self) -> bool:
+        """健康检查"""
+        try:
+            # 调用简单的API进行测试
+            return await self._test_connection()
+        except Exception:
+            return False
+
+    async def _test_connection(self) -> bool:
+        """测试连接（子类实现）"""
+        return True
+
+    def _build_error_response(
+        self,
+        message: str,
+        error_code: str = "PLATFORM_ERROR",
+        details: Optional[Dict] = None
+    ) -> Dict[str, Any]:
+        """构建错误响应"""
+        return {
+            "success": False,
+            "error": {
+                "code": error_code,
+                "message": message,
+                "details": details or {}
+            }
+        }
+
+    def _normalize_order_status(self, platform_status: str) -> OrderStatus:
+        """将平台订单状态标准化"""
+        status_mapping = {
+            # 天猫状态映射
+            "TRADE_NO_CREATE_PAY": OrderStatus.PENDING_PAYMENT,
+            "WAIT_BUYER_PAY": OrderStatus.PENDING_PAYMENT,
+            "TRADE_CREATED": OrderStatus.PENDING_PAYMENT,
+            "WAIT_SELLER_SEND_GOODS": OrderStatus.PAID,
+            "WAIT_BUYER_CONFIRM_GOODS": OrderStatus.SHIPPED,
+            "TRADE_BUYER_SIGNED": OrderStatus.DELIVERED,
+            "TRADE_FINISHED": OrderStatus.COMPLETED,
+            "TRADE_CLOSED": OrderStatus.CANCELLED,
+            "TRADE_CLOSED_BY_TAOBAO": OrderStatus.CANCELLED,
+            "REFUNDING": OrderStatus.REFUNDING,
+            "REFUND_SUCCESS": OrderStatus.REFUNDED,
+
+            # 京东状态映射
+            "0": OrderStatus.PENDING_PAYMENT,
+            "1": OrderStatus.PAID,
+            "2": OrderStatus.SHIPPED,
+            "3": OrderStatus.DELIVERED,
+            "4": OrderStatus.COMPLETED,
+            "5": OrderStatus.CANCELLED,
+            "6": OrderStatus.REFUNDING,
+            "7": OrderStatus.REFUNDED,
+
+            # 亚马逊状态映射
+            "Pending": OrderStatus.PENDING_PAYMENT,
+            "Unshipped": OrderStatus.PAID,
+            "PartiallyShipped": OrderStatus.SHIPPED,
+            "Shipped": OrderStatus.SHIPPED,
+            "Delivered": OrderStatus.DELIVERED,
+            "Completed": OrderStatus.COMPLETED,
+            "Canceled": OrderStatus.CANCELLED,
+            "Refunded": OrderStatus.REFUNDED,
+        }
+
+        return status_mapping.get(
+            platform_status,
+            OrderStatus.PENDING_PAYMENT
+        )
+
+
+class PlatformMessageHandler:
+    """平台消息处理器基类"""
+
+    def __init__(self, adapter: BasePlatformAdapter):
+        self.adapter = adapter
+
+    async def handle_message(self, raw_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        处理平台消息
+
+        Args:
+            raw_data: 平台原始消息数据
+
+        Returns:
+            处理结果
+        """
+        try:
+            # 解析消息
+            message = await self.adapter.parse_incoming_message(raw_data)
+
+            # 路由到相应的处理器
+            return await self._route_message(message)
+
+        except Exception as e:
+            from loguru import logger
+
+            logger.error(f"Message handling error: {str(e)}")
+
+            return self.adapter._build_error_response(
+                message=str(e),
+                error_code="MESSAGE_HANDLE_ERROR"
+            )
+
+    async def _route_message(self, message: IncomingMessage) -> Dict[str, Any]:
+        """
+        路由消息到对应的处理器
+
+        Args:
+            message: 解析后的消息
+
+        Returns:
+            处理结果
+        """
+        # 这里可以根据消息类型路由到不同的处理逻辑
+        # 实际路由逻辑在router.py中实现
+        pass

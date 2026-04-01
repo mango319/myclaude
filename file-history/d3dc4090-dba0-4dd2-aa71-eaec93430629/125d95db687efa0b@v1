@@ -1,0 +1,174 @@
+"""
+自定义异常定义
+"""
+from typing import Optional, Any
+from fastapi import HTTPException, status
+
+
+# ==================== 基础异常 ====================
+
+class BaseAppException(Exception):
+    """应用基础异常"""
+
+    def __init__(
+        self,
+        message: str,
+        code: str = "INTERNAL_ERROR",
+        details: Optional[dict] = None
+    ):
+        self.message = message
+        self.code = code
+        self.details = details or {}
+        super().__init__(self.message)
+
+
+# ==================== 业务异常 ====================
+
+class BusinessException(BaseAppException):
+    """业务逻辑异常"""
+    pass
+
+
+class IntentClassificationError(BusinessException):
+    """意图识别失败"""
+    pass
+
+
+class EntityExtractionError(BusinessException):
+    """实体提取失败"""
+    pass
+
+
+class KnowledgeBaseError(BusinessException):
+    """知识库错误"""
+    pass
+
+
+class OrderQueryError(BusinessException):
+    """订单查询错误"""
+    pass
+
+
+class PlatformAPIError(BusinessException):
+    """平台API调用错误"""
+
+    def __init__(
+        self,
+        message: str,
+        platform: str,
+        status_code: Optional[int] = None,
+        details: Optional[dict] = None
+    ):
+        self.platform = platform
+        self.status_code = status_code
+        super().__init__(message, "PLATFORM_API_ERROR", details)
+
+
+class EscalationError(BusinessException):
+    """人工转接错误"""
+    pass
+
+
+# ==================== 数据异常 ====================
+
+class DataError(BaseAppException):
+    """数据相关异常"""
+    pass
+
+
+class DocumentNotFoundError(DataError):
+    """文档未找到"""
+    pass
+
+
+class OrderNotFoundError(DataError):
+    """订单未找到"""
+    pass
+
+
+class SessionNotFoundError(DataError):
+    """会话未找到"""
+    pass
+
+
+class ValidationError(DataError):
+    """数据验证错误"""
+    pass
+
+
+# ==================== 配置异常 ====================
+
+class ConfigurationError(BaseAppException):
+    """配置错误"""
+    pass
+
+
+class MissingConfigurationError(ConfigurationError):
+    """缺少必要配置"""
+    pass
+
+
+# ==================== HTTP异常辅助函数 ====================
+
+def http_exception_from_app_exception(exc: BaseAppException) -> HTTPException:
+    """将应用异常转换为HTTP异常"""
+
+    status_map = {
+        "VALIDATION_ERROR": status.HTTP_400_BAD_REQUEST,
+        "NOT_FOUND": status.HTTP_404_NOT_FOUND,
+        "PLATFORM_API_ERROR": status.HTTP_502_BAD_GATEWAY,
+        "KNOWLEDGE_BASE_ERROR": status.HTTP_503_SERVICE_UNAVAILABLE,
+        "ORDER_QUERY_ERROR": status.HTTP_502_BAD_GATEWAY,
+        "CONFIGURATION_ERROR": status.HTTP_500_INTERNAL_SERVER_ERROR,
+        "INTERNAL_ERROR": status.HTTP_500_INTERNAL_SERVER_ERROR,
+    }
+
+    http_status = status_map.get(exc.code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return HTTPException(
+        status_code=http_status,
+        detail={
+            "code": exc.code,
+            "message": exc.message,
+            "details": exc.details
+        }
+    )
+
+
+# ==================== 异常处理器 ====================
+
+class ExceptionHandler:
+    """全局异常处理器"""
+
+    @staticmethod
+    async def handle_exception(exc: Exception) -> dict:
+        """处理异常并返回统一格式"""
+
+        if isinstance(exc, BaseAppException):
+            return {
+                "success": False,
+                "error": {
+                    "code": exc.code,
+                    "message": exc.message,
+                    "details": exc.details
+                }
+            }
+
+        if isinstance(exc, HTTPException):
+            return {
+                "success": False,
+                "error": {
+                    "code": "HTTP_ERROR",
+                    "message": str(exc.detail),
+                    "status_code": exc.status_code
+                }
+            }
+
+        # 未知异常
+        return {
+            "success": False,
+            "error": {
+                "code": "INTERNAL_ERROR",
+                "message": "服务器内部错误" if not isinstance(exc, BaseAppException) else str(exc)
+            }
+        }

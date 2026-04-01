@@ -1,0 +1,261 @@
+"""
+平台路由器
+负责将消息路由到正确的平台适配器
+"""
+from typing import Dict, Any, Optional
+from loguru import logger
+
+from core.models import PlatformType, IncomingMessage
+from gateway.base import BasePlatformAdapter
+from gateway.tmall import TmallAdapter
+from gateway.jd import JDAdapter
+from gateway.amazon import AmazonAdapter
+from core.exceptions import ConfigurationError
+
+
+class PlatformRouter:
+    """平台路由器"""
+
+    def __init__(self):
+        """初始化路由器"""
+        self._adapters: Dict[PlatformType, BasePlatformAdapter] = {}
+        self._config: Optional[dict] = None
+
+    def load_config(self, config: dict) -> None:
+        """
+        加载平台配置
+
+        Args:
+            config: 平台配置字典
+        """
+        import yaml
+
+        self._config = config
+
+        # 初始化天猫适配器
+        if "tmall" in config:
+            try:
+                self._adapters[PlatformType.TMALL] = TmallAdapter(config["tmall"])
+                logger.info("天猫适配器初始化成功")
+            except Exception as e:
+                logger.warning(f"天猫适配器初始化失败: {str(e)}")
+
+        # 初始化京东适配器
+        if "jd" in config:
+            try:
+                self._adapters[PlatformType.JD] = JDAdapter(config["jd"])
+                logger.info("京东适配器初始化成功")
+            except Exception as e:
+                logger.warning(f"京东适配器初始化失败: {str(e)}")
+
+        # 初始化亚马逊适配器
+        if "amazon" in config:
+            try:
+                self._adapters[PlatformType.AMAZON] = AmazonAdapter(config["amazon"])
+                logger.info("亚马逊适配器初始化成功")
+            except Exception as e:
+                logger.warning(f"亚马逊适配器初始化失败: {str(e)}")
+
+        logger.info(f"平台适配器加载完成: {list(self._adapters.keys())}")
+
+    def get_adapter(self, platform: PlatformType) -> BasePlatformAdapter:
+        """
+        获取指定平台的适配器
+
+        Args:
+            platform: 平台类型
+
+        Returns:
+            平台适配器
+
+        Raises:
+            ConfigurationError: 平台未配置
+        """
+        if platform not in self._adapters:
+            raise ConfigurationError(
+                f"平台 {platform.value} 未配置或未初始化",
+                code="PLATFORM_NOT_CONFIGURED"
+            )
+
+        return self._adapters[platform]
+
+    async def route_message(
+        self,
+        platform: PlatformType,
+        raw_data: Dict[str, Any]
+    ) -> IncomingMessage:
+        """
+        路由消息到对应的平台适配器
+
+        Args:
+            platform: 平台类型
+            raw_data: 原始消息数据
+
+        Returns:
+            解析后的消息对象
+
+        Raises:
+            ConfigurationError: 平台未配置
+        """
+        adapter = self.get_adapter(platform)
+
+        # 解析消息
+        message = await adapter.parse_incoming_message(raw_data)
+
+        logger.info(
+            f"消息路由成功: 平台={platform.value}, "
+            f"消息ID={message.id}, 用户={message.user_id}"
+        )
+
+        return message
+
+    async def send_to_platform(
+        self,
+        platform: PlatformType,
+        message: Any
+    ) -> Dict[str, Any]:
+        """
+        发送消息到指定平台
+
+        Args:
+            platform: 平台类型
+            message: 消息对象
+
+        Returns:
+            发送结果
+        """
+        adapter = self.get_adapter(platform)
+
+        result = await adapter.send_message(message)
+
+        logger.info(f"消息发送成功: 平台={platform.value}, 消息ID={message.id}")
+
+        return result
+
+    async def get_platform_order(
+        self,
+        platform: PlatformType,
+        order_id: str,
+        user_id: str
+    ):
+        """
+        获取平台订单信息
+
+        Args:
+            platform: 平台类型
+            order_id: 订单号
+            user_id: 用户ID
+
+        Returns:
+            订单信息
+        """
+        adapter = self.get_adapter(platform)
+        return await adapter.get_order(order_id, user_id)
+
+    async def get_platform_logistics(
+        self,
+        platform: PlatformType,
+        order_id: str
+    ) -> Dict[str, Any]:
+        """
+        获取平台物流信息
+
+        Args:
+            platform: 平台类型
+            order_id: 订单号
+
+        Returns:
+            物流信息
+        """
+        adapter = self.get_adapter(platform)
+        return await adapter.get_order_logistics(order_id)
+
+    async def verify_platform_user(
+        self,
+        platform: PlatformType,
+        user_id: str
+    ) -> bool:
+        """
+        验证平台用户
+
+        Args:
+            platform: 平台类型
+            user_id: 用户ID
+
+        Returns:
+            验证结果
+        """
+        adapter = self.get_adapter(platform)
+        return await adapter.verify_user(user_id)
+
+    async def health_check_platform(self, platform: PlatformType) -> bool:
+        """
+        检查平台健康状态
+
+        Args:
+            platform: 平台类型
+
+        Returns:
+            健康状态
+        """
+        try:
+            adapter = self.get_adapter(platform)
+            return await adapter.health_check()
+        except Exception as e:
+            logger.error(f"平台健康检查失败 {platform.value}: {str(e)}")
+            return False
+
+    async def health_check_all(self) -> Dict[PlatformType, bool]:
+        """
+        检查所有平台健康状态
+
+        Returns:
+            各平台健康状态字典
+        """
+        results = {}
+
+        for platform in self._adapters.keys():
+            results[platform] = await self.health_check_platform(platform)
+
+        return results
+
+    def get_available_platforms(self) -> list[PlatformType]:
+        """
+        获取已配置的平台列表
+
+        Returns:
+            平台类型列表
+        """
+        return list(self._adapters.keys())
+
+
+# 全局路由器实例
+router = PlatformRouter()
+
+
+def load_platform_config(config_path: str = None) -> None:
+    """
+    加载平台配置
+
+    Args:
+        config_path: 配置文件路径（可选，默认使用settings中的路径）
+    """
+    import yaml
+    from pathlib import Path
+
+    if config_path is None:
+        config_path = Path(__file__).parent.parent / "config" / "platforms.yaml"
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    router.load_config(config)
+
+
+# 启动时自动加载配置
+def init_router():
+    """初始化路由器"""
+    try:
+        load_platform_config()
+    except Exception as e:
+        logger.error(f"平台配置加载失败: {str(e)}")

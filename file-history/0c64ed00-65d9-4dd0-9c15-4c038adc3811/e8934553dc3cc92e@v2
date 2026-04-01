@@ -1,0 +1,217 @@
+"""
+闲鱼 1DX2 价格抓取脚本
+使用第三方 API 接口获取闲鱼商品价格信息
+"""
+
+import requests
+import json
+import time
+from typing import List, Dict
+import pandas as pd
+from datetime import datetime
+
+
+class XianyuScraper:
+    """闲鱼商品价格抓取器"""
+
+    def __init__(self, api_key: str = None):
+        """
+        初始化抓取器
+
+        Args:
+            api_key: API 密钥（需要从第三方服务商获取）
+        """
+        self.api_key = api_key
+        # 第三方 API 地址（示例，需替换为实际 API）
+        self.api_base = "https://api.example.com"  # 需要替换
+
+    def search_items(self, keyword: str, page: int = 1, page_size: int = 20) -> List[Dict]:
+        """
+        搜索闲鱼商品
+
+        Args:
+            keyword: 搜索关键词，如 "1DX2"
+            page: 页码
+            page_size: 每页数量
+
+        Returns:
+            商品列表
+        """
+        # 注意：这是一个示例结构，实际 API 需要根据服务商文档调整
+        params = {
+            "key": self.api_key,
+            "q": keyword,
+            "page": page,
+            "pageSize": page_size
+        }
+
+        try:
+            # 示例请求（需替换为实际 API 端点）
+            response = requests.get(
+                f"{self.api_base}/xianyu/search",
+                params=params,
+                timeout=10
+            )
+            response.raise_for_status()
+            data = response.json()
+
+            return data.get("items", [])
+
+        except Exception as e:
+            print(f"搜索失败: {e}")
+            return []
+
+    def get_item_detail(self, item_id: str) -> Dict:
+        """
+        获取商品详情
+
+        Args:
+            item_id: 商品ID
+
+        Returns:
+            商品详情
+        """
+        params = {
+            "key": self.api_key,
+            "num_iid": item_id
+        }
+
+        try:
+            response = requests.get(
+                f"{self.api_base}/xianyu/item_get",
+                params=params,
+                timeout=10
+            )
+            response.raise_for_status()
+            return response.json()
+
+        except Exception as e:
+            print(f"获取详情失败: {e}")
+            return {}
+
+    def scrape_1dx2_prices(self, max_pages: int = 5) -> List[Dict]:
+        """
+        抓取 1DX2 的价格信息
+
+        Args:
+            max_pages: 最大抓取页数
+
+        Returns:
+            商品价格列表
+        """
+        all_items = []
+
+        for page in range(1, max_pages + 1):
+            print(f"正在抓取第 {page} 页...")
+            items = self.search_items("1DX2", page=page)
+
+            if not items:
+                print(f"第 {page} 页没有更多数据")
+                break
+
+            all_items.extend(items)
+            time.sleep(1)  # 避免请求过快
+
+        return all_items
+
+    def save_to_excel(self, items: List[Dict], filename: str = None):
+        """
+        保存数据到 Excel
+
+        Args:
+            items: 商品列表
+            filename: 文件名
+        """
+        if not filename:
+            filename = f"闲鱼_1DX2价格_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+
+        # 提取关键字段
+        data = []
+        for item in items:
+            data.append({
+                "标题": item.get("title", ""),
+                "价格": item.get("price", ""),
+                "卖家": item.get("seller", {}).get("nickName", ""),
+                "成色": item.get("condition", ""),
+                "地区": item.get("location", ""),
+                "发布时间": item.get("publishTime", ""),
+                "商品链接": item.get("url", ""),
+                "浏览量": item.get("viewCount", ""),
+                "想要数": item.get("wantCount", "")
+            })
+
+        df = pd.DataFrame(data)
+        df.to_excel(filename, index=False, engine='openpyxl')
+        print(f"数据已保存到: {filename}")
+        return df
+
+    def analyze_prices(self, items: List[Dict]):
+        """
+        分析价格数据
+
+        Args:
+            items: 商品列表
+        """
+        if not items:
+            print("没有数据可分析")
+            return
+
+        prices = []
+        for item in items:
+            price_str = item.get("price", "")
+            # 提取价格数字（处理 "¥1234" 格式）
+            import re
+            match = re.search(r'[\d,]+\.?\d*', str(price_str))
+            if match:
+                price = float(match.group().replace(',', ''))
+                prices.append(price)
+
+        if prices:
+            print("\n=== 1DX2 价格分析 ===")
+            print(f"样本数量: {len(prices)}")
+            print(f"最低价: ¥{min(prices):,.2f}")
+            print(f"最高价: ¥{max(prices):,.2f}")
+            print(f"平均价: ¥{sum(prices)/len(prices):,.2f}")
+            print(f"中位数: ¥{sorted(prices)[len(prices)//2]:,.2f}")
+
+
+def main():
+    """主函数"""
+    print("=== 闲鱼 1DX2 价格抓取工具 ===\n")
+
+    # 注意：需要从第三方 API 服务商获取 API Key
+    # 常见的服务商包括：
+    # - 聚合数据
+    # - 极速数据
+    # - 天行数据
+    # 等
+
+    api_key = input("请输入 API Key (如果没有，可以联系服务商获取): ").strip()
+
+    if not api_key:
+        print("\n提示：您需要先获取 API Key 才能使用此脚本")
+        print("\n推荐的第三方 API 服务商：")
+        print("1. 聚合数据: https://www.juhe.cn/")
+        print("2. 极速数据: https://www.jisuapi.com/")
+        print("3. 天行数据: https://www.tianapi.com/")
+        print("\n请搜索'闲鱼 API'或'淘宝API'找到相关服务")
+        return
+
+    scraper = XianyuScraper(api_key=api_key)
+
+    # 抓取数据
+    print("\n开始抓取 1DX2 价格数据...")
+    items = scraper.scrape_1dx2_prices(max_pages=3)
+
+    if items:
+        # 分析价格
+        scraper.analyze_prices(items)
+
+        # 保存到 Excel
+        scraper.save_to_excel(items)
+    else:
+        print("未获取到数据，请检查 API Key 是否正确")
+
+
+if __name__ == "__main__":
+    main()

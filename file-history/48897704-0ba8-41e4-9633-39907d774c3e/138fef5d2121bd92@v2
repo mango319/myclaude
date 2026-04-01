@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.7",
+    "lastTouchedAt": "2026-03-23T09:05:12.380Z"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "zai/glm-4.7"
+      },
+      "models": {
+        "zai/glm-4.7": {}
+      },
+      "workspace": "C:\\Users\\Administrator\\.openclaw\\workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "timeoutSeconds": 600,
+      "sandbox": {
+        "mode": "off"
+      }
+    }
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "channels": {
+    "qqbot": {
+      "enabled": true,
+      "allowFrom": [
+        "*"
+      ],
+      "appId": "1903233088",
+      "clientSecret": "ztc9SXO1QaWEj15v",
+      "allowPrivateChat": true,
+      "allowlist": {
+        "users": []
+      },
+      "pairing": {
+        "requireApproval": false,
+        "autoAccept": []
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "ead7d36327186a565eed8b306232201b29ca12cf15306327"
+    },
+    "trustedProxies": []
+  },
+  "plugins": {
+    "allow": [
+      "qqbot",
+      "openclaw-weixin"
+    ],
+    "entries": {
+      "qqbot": {
+        "enabled": true
+      },
+      "openclaw-weixin": {
+        "enabled": true
+      }
+    },
+    "installs": {
+      "qqbot": {
+        "source": "npm",
+        "spec": "@sliverp/qqbot@1.5.3",
+        "installPath": "C:\\Users\\Administrator\\.openclaw\\extensions\\qqbot",
+        "version": "1.5.3",
+        "resolvedName": "@sliverp/qqbot",
+        "resolvedVersion": "1.5.3",
+        "resolvedSpec": "@sliverp/qqbot@1.5.3",
+        "integrity": "sha512-32g2LLjdGrZEOmw5umel0DuWfRyw2HYX3P6lafFapt/98CF+2LsyAXCYBhkpTS0gN9j/pvQpLYcPilO9mWAScA==",
+        "shasum": "8bc609f0a01315ab2c958915ccbff54e3881b868",
+        "resolvedAt": "2026-03-10T00:51:28.096Z",
+        "installedAt": "2026-03-10T00:53:00.444Z"
+      },
+      "openclaw-weixin": {
+        "source": "npm",
+        "spec": "@tencent-weixin/openclaw-weixin",
+        "installPath": "C:\\Users\\Administrator\\.openclaw\\extensions\\openclaw-weixin",
+        "version": "1.0.2",
+        "resolvedName": "@tencent-weixin/openclaw-weixin",
+        "resolvedVersion": "1.0.2",
+        "resolvedSpec": "@tencent-weixin/openclaw-weixin@1.0.2",
+        "integrity": "sha512-kYPEowHB/0VWt9nQFee/AS6Fb+jbnu38wjkgZDBdKTuJoBL0IBW2obQ0ymgFKBFJJL9rDwnFrb/17ORGZD/X8Q==",
+        "shasum": "244baf0a873683a9c350d0f0b5bc055c07b0eb39",
+        "resolvedAt": "2026-03-23T09:04:34.957Z",
+        "installedAt": "2026-03-23T09:04:44.918Z"
+      }
+    }
+  }
+}
