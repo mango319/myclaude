@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 20pt 50pt 70pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 10pt;
+  font-weight: bold;
+  margin: 0 0 3pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 22pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+}
+.price-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8pt;
+}
+.price-item {
+  background: #F9FAFB;
+  border-left: 4pt solid #3B82F6;
+  padding: 8pt 14pt;
+  border-radius: 4pt;
+  flex: 0 0 calc(50% - 4pt);
+}
+.price-name {
+  color: #6B7280;
+  font-size: 11pt;
+  margin: 0 0 3pt 0;
+}
+.price-range {
+  color: #1E40AF;
+  font-size: 15pt;
+  font-weight: bold;
+  margin: 0;
+}
+.strategy-box {
+  background: #DBEAFE;
+  padding: 10pt 16pt;
+  border-radius: 6pt;
+  margin-top: 8pt;
+}
+.strategy-label {
+  color: #3B82F6;
+  font-size: 11pt;
+  font-weight: bold;
+  margin: 0 0 3pt 0;
+}
+.strategy-text {
+  color: #1E40AF;
+  font-size: 14pt;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第二章 / 产品定位</p>
+  <h1>价格策略</h1>
+  <div class="price-grid">
+    <div class="price-item">
+      <p class="price-name">便携式</p>
+      <p class="price-range">300-500元</p>
+    </div>
+    <div class="price-item">
+      <p class="price-name">桌面式</p>
+      <p class="price-range">500-1500元</p>
+    </div>
+    <div class="price-item">
+      <p class="price-name">嵌入式</p>
+      <p class="price-range">800-2000元</p>
+    </div>
+    <div class="price-item">
+      <p class="price-name">工业级</p>
+      <p class="price-range">2000-5000元</p>
+    </div>
+  </div>
+  <div class="strategy-box">
+    <p class="strategy-label">策略定位</p>
+    <p class="strategy-text">中高端定价，价值驱动</p>
+  </div>
+</div>
+<p class="page-number">18</p>
+</body>
+</html>

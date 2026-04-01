@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 35pt 60pt 60pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0 0 6pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 28pt;
+  font-weight: bold;
+  margin: 0 0 20pt 0;
+}
+.supply-item {
+  margin-bottom: 15pt;
+}
+.supply-name {
+  color: #3B82F6;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 4pt 0;
+}
+.supply-desc {
+  color: #1F2937;
+  font-size: 15pt;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第一章 / 市场分析</p>
+  <h1>供应链分析</h1>
+  <div class="supply-item">
+    <p class="supply-name">核心零部件</p>
+    <p class="supply-desc">打印头(进口为主)</p>
+  </div>
+  <div class="supply-item">
+    <p class="supply-name">主控芯片</p>
+    <p class="supply-desc">国产化率提升</p>
+  </div>
+  <div class="supply-item">
+    <p class="supply-name">外壳材料</p>
+    <p class="supply-desc">塑料为主，环保趋势</p>
+  </div>
+  <div class="supply-item">
+    <p class="supply-name">供应稳定性</p>
+    <p class="supply-desc">整体良好</p>
+  </div>
+</div>
+<p class="page-number">11</p>
+</body>
+</html>

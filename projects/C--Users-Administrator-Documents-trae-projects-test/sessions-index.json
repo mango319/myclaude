@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "sessionId": "4decdb96-16e8-4a91-b719-721ea0827bab",
+      "fullPath": "C:\\Users\\Administrator\\.claude\\projects\\C--Users-Administrator-Documents-trae-projects-test\\4decdb96-16e8-4a91-b719-721ea0827bab.jsonl",
+      "fileMtime": 1769066146964,
+      "firstPrompt": "当前模型",
+      "summary": "Invalid API key · Please run /login",
+      "messageCount": 6,
+      "created": "2026-01-15T03:17:48.230Z",
+      "modified": "2026-01-15T03:18:01.014Z",
+      "gitBranch": "",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\trae_projects\\test",
+      "isSidechain": false
+    },
+    {
+      "sessionId": "99d62c65-1d00-4518-80b9-2cea3b8b5765",
+      "fullPath": "C:\\Users\\Administrator\\.claude\\projects\\C--Users-Administrator-Documents-trae-projects-test\\99d62c65-1d00-4518-80b9-2cea3b8b5765.jsonl",
+      "fileMtime": 1769067402327,
+      "firstPrompt": "Hello, can you help me with my project?",
+      "summary": "API Error: 403 {\"error\":{\"type\":\"forbidden\",\"message\":\"Request not allowed\"}} · Please run /login",
+      "messageCount": 1,
+      "created": "2026-01-22T07:33:57.668Z",
+      "modified": "2026-01-22T07:33:57.813Z",
+      "gitBranch": "",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\trae_projects\\test",
+      "isSidechain": false
+    }
+  ],
+  "originalPath": "C:\\Users\\Administrator\\Documents\\trae_projects\\test"
+}

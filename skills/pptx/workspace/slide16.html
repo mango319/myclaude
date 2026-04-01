@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 25pt 50pt 60pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 11pt;
+  font-weight: bold;
+  margin: 0 0 4pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 24pt;
+  font-weight: bold;
+  margin: 0 0 12pt 0;
+}
+.spec-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8pt;
+}
+.spec-item {
+  background: #F9FAFB;
+  padding: 8pt 14pt;
+  border-radius: 6pt;
+  flex: 0 0 calc(50% - 4pt);
+}
+.spec-label {
+  color: #6B7280;
+  font-size: 11pt;
+  margin: 0 0 2pt 0;
+}
+.spec-value {
+  color: #1E40AF;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第二章 / 产品定位</p>
+  <h1>技术参数对比</h1>
+  <div class="spec-grid">
+    <div class="spec-item">
+      <p class="spec-label">打印速度</p>
+      <p class="spec-value">最快300mm/s</p>
+    </div>
+    <div class="spec-item">
+      <p class="spec-label">分辨率</p>
+      <p class="spec-value">203/300dpi可选</p>
+    </div>
+    <div class="spec-item">
+      <p class="spec-label">打印宽度</p>
+      <p class="spec-value">58mm/80mm</p>
+    </div>
+    <div class="spec-item">
+      <p class="spec-label">接口</p>
+      <p class="spec-value">USB/蓝牙/WiFi/网口</p>
+    </div>
+    <div class="spec-item">
+      <p class="spec-label">刀具</p>
+      <p class="spec-value">全切/半切可选</p>
+    </div>
+  </div>
+</div>
+<p class="page-number">16</p>
+</body>
+</html>

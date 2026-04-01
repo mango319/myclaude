@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 40pt 50pt 50pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 32pt;
+  font-weight: bold;
+  margin: 0 0 20pt 0;
+}
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15pt;
+}
+.info-box {
+  background: #DBEAFE;
+  padding: 15pt;
+  border-radius: 8pt;
+  flex: 1;
+  min-width: 180pt;
+}
+.box-label {
+  color: #6B7280;
+  font-size: 13pt;
+  margin: 0 0 8pt 0;
+}
+.box-value {
+  color: #1E40AF;
+  font-size: 24pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+}
+.box-sub {
+  color: #3B82F6;
+  font-size: 13pt;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第一章 / 市场分析</p>
+  <h1>中国市场概况</h1>
+  <div class="info-grid">
+    <div class="info-box">
+      <p class="box-label">市场规模</p>
+      <p class="box-value">120亿元</p>
+      <p class="box-sub">人民币</p>
+    </div>
+    <div class="info-box">
+      <p class="box-label">年增长率</p>
+      <p class="box-value">&gt;10%</p>
+      <p class="box-sub">高于全球平均</p>
+    </div>
+    <div class="info-box">
+      <p class="box-label">主要驱动因素</p>
+      <p style="color: #1F2937; font-size: 13pt; margin: 3pt 0;">移动支付普及</p>
+      <p style="color: #1F2937; font-size: 13pt; margin: 3pt 0;">零售业数字化</p>
+    </div>
+    <div class="info-box">
+      <p class="box-label">政策支持</p>
+      <p style="color: #1F2937; font-size: 13pt; margin: 3pt 0;">数字化转型推动</p>
+    </div>
+  </div>
+</div>
+<p class="page-number">06</p>
+</body>
+</html>

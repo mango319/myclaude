@@ -1,0 +1,32 @@
+[
+  {
+    "content": "创建智能裁剪头文件",
+    "status": "completed",
+    "activeForm": "创建智能裁剪头文件"
+  },
+  {
+    "content": "实现智能裁剪实现文件",
+    "status": "in_progress",
+    "activeForm": "实现智能裁剪实现文件"
+  },
+  {
+    "content": "实现基于显著性的裁剪",
+    "status": "pending",
+    "activeForm": "实现基于显著性的裁剪"
+  },
+  {
+    "content": "实现基于人脸的裁剪",
+    "status": "pending",
+    "activeForm": "实现基于人脸的裁剪"
+  },
+  {
+    "content": "实现基于边缘的裁剪",
+    "status": "pending",
+    "activeForm": "实现基于边缘的裁剪"
+  },
+  {
+    "content": "实现Seam Carving算法",
+    "status": "pending",
+    "activeForm": "实现Seam Carving算法"
+  }
+]

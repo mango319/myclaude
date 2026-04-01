@@ -1,0 +1,1983 @@
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+extglob.MainWindowTitle : �޷�����extglob.MainWindowTitle����ʶ��Ϊ cmdlet���������ű��ļ�������г�������ơ��������Ƶ�ƴ
+д���������·������ȷ��·����ȷ��Ȼ������һ�Ρ�
+����λ�� ��:1 �ַ�: 30
++ Get-Process | Where-Object { extglob.MainWindowTitle -like '*coding*' ...
++                              ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (extglob.MainWindowTitle:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException

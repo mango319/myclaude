@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60pt;
+  background: #2E4053;
+  display: flex;
+  align-items: center;
+  padding-left: 40pt;
+}
+.header h1 {
+  color: #FFFFFF;
+  font-size: 24pt;
+  margin: 0;
+  font-weight: bold;
+}
+.content {
+  margin-top: 75pt;
+  margin-left: 40pt;
+  margin-right: 40pt;
+  display: flex;
+  gap: 20pt;
+}
+.section-box {
+  background: #FFFFFF;
+  border-left: 5pt solid #E67E22;
+  padding: 10pt 15pt;
+  border-radius: 4pt;
+  flex: 1;
+}
+.section-title {
+  color: #E67E22;
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0 0 8pt 0;
+}
+.icon-container {
+  text-align: center;
+  margin-bottom: 8pt;
+}
+.icon-container img {
+  width: 40pt;
+  height: 40pt;
+}
+.app-list {
+  margin: 0;
+  padding-left: 14pt;
+}
+.app-list li {
+  color: #2C3E50;
+  font-size: 10pt;
+  margin: 2pt 0;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>标签打印机 - 便携式</h1>
+</div>
+<div class="content">
+  <div class="section-box">
+    <p class="section-title">半寸热转印</p>
+    <div class="icon-container">
+      <img src="document.png" alt="文档">
+    </div>
+    <ul class="app-list">
+      <li>丝带、线号等标识</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">2寸</p>
+    <div class="icon-container">
+      <img src="retail.png" alt="零售">
+    </div>
+    <ul class="app-list">
+      <li>小价签、分类标签</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">3寸</p>
+    <div class="icon-container">
+      <img src="supermarket.png" alt="超市">
+    </div>
+    <ul class="app-list">
+      <li>商超价签、食品标签</li>
+      <li>货架条码、商品条码</li>
+      <li>快递一联单、小外箱标签</li>
+      <li>入库标签</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

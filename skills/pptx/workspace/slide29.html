@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 5pt 50pt 85pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 9pt;
+  font-weight: bold;
+  margin: 0 0 2pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 0 0 8pt 0;
+}
+.profit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4pt;
+}
+.profit-item {
+  background: #F9FAFB;
+  padding: 5pt 10pt;
+  border-radius: 6pt;
+  flex: 0 0 calc(50% - 2pt);
+}
+.year-label {
+  color: #6B7280;
+  font-size: 11pt;
+  margin: 0 0 3pt 0;
+}
+.profit-value {
+  color: #1E40AF;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0;
+}
+.profit-desc {
+  color: #6B7280;
+  font-size: 10pt;
+  margin: 3pt 0 0 0;
+}
+.highlight-box {
+  background: #1E40AF;
+  padding: 8pt 16pt;
+  border-radius: 6pt;
+  margin-top: 6pt;
+}
+.highlight-label {
+  color: #DBEAFE;
+  font-size: 10pt;
+  margin: 0 0 2pt 0;
+}
+.highlight-value {
+  color: #ffffff;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第四章 / 财务预测</p>
+  <h1>盈利预测</h1>
+  <div class="profit-grid">
+    <div class="profit-item">
+      <p class="year-label">第一年</p>
+      <p class="profit-value">-5%</p>
+      <p class="profit-desc">净利润率(投入期)</p>
+    </div>
+    <div class="profit-item">
+      <p class="year-label">第二年</p>
+      <p class="profit-value">5%</p>
+      <p class="profit-desc">净利润率(盈亏平衡)</p>
+    </div>
+    <div class="profit-item">
+      <p class="year-label">第三年</p>
+      <p class="profit-value">12%</p>
+      <p class="profit-desc">净利润率</p>
+    </div>
+    <div class="profit-item">
+      <p class="year-label">第五年</p>
+      <p class="profit-value">18%</p>
+      <p class="profit-desc">净利润率</p>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <p class="highlight-label">投资回收期</p>
+    <p class="highlight-value">2.5年</p>
+  </div>
+</div>
+<p class="page-number">29</p>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60pt;
+  background: #2E4053;
+  display: flex;
+  align-items: center;
+  padding-left: 40pt;
+}
+.header h1 {
+  color: #FFFFFF;
+  font-size: 22pt;
+  margin: 0;
+  font-weight: bold;
+}
+.content {
+  margin-top: 80pt;
+  margin-left: 60pt;
+  margin-right: 60pt;
+  display: flex;
+  gap: 30pt;
+}
+.speed-note {
+  color: #E67E22;
+  font-size: 14pt;
+  margin: 0 0 15pt 0;
+  font-weight: bold;
+  text-align: center;
+}
+.section-box {
+  background: #FFFFFF;
+  border-left: 5pt solid #E67E22;
+  padding: 15pt 20pt;
+  border-radius: 4pt;
+  flex: 1;
+}
+.section-title {
+  color: #E67E22;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+  text-align: center;
+}
+.icon-container {
+  text-align: center;
+  margin-bottom: 10pt;
+}
+.icon-container img {
+  width: 50pt;
+  height: 50pt;
+}
+.market-list {
+  margin: 0;
+  padding-left: 16pt;
+}
+.market-list li {
+  color: #2C3E50;
+  font-size: 11pt;
+  margin: 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>票据打印机（高速）</h1>
+</div>
+<div class="content">
+  <div class="section-box">
+    <p class="section-title">58mm</p>
+    <div class="icon-container">
+      <img src="retail.png" alt="商超">
+    </div>
+    <ul class="market-list">
+      <li>应用：商超、外卖</li>
+      <li>市场：国内、东南亚</li>
+    </ul>
+  </div>
+  <div class="section-box">
+    <p class="section-title">80mm（切刀）</p>
+    <div class="icon-container">
+      <img src="supermarket.png" alt="商超">
+    </div>
+    <ul class="market-list">
+      <li>应用：商超</li>
+      <li>市场：欧美</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

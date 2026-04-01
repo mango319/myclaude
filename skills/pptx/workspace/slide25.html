@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 40pt 50pt 40pt 40pt;
+  flex: 1;
+  display: flex;
+}
+.left-col {
+  flex: 1;
+  margin-right: 30pt;
+}
+.right-col {
+  width: 260pt;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 30pt;
+  font-weight: bold;
+  margin: 0 0 20pt 0;
+}
+.info-row {
+  margin-bottom: 12pt;
+}
+.info-label {
+  color: #6B7280;
+  font-size: 12pt;
+  margin: 0 0 3pt 0;
+}
+.info-value {
+  color: #1F2937;
+  font-size: 15pt;
+  margin: 0;
+}
+.pain-box {
+  background: #FEF2F2;
+  border-left: 4pt solid #EF4444;
+  padding: 12pt 15pt;
+  border-radius: 4pt;
+  margin-bottom: 10pt;
+}
+.pain-label {
+  color: #EF4444;
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+}
+.pain-text {
+  color: #1F2937;
+  font-size: 14pt;
+  margin: 0;
+}
+.solution-box {
+  background: #ECFDF5;
+  border-left: 4pt solid #10B981;
+  padding: 12pt 15pt;
+  border-radius: 4pt;
+}
+.solution-label {
+  color: #10B981;
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+}
+.solution-text {
+  color: #1F2937;
+  font-size: 14pt;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <div class="left-col">
+    <p class="section-label">第三章 / 场景细分</p>
+    <h1>医疗健康场景</h1>
+    <div class="info-row">
+      <p class="info-label">适用产品</p>
+      <p class="info-value">桌面式、嵌入式</p>
+    </div>
+    <div class="info-row">
+      <p class="info-label">客户需求</p>
+      <p class="info-value">静音、无菌、精准</p>
+    </div>
+    <div class="info-row">
+      <p class="info-label">市场规模</p>
+      <p class="info-value">约10亿元</p>
+    </div>
+  </div>
+  <div class="right-col">
+    <div class="pain-box">
+      <p class="pain-label">痛点</p>
+      <p class="pain-text">噪音要求、记录规范</p>
+    </div>
+    <div class="solution-box">
+      <p class="solution-label">解决方案</p>
+      <p class="solution-text">静音技术、医疗认证</p>
+    </div>
+  </div>
+</div>
+<p class="page-number">25</p>
+</body>
+</html>

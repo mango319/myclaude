@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 35pt 60pt 60pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 13pt;
+  font-weight: bold;
+  margin: 0 0 6pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 28pt;
+  font-weight: bold;
+  margin: 0 0 18pt 0;
+}
+.tech-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10pt;
+}
+.tech-item {
+  background: #DBEAFE;
+  padding: 10pt 16pt;
+  border-radius: 6pt;
+  flex: 0 0 calc(50% - 5pt);
+}
+.tech-text {
+  color: #1E40AF;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第一章 / 市场分析</p>
+  <h1>技术趋势</h1>
+  <div class="tech-grid">
+    <div class="tech-item">
+      <p class="tech-text">打印速度提升(300mm/s+)</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-text">分辨率提高(203/300/600dpi)</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-text">蓝牙/WiFi无线连接</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-text">移动设备兼容性增强</p>
+    </div>
+    <div class="tech-item">
+      <p class="tech-text">节能环保技术</p>
+    </div>
+  </div>
+</div>
+<p class="page-number">10</p>
+</body>
+</html>

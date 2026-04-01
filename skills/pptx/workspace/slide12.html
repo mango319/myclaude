@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 40pt 50pt 40pt 40pt;
+  flex: 1;
+  display: flex;
+}
+.left-col {
+  flex: 1;
+  margin-right: 30pt;
+}
+.right-col {
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 32pt;
+  font-weight: bold;
+  margin: 0 0 25pt 0;
+}
+.box {
+  padding: 20pt;
+  border-radius: 8pt;
+  margin-bottom: 15pt;
+}
+.box-opportunity {
+  background: #ECFDF5;
+  border-left: 4pt solid #10B981;
+}
+.box-threat {
+  background: #FEF2F2;
+  border-left: 4pt solid #EF4444;
+}
+.box-title {
+  color: #10B981;
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+}
+.box-title-threat {
+  color: #EF4444;
+}
+.box-text {
+  color: #1F2937;
+  font-size: 14pt;
+  margin: 0;
+  line-height: 1.4;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <div class="left-col">
+    <p class="section-label">第一章 / 市场分析</p>
+    <h1>机会与威胁总结</h1>
+  </div>
+  <div class="left-col">
+    <div class="box box-opportunity">
+      <p class="box-title">机会</p>
+      <ul>
+        <li style="color: #1F2937; font-size: 15pt; margin-bottom: 8pt;">市场需求持续</li>
+        <li style="color: #1F2937; font-size: 15pt; margin-bottom: 8pt;">政策支持</li>
+        <li style="color: #1F2937; font-size: 15pt; margin: 0;">技术升级</li>
+      </ul>
+    </div>
+  </div>
+  <div class="right-col">
+    <div class="box box-threat">
+      <p class="box-title box-title-threat">威胁</p>
+      <ul>
+        <li style="color: #1F2937; font-size: 15pt; margin-bottom: 8pt;">竞争加剧</li>
+        <li style="color: #1F2937; font-size: 15pt; margin-bottom: 8pt;">成本上升</li>
+        <li style="color: #1F2937; font-size: 15pt; margin: 0;">环保压力</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<p class="page-number">12</p>
+</body>
+</html>

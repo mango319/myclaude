@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 40pt 50pt 40pt 40pt;
+  flex: 1;
+  display: flex;
+}
+.left-col {
+  width: 280pt;
+  margin-right: 30pt;
+}
+.right-col {
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 0 0 10pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 32pt;
+  font-weight: bold;
+  margin: 0 0 30pt 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+.chart-placeholder {
+  background: #F3F4F6;
+  border-radius: 8pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <div class="left-col">
+    <p class="section-label">第一章 / 市场分析</p>
+    <h1>区域市场分析</h1>
+    <ul>
+      <li>亚太地区：42%市场份额，增长最快</li>
+      <li>北美：28%市场份额，成熟稳定</li>
+      <li>欧洲：23%市场份额，高端为主</li>
+      <li>其他地区：7%市场份额</li>
+    </ul>
+  </div>
+  <div class="right-col">
+    <div id="chart" class="placeholder chart-placeholder" style="width: 340pt; height: 280pt;"></div>
+  </div>
+</div>
+<p class="page-number">05</p>
+</body>
+</html>

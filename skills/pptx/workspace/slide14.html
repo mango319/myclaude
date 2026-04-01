@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6pt;
+  background: #1E40AF;
+}
+.side-bar {
+  position: absolute;
+  left: 0;
+  top: 6pt;
+  bottom: 30pt;
+  width: 8pt;
+  background: #3B82F6;
+}
+.content {
+  margin: 30pt 50pt 60pt 40pt;
+  flex: 1;
+}
+.section-label {
+  color: #3B82F6;
+  font-size: 12pt;
+  font-weight: bold;
+  margin: 0 0 5pt 0;
+  letter-spacing: 2pt;
+}
+h1 {
+  color: #1E40AF;
+  font-size: 26pt;
+  font-weight: bold;
+  margin: 0 0 15pt 0;
+}
+.series-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10pt;
+}
+.series-item {
+  background: #F9FAFB;
+  border-left: 5pt solid #1E40AF;
+  padding: 10pt 16pt;
+  border-radius: 4pt;
+  flex: 0 0 calc(50% - 5pt);
+}
+.series-name {
+  color: #1E40AF;
+  font-size: 15pt;
+  font-weight: bold;
+  margin: 0 0 4pt 0;
+}
+.series-scenario {
+  color: #1F2937;
+  font-size: 13pt;
+  margin: 0;
+}
+.page-number {
+  position: absolute;
+  bottom: 15pt;
+  right: 30pt;
+  color: #9CA3AF;
+  font-size: 12pt;
+}
+</style>
+</head>
+<body>
+<div class="header-bar"></div>
+<div class="side-bar"></div>
+<div class="content">
+  <p class="section-label">第二章 / 产品定位</p>
+  <h1>产品系列规划</h1>
+  <div class="series-grid">
+    <div class="series-item">
+      <p class="series-name">便携式系列</p>
+      <p class="series-scenario">移动打印场景</p>
+    </div>
+    <div class="series-item">
+      <p class="series-name">桌面式系列</p>
+      <p class="series-scenario">零售收银场景</p>
+    </div>
+    <div class="series-item">
+      <p class="series-name">嵌入式系列</p>
+      <p class="series-scenario">自助终端场景</p>
+    </div>
+    <div class="series-item">
+      <p class="series-name">工业级系列</p>
+      <p class="series-scenario">物流制造场景</p>
+    </div>
+  </div>
+</div>
+<p class="page-number">14</p>
+</body>
+</html>

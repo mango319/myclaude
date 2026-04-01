@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F4F6F6;
+  font-family: Arial, sans-serif;
+  display: flex;
+}
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 80pt;
+  background: #2E4053;
+  display: flex;
+  align-items: center;
+  padding-left: 50pt;
+}
+.header h1 {
+  color: #FFFFFF;
+  font-size: 36pt;
+  margin: 0;
+  font-weight: bold;
+}
+.content {
+  margin-top: 100pt;
+  margin-left: 80pt;
+  margin-right: 80pt;
+}
+.content h2 {
+  color: #2E4053;
+  font-size: 28pt;
+  margin: 0 0 40pt 0;
+  font-weight: bold;
+}
+.toc-item {
+  margin: 25pt 0;
+  padding-left: 30pt;
+  position: relative;
+}
+.toc-item:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12pt;
+  height: 12pt;
+  background: #E67E22;
+  border-radius: 50%;
+}
+.toc-item p {
+  color: #2C3E50;
+  font-size: 22pt;
+  margin: 0;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>目录</h1>
+</div>
+<div class="content">
+  <h2>四大分类</h2>
+  <div class="toc-item">
+    <p>标签打印机</p>
+  </div>
+  <div class="toc-item">
+    <p>工业条码打印机</p>
+  </div>
+  <div class="toc-item">
+    <p>家用办公打印机</p>
+  </div>
+  <div class="toc-item">
+    <p>票据打印机（高速）</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+[
+  {
+    "content": "安装Python依赖包",
+    "status": "in_progress",
+    "activeForm": "安装Python依赖包"
+  },
+  {
+    "content": "创建测试脚本",
+    "status": "pending",
+    "activeForm": "创建测试脚本"
+  },
+  {
+    "content": "运行MCP服务器测试",
+    "status": "pending",
+    "activeForm": "运行MCP服务器测试"
+  }
+]
