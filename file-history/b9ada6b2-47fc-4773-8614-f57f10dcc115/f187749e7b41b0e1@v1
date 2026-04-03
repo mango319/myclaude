@@ -1,0 +1,190 @@
+// Write Temu data to Feishu spreadsheet after permissions granted
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "YOnrspCSthPDqAtSqPmcQu3fnyp"  // Using the test spreadsheet
+};
+
+const temuData = {
+  products: [
+    ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+    [1, "M832 Pro 2025 BT A4", 25.99, 4.2, 1250, "蓝牙无线;A4支持"],
+    [2, "A281U Portable Wireless", 22.99, 4.0, 890, "无线;便携"],
+    [3, "M832 Base Model", 19.99, 3.9, 645, "双用途;纹身转印"],
+    [4, "2026 New Inkless", 28.99, 4.1, 423, "纹身转印"],
+    [5, "Portable Travel", 24.49, 3.8, 312, "旅行设计"]
+  ],
+  comparison: [
+    ["平台", "平均价格($)", "价格区间"],
+    ["Temu", 24.29, "$19.99 - $28.99"],
+    ["亚马逊", 52.70, "$27.99 - $79.99"],
+    ["价格差异", "-54%", ""]
+  ],
+  features: [
+    ["产品特性", "配备比例", "影响"],
+    ["无线蓝牙连接", "100%", "高"],
+    ["无墨热敏打印", "100%", "高"],
+    ["支持A4尺寸", "100%", "高"],
+    ["可充电电池", "90%", "高"],
+    ["便携设计", "100%", "中"],
+    ["纹身转印", "20%", "低"]
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed: ${data.msg}`);
+  }
+  return data.tenant_access_token;
+}
+
+async function getSpreadsheetInfo(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}`, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  const text = await response.text();
+  console.log('Spreadsheet info:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function appendRows(token, sheetId, rows) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+  const text = await response.text();
+  console.log('Append rows response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function addSheetAndWrite(token) {
+  // Add second sheet
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: "产品特性分析",
+      sheet_type: "grid"
+    })
+  });
+  const data = await response.json();
+  console.log('Add sheet response:', JSON.stringify(data, null, 2));
+
+  if (data.code === 0) {
+    const featureSheetId = data.data.sheet.sheet_id;
+    console.log('Feature sheet created:', featureSheetId);
+
+    // Write feature data
+    const featureRows = [
+      ...temuData.features,
+      [""],
+      ["📈 Temu 市场特点", "", ""],
+      ["• 价格优势", "比亚马逊低 54%", ""],
+      ["• 品牌分布", "白牌/贴牌为主", ""],
+      ["• 热销型号", "M832 Pro 系列", ""]
+    ];
+
+    const result = await appendRows(token, featureSheetId, featureRows);
+    return { sheetId: featureSheetId, success: result.code === 0 };
+  }
+
+  return { sheetId: null, success: false };
+}
+
+async function main() {
+  try {
+    console.log('🚀 重新写入数据到飞书表格...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📊 获取表格信息...');
+    const info = await getSpreadsheetInfo(token);
+
+    let sheetId = "0";
+    if (info.code === 0 && info.data && info.data.spreadsheet) {
+      const sheets = info.data.spreadsheet.sheets || [];
+      if (sheets.length > 0) {
+        sheetId = sheets[0].sheet_id;
+        console.log(`✅ 使用工作表: ${sheetId} (${sheets[0].title || 'Sheet1'})\n`);
+      }
+    }
+
+    // Prepare all data
+    const allRows = [
+      ...temuData.products,
+      [""],
+      ["📊 Temu vs 亚马逊价格对比", "", "", "", "", ""],
+      ...temuData.comparison,
+      [""],
+      ["🌟 关键发现", "", "", "", "", ""],
+      ["• Temu 更便宜", "54%", "", "", "", ""],
+      ["• 热销型号", "M832 Pro 2025", "", "", "", ""],
+      ["• 目标客户", "预算敏感用户", "", "", "", ""],
+      [""],
+      ["💡 购买建议", "", "", "", "", ""],
+      ["预算有限", "选 Temu (M832 Pro $25.99)", "", "", "", ""],
+      ["品质优先", "选亚马逊 (Amazon Basics $28.78)", "", "", "", ""]
+    ];
+
+    console.log('📝 写入产品数据...');
+    const result1 = await appendRows(token, sheetId, allRows);
+
+    if (result1.code === 0) {
+      console.log('✅ 产品数据写入成功!\n');
+    } else {
+      console.log(`⚠️ 产品数据: ${result1.msg}\n`);
+    }
+
+    console.log('📄 创建第二个工作表...');
+    const sheet2Result = await addSheetAndWrite(token);
+
+    console.log('\n' + '='.repeat(80));
+    console.log('✅ 飞书多维表格数据写入完成！');
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 访问链接:');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/YOnrspCSthPDqAtSqPmcQu3fnyp');
+
+    console.log('\n📊 数据统计:');
+    console.log(`   • 产品数据: ${result1.code === 0 ? '✅ 成功' : '❌ 失败'}`);
+    console.log(`   • 特性工作表: ${sheet2Result.success ? '✅ 成功' : '❌ 失败'}`);
+
+    console.log('\n💡 请刷新飞书表格查看数据！');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

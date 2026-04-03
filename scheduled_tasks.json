@@ -1,0 +1,11 @@
+{
+  "tasks": [
+    {
+      "id": "6aaf0172",
+      "cron": "0 9 * * 1-5",
+      "prompt": "执行Git仓库备份任务：\n1. 检查当前git状态\n2. 添加所有更改文件\n3. 创建提交，格式为 \"Auto-backup: YYYY-MM-DD HH:MM\"\n4. 推送到远程仓库 origin master\n5. 记录备份结果到日志文件",
+      "createdAt": 1775178059489,
+      "recurring": true
+    }
+  ]
+}

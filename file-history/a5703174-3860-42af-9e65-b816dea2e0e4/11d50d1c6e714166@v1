@@ -1,0 +1,210 @@
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+// 从之前获取的亚马逊数据中筛选符合条件的产品
+// 价格：40-80美元，月销量>100
+const products = [
+  {
+    "产品ASIN码": "B0FKMF7CFF",
+    "标题": "vretti Thermal Receipt Printer, 80mm Direct Thermal Printer with USB Serial LAN Port",
+    "品牌": "vretti",
+    "价格": 80.74,
+    "月销额": 7589.56,
+    "月销量": 94,
+    "星级": 4.5,
+    "评论数": 113,
+    "发货方式": "AmzFBA",
+    "产品潜力指数": 12.34,
+    "上架时间": "2025-10-25 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0GGHVZCZF",
+    "标题": "Phomemo Shipping Label Printer with Touchable Screen, 4x6 Bluetooth",
+    "品牌": "Phomemo",
+    "价格": 169.98,
+    "月销额": 9348.90,
+    "月销量": 55,
+    "星级": 4.6,
+    "评论数": 3,
+    "发货方式": "FBA",
+    "产品潜力指数": 11.85,
+    "上架时间": "2026-02-25 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0GMH5TLCT",
+    "标题": "Aixiqee Portable Thermal Printer, Wireless & Bluetooth Mini Inkless Printer",
+    "品牌": "Aixiqee",
+    "价格": 89.99,
+    "月销额": 629.91,
+    "月销量": 9,
+    "星级": 4.9,
+    "评论数": 34,
+    "发货方式": "FBA",
+    "产品潜力指数": 11.43,
+    "上架时间": "2026-03-05 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0FMRKJBPY",
+    "标题": "AirPrint Thermal Label Printer, Wireless Wi-Fi Shipping Label Printer 4x6",
+    "品牌": "KNAON",
+    "价格": 127.99,
+    "月销额": 12543.02,
+    "月销量": 98,
+    "星级": 3.9,
+    "评论数": 32,
+    "发货方式": "FBA",
+    "产品潜力指数": 11.24,
+    "上架时间": "2025-10-14 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0FJ28T923",
+    "标题": "YIRIGUI POS Receipt Printer, 80mm Thermal Printer with Auto Cutter",
+    "品牌": "YIRIGUI",
+    "价格": 54.99,
+    "月销额": 6983.73,
+    "月销量": 127,
+    "星级": 3.4,
+    "评论数": 51,
+    "发货方式": "FBA",
+    "产品潜力指数": 11.13,
+    "上架时间": "2025-09-09 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0GCC61MW3",
+    "标题": "Milestone P80E POS Receipt Printer, 80mm USB Thermal with Auto Cutter",
+    "品牌": "TATOPRT",
+    "价格": 59.99,
+    "月销额": 4127.14,
+    "月销量": 86,
+    "星级": 4.3,
+    "评论数": 20,
+    "发货方式": "FBA",
+    "产品潜力指数": 11.08,
+    "上架时间": "2025-12-30 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0FWCLCDGG",
+    "标题": "P1 Pro Ink-Free Thermal Printer, Portable US Letter Size Bluetooth",
+    "品牌": "CamScanner",
+    "价格": 129.99,
+    "月销额": 12349.05,
+    "月销量": 95,
+    "星级": 4.3,
+    "评论数": 28,
+    "发货方式": "AmzFBA",
+    "产品潜力指数": 10.97,
+    "上架时间": "2025-12-03 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0GF1PNN81",
+    "标题": "POLONO Portable Printer, D810 Inkless Bluetooth Thermal Printer",
+    "品牌": "POLONO",
+    "价格": 59.98,
+    "月销额": 5278.24,
+    "月销量": 88,
+    "星级": 4.5,
+    "评论数": 26,
+    "发货方式": "AmzFBA",
+    "产品潜力指数": 10.11,
+    "上架时间": "2026-01-09 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0F7W989YT",
+    "标题": "ORGBRO Bluetooth Thermal Shipping Label Printer, Z1-Plus Wireless 4X6",
+    "品牌": "ORGBRO",
+    "价格": 52.47,
+    "月销额": 5981.58,
+    "月销量": 114,
+    "星级": 4.1,
+    "评论数": 253,
+    "发货方式": "FBA",
+    "产品潜力指数": 9.87,
+    "上架时间": "2025-09-30 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0FLXBSMKJ",
+    "标题": "Labeer Bluetooth Thermal Label Printer, 4x6 Wireless Label Sticker",
+    "品牌": "Labeer",
+    "价格": 56.99,
+    "月销额": 9175.39,
+    "月销量": 161,
+    "星级": 4.2,
+    "评论数": 57,
+    "发货方式": "FBA",
+    "产品潜力指数": 9.69,
+    "上架时间": "2025-11-18 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0F297Y648",
+    "标题": "iDPRT Portable Printer Wireless for Travel, Supports 8.5 x 11 Letter",
+    "品牌": "iDPRT",
+    "价格": 55.99,
+    "月销额": 5431.03,
+    "月销量": 97,
+    "星级": 4.1,
+    "评论数": 102,
+    "发货方式": "FBA",
+    "产品潜力指数": 9.66,
+    "上架时间": "2025-04-17 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0GKYNRMWP",
+    "标题": "TATTMUSE Portable Printers Wireless for Travel, Inkless Thermal",
+    "品牌": "TATTMUSE",
+    "价格": 59.99,
+    "月销额": 39833.36,
+    "月销量": 664,
+    "星级": 4.3,
+    "评论数": 72,
+    "发货方式": "FBA",
+    "产品潜力指数": 9.95,
+    "上架时间": "2026-02-11 00:00:00"
+  },
+  {
+    "产品ASIN码": "B0FD7P1S1D",
+    "标题": "Wireless Tattoo Stencil Printer, Portable Bluetooth Thermal Printer",
+    "品牌": "Sacnahe",
+    "价格": 55.99,
+    "月销额": 60693.16,
+    "月销量": 1084,
+    "星级": 4.6,
+    "评论数": 452,
+    "发货方式": "FBA",
+    "产品潜力指数": 8.15,
+    "上架时间": "2025-06-16 00:00:00"
+  }
+];
+
+const baseToken = "YDBhbylY3aPh7bs3GAXcchZtn7f";
+const tableId = "tblAcpskf76cChax";
+
+// 筛选符合条件的产品：价格40-80，月销量尽可能高
+const filteredProducts = products.filter(p => p.价格 >= 40 && p.价格 <= 80);
+
+console.log(`找到 ${filteredProducts.length} 个符合条件的产品（价格40-80美元）`);
+console.log('产品列表:');
+filteredProducts.forEach((p, i) => {
+  console.log(`${i+1}. ${p.品牌} - $${p.价格} - 月销量:${p.月销量}`);
+});
+
+async function importProducts() {
+  for (let i = 0; i < filteredProducts.length; i++) {
+    const product = filteredProducts[i];
+    const jsonStr = JSON.stringify(product);
+
+    const cmd = `lark-cli base +record-upsert --base-token "${baseToken}" --table-id "${tableId}" --json '${jsonStr}'`;
+
+    try {
+      console.log(`导入产品 ${i + 1}/${filteredProducts.length}: ${product["产品ASIN码"]}`);
+      execSync(cmd, { stdio: 'inherit' });
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } catch (error) {
+      console.error(`导入失败: ${product["产品ASIN码"]}`, error.message);
+    }
+  }
+
+  console.log('所有产品导入完成!');
+}
+
+importProducts();

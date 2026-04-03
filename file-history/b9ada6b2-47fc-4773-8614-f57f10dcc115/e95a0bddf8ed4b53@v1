@@ -1,0 +1,219 @@
+// Feishu API - Write data with correct format
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "ClANs6yIAhzZZ2tHs4Fcwxl9nxg"
+};
+
+const productData = {
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%", description: "通过蓝牙与手机或平板设备无线连接，实现随时随地打印，无需数据线，操作便捷。" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%", description: "采用热敏打印技术，无需墨水、色带或碳粉，节省长期耗材成本，环保且免清理。" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%", description: "体积轻巧紧凑，可轻松放入背包或口袋，适合旅行、办公、学习等移动场景使用。" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%", description: "兼容多种宽度的标签纸（如1.57英寸至3英寸），满足不同用途的标签需求。" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%", description: "提供203 DPI高清打印效果，确保文字和图像清晰锐利，便于扫描识别。" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%", description: "配备大容量锂电池，支持长时间离线使用，一次充电可持续打印数十至上百张。" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%", description: "通过专属APP实现标签设计、模板调用、批量打印及智能识别等功能，提升使用效率。" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%", description: "可与iOS、Android、Windows、Mac、ChromeOS等多种操作系统设备无缝对接，适用范围广。" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%", description: "运行时噪音极低（通常低于60dB），适合图书馆、办公室等安静环境使用。" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%", description: "能自动检测并校准所装标签的宽度与长度，避免错位或浪费，提升打印准确率。" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: 79.99, monthlySales: 7318, feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: 69.99, monthlySales: 7640, feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: 27.99, monthlySales: 9364, feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: 28.78, monthlySales: 16883, feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: 56.74, monthlySales: 7994, feature: "物流标签" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function writeRange(token, range, values) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/values`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRange: {
+        range: range,
+        values: values
+      }
+    })
+  });
+
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON response', raw: text };
+  }
+}
+
+async function writeBatchData(token) {
+  const results = [];
+
+  // Write feature data (Sheet 0)
+  console.log('📊 写入产品特性数据...');
+
+  // Header
+  results.push(await writeRange(token, "产品特性分析!A1", [[
+    "产品特性", "产品数量占比", "月销量占比", "说明"
+  ]]));
+
+  // Data rows
+  for (const f of productData.features) {
+    results.push(await writeRange(token, "产品特性分析!A2:D2", [[
+      f.feature, f.productRatio, f.salesRatio, f.description
+    ]]));
+  }
+
+  // Write hot products data (Sheet 1)
+  console.log('🔥 写入热销产品数据...');
+
+  // Header
+  results.push(await writeRange(token, "热销产品榜单!A1", [[
+    "排名", "品牌", "价格", "月销量", "特点"
+  ]]));
+
+  // Data rows
+  for (const p of productData.hotProducts) {
+    results.push(await writeRange(token, "热销产品榜单!A2:E2", [[
+      p.rank, p.brand, p.price, p.monthlySales, p.feature
+    ]]));
+  }
+
+  // Write summary data
+  console.log('📈 写入汇总数据...');
+  const summaryData = [
+    ["关键词", "A4 Portable Thermal Printer"],
+    ["市场", "Amazon US"],
+    ["数据来源", "Sorftime"],
+    ["更新时间", new Date().toLocaleString('zh-CN')],
+    [""],
+    ["统计指标", "数值"],
+    ["分析产品数", "46"],
+    ["特性数量", productData.features.length],
+    ["热销产品数", productData.hotProducts.length],
+    [""],
+    ["价格区间", "$27.99 - $79.99"],
+    ["总月销量", "49199"],
+    ["平均价格", "$52.70"],
+    ["最高销量", "16883"]
+  ];
+
+  for (const row of summaryData) {
+    results.push(await writeRange(token, "市场数据汇总!A1:B1", [row]));
+  }
+
+  return results;
+}
+
+function displayResults() {
+  console.log('\n' + '='.repeat(70));
+  console.log('✅ 飞书多维表格和仪表盘数据准备完成！');
+  console.log('='.repeat(70));
+
+  console.log('\n📊 数据摘要:');
+  console.log(`   ├─ 产品特性分析: ${productData.features.length} 条`);
+  console.log(`   ├─ 热销产品榜单: ${productData.hotProducts.length} 条`);
+  console.log(`   └─ 数据来源: Sorftime (Amazon US)`);
+
+  console.log('\n💰 价格分析:');
+  const prices = productData.hotProducts.map(p => p.price);
+  const avgPrice = (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2);
+  console.log('   ├─ 价格区间: $27.99 - $79.99');
+  console.log(`   ├─ 平均价格: $${avgPrice}`);
+  console.log('   └─ 总月销量: 49,199');
+
+  console.log('\n🏆 热销品牌 Top 3 (按月销量):');
+  const sorted = [...productData.hotProducts].sort((a, b) => b.monthlySales - a.monthlySales);
+  sorted.slice(0, 3).forEach((p, i) => {
+    console.log(`   ${i + 1}. ${p.brand.padEnd(15)} - $${p.price.toFixed(2)} (${p.monthlySales.toLocaleString()} 月销量)`);
+  });
+
+  console.log('\n🌟 关键产品特性 (按产品数量占比):');
+  const sortedFeatures = [...productData.features].sort((a, b) =>
+    parseFloat(b.productRatio) - parseFloat(a.productRatio)
+  );
+  sortedFeatures.slice(0, 5).forEach((f, i) => {
+    console.log(`   ${i + 1}. ${f.feature.padEnd(20)} - ${f.productRatio} (产品占比)`);
+  });
+
+  console.log('\n🔗 访问飞书多维表格:');
+  console.log(`   https://docs.feishu.cn/sheets/${feishuConfig.spreadsheetToken}`);
+
+  console.log('\n💡 后续操作建议:');
+  console.log('   1. 打开飞书表格，查看已创建的3个工作表');
+  console.log('   2. 使用飞书表格的"图表"功能创建可视化仪表盘');
+  console.log('   3. 可创建饼图展示产品特性占比');
+  console.log('   4. 可创建柱状图展示热销产品对比');
+  console.log('   5. 支持多人协作实时编辑');
+  console.log('   6. 可设置定时刷新数据');
+
+  console.log('\n📈 推荐仪表盘布局:');
+  console.log('   ┌─────────────────────────────────────┐');
+  console.log('   │  A4便携式热敏打印机市场分析仪表盘   │');
+  console.log('   ├──────────────┬──────────────────────┤');
+  console.log('   │ 饼图:        │ 柱状图:              │');
+  console.log('   │ 产品特性占比 │ 热销产品月销量       │');
+  console.log('   ├──────────────┴──────────────────────┤');
+  console.log('   │ 数据卡片:                            │');
+  console.log('   │ [总销量] [平均价格] [产品数]         │');
+  console.log('   └─────────────────────────────────────┘');
+
+  console.log('\n📋 完整数据列表:');
+  console.log('\n   --- 产品特性分析 (前5) ---');
+  productData.features.slice(0, 5).forEach((f, i) => {
+    console.log(`   ${i + 1}. ${f.feature}`);
+    console.log(`      产品占比: ${f.productRatio} | 销量占比: ${f.salesRatio}`);
+  });
+
+  console.log('\n   --- 热销产品榜单 ---');
+  productData.hotProducts.forEach((p, i) => {
+    console.log(`   ${i + 1}. ${p.brand} - $${p.price} - ${p.monthlySales.toLocaleString()} 月销量`);
+  });
+}
+
+async function main() {
+  try {
+    console.log('🚀 开始写入飞书多维表格数据...\n');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    const results = await writeBatchData(token);
+
+    const successCount = results.filter(r => r.code === 0 || !r.code).length;
+    console.log(`\n✅ 数据写入完成 (成功: ${successCount}/${results.length})`);
+
+    // Check for errors
+    const errors = results.filter(r => r.code && r.code !== 0);
+    if (errors.length > 0) {
+      console.log('\n⚠️  部分数据写入可能需要手动操作:');
+      errors.forEach(e => {
+        if (e.msg) console.log(`   - ${e.msg}`);
+      });
+    }
+
+    displayResults();
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

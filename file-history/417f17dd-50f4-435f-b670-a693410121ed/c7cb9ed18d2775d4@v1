@@ -1,0 +1,261 @@
+{
+  "numStartups": 161,
+  "installMethod": "native",
+  "autoUpdates": false,
+  "hasSeenTasksHint": true,
+  "tipsHistory": {
+    "continue": 154,
+    "custom-agents": 155,
+    "custom-commands": 147,
+    "desktop-app": 155,
+    "double-esc-code-restore": 154,
+    "drag-and-drop-images": 153,
+    "enter-to-steer-in-relatime": 147,
+    "frontend-design-plugin": 155,
+    "git-worktrees": 152,
+    "ide-upsell-external-terminal": 9,
+    "image-paste": 152,
+    "install-github-app": 152,
+    "install-slack-app": 152,
+    "memory-command": 161,
+    "mobile-app": 155,
+    "new-user-warmup": 8,
+    "permissions": 153,
+    "plan-mode-for-complex-tasks": 160,
+    "prompt-queue": 6,
+    "rename-conversation": 161,
+    "shift-enter-setup": 12,
+    "shift-tab": 155,
+    "status-line": 152,
+    "stickers-command": 1,
+    "terminal-setup": 159,
+    "theme-command": 147,
+    "todo-list": 152,
+    "ultrathink-keyword": 13,
+    "web-app": 155,
+    "powershell-tool-env": 160,
+    "agent-flag": 160,
+    "feedback-command": 160
+  },
+  "promptQueueUseCount": 849,
+  "cachedStatsigGates": {
+    "tengu_prompt_suggestion": false
+  },
+  "cachedGrowthBookFeatures": {
+    "enhanced_telemetry_beta": false,
+    "tengu-top-of-feed-tip": {
+      "tip": "",
+      "color": ""
+    },
+    "tengu_1p_event_batch_config": {
+      "scheduledDelayMillis": 10000,
+      "maxExportBatchSize": 400,
+      "maxQueueSize": 8192,
+      "path": "/api/event_logging/v2/batch"
+    },
+    "tengu_accept_with_feedback": false,
+    "tengu_ant_attribution_header_new": false,
+    "tengu_attribution_header": true,
+    "tengu_brass_pebble": false,
+    "tengu_c4w_usage_limit_notifications_enabled": true,
+    "tengu_claudeai_mcp_connectors": true,
+    "tengu_code_diff_cli": true,
+    "tengu_disable_bypass_permissions_mode": false,
+    "tengu_event_sampling_config": {},
+    "tengu_keybinding_customization": false,
+    "tengu_log_datadog_events": true,
+    "tengu_log_segment_events": false,
+    "tengu_mcp_tool_search": false,
+    "tengu_permission_explainer": true,
+    "tengu_pid_based_version_locking": true,
+    "tengu_plank_river_frost": "user_intent",
+    "tengu_post_compact_survey": false,
+    "tengu_react_vulnerability_warning": false,
+    "tengu_scratch": false,
+    "tengu_session_memory": false,
+    "tengu_streaming_tool_execution2": false,
+    "tengu_sumi": false,
+    "tengu_thinkback": false,
+    "tengu_tool_pear": false,
+    "tengu_tool_search_unsupported_models": [
+      "haiku"
+    ],
+    "tengu_bash_haiku_prefetch": true
+  },
+  "autoUpdatesProtectedForNative": true,
+  "cachedChromeExtensionInstalled": false,
+  "changelogLastFetched": 1775177425973,
+  "firstStartTime": "2026-01-12T03:03:59.039Z",
+  "githubRepoPaths": {
+    "mango319/-antigravity-backup": [
+      "C:\\Users\\Administrator",
+      "C:\\Users\\Administrator\\Desktop"
+    ]
+  },
+  "hasAvailableSubscription": false,
+  "hasCompletedOnboarding": true,
+  "hasUsedBackslashReturn": true,
+  "lastOnboardingVersion": "2.1.15",
+  "lastReleaseNotesSeen": "2.1.91",
+  "mcpServers": {
+    "pencil": {
+      "args": [
+        "--app",
+        "desktop"
+      ],
+      "command": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Pencil\\resources\\app.asar.unpacked\\out\\mcp-server-windows-x64.exe",
+      "env": {},
+      "type": "stdio"
+    },
+    "sorftime": {
+      "type": "http",
+      "url": "https://mcp.sorftime.com?key=ymdqwm1hzjcrbml4tgp2m0f6mxjtqt09"
+    }
+  },
+  "metricsStatusCache": {
+    "enabled": false,
+    "timestamp": 1774664612760
+  },
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": true,
+  "opus45MigrationComplete": true,
+  "opusProMigrationComplete": true,
+  "projects": {
+    "C:/Users/Administrator": {
+      "allowedTools": [],
+      "disabledMcpjsonServers": [],
+      "enabledMcpjsonServers": [],
+      "exampleFiles": [],
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "hasTrustDialogAccepted": true,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastCost": 0,
+      "lastDuration": 27366,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastModelUsage": {},
+      "lastSessionId": "6d48e1bb-3a27-4f77-8214-32b6e6f8470f",
+      "lastToolDuration": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "projectOnboardingSeenCount": 4,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageName": null,
+        "version": null,
+        "packageManager": null
+      }
+    },
+    "C:/Users/Administrator/Documents/trae_projects": {
+      "allowedTools": [],
+      "disabledMcpjsonServers": [],
+      "enabledMcpjsonServers": [],
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "hasTrustDialogAccepted": true,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "projectOnboardingSeenCount": 1,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageManager": null,
+        "packageName": null,
+        "version": null
+      }
+    },
+    "C:/Users/Administrator/Documents/trae_projects/test": {
+      "allowedTools": [],
+      "disabledMcpjsonServers": [],
+      "enabledMcpjsonServers": [],
+      "exampleFiles": [],
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "hasTrustDialogAccepted": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "projectOnboardingSeenCount": 0,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageManager": null,
+        "packageName": null,
+        "version": null
+      }
+    },
+    "C:/Users/Administrator/Documents/trae_projects/trae-solo": {
+      "allowedTools": [],
+      "disabledMcpjsonServers": [],
+      "enabledMcpjsonServers": [],
+      "exampleFiles": [],
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "hasTrustDialogAccepted": false,
+      "lastAPIDuration": 0,
+      "lastAPIDurationWithoutRetries": 0,
+      "lastCost": 0,
+      "lastDuration": 378161,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastModelUsage": {},
+      "lastSessionId": "fd95e15b-62c3-4cd4-80a0-d37625027f92",
+      "lastToolDuration": 0,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalInputTokens": 0,
+      "lastTotalOutputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "projectOnboardingSeenCount": 0,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageManager": null,
+        "packageName": null,
+        "version": null
+      }
+    }
+  },
+  "skillUsage": {
+    "doc-coauthoring": {
+      "lastUsedAt": 1773978430731,
+      "usageCount": 1
+    },
+    "docx": {
+      "lastUsedAt": 1774853464381,
+      "usageCount": 17
+    },
+    "ima-skill": {
+      "lastUsedAt": 1774580503221,
+      "usageCount": 1
+    },
+    "pptx": {
+      "lastUsedAt": 1773883296125,
+      "usageCount": 2
+    },
+    "xlsx": {
+      "lastUsedAt": 1774511338881,
+      "usageCount": 4
+    },
+    "lark-base": {
+      "usageCount": 1,
+      "lastUsedAt": 1775176814047
+    }
+  },
+  "sonnet1m45MigrationComplete": true,
+  "sonnet45MigrationComplete": true,
+  "subscriptionNoticeCount": 0,
+  "thinkingMigrationComplete": true,
+  "userID": "798c3192d029a2df6e23a85bde5ba0f74d4b1d8b7fa4a82395567263cbebe8f3",
+  "migrationVersion": 11,
+  "opus1mMergeNoticeSeenCount": 2
+}

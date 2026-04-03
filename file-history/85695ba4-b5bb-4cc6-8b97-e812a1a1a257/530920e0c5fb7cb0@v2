@@ -1,0 +1,12 @@
+# Temporary files
+tmpclaude-*
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Submodule git directories
+test/.git
+trae-solo/.git
+*/.git

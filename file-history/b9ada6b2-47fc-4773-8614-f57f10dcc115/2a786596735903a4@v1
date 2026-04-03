@@ -1,0 +1,218 @@
+// Feishu API - Check permissions and try alternative approach
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn"
+};
+
+const productData = {
+  keyword: "A4 Portable Thermal Printer",
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: 79.99, monthlySales: 7318, feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: 69.99, monthlySales: 7640, feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: 27.99, monthlySales: 9364, feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: 28.78, monthlySales: 16883, feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: 56.74, monthlySales: 7994, feature: "物流标签" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function sendMessageToFeishu(token, content) {
+  // Try to send a message to a user or bot
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/bot/v3/info`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return await response.json();
+}
+
+async function createDocument(token) {
+  // Try to create a document instead
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/docx/v1/documents`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: `Amazon产品分析-${productData.keyword}`,
+      folder_token: ""
+    })
+  });
+  return await response.json();
+}
+
+function generateHTMLReport() {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>A4便携式热敏打印机市场分析报告</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; border-bottom: 3px solid #0066cc; padding-bottom: 15px; }
+        h2 { color: #0066cc; margin-top: 30px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #0066cc; color: white; padding: 12px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f5f5f5; }
+        .summary { display: flex; justify-content: space-around; margin: 30px 0; }
+        .summary-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; min-width: 150px; }
+        .summary-card h3 { margin: 0; font-size: 32px; }
+        .summary-card p { margin: 5px 0 0; opacity: 0.9; }
+        .badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; margin-left: 10px; }
+        .badge-gold { background: #ffd700; color: #333; }
+        .badge-silver { background: #c0c0c0; color: #333; }
+        .badge-bronze { background: #cd7f32; color: white; }
+        .chart-placeholder { background: #f9f9f9; border: 2px dashed #ddd; padding: 40px; text-align: center; margin: 20px 0; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 A4便携式热敏打印机市场分析报告</h1>
+        <p style="text-align: center; color: #666;">数据来源: Sorftime | 市场: Amazon US | 更新时间: ${new Date().toLocaleString('zh-CN')}</p>
+
+        <div class="summary">
+            <div class="summary-card">
+                <h3>${productData.hotProducts.reduce((a, b) => a + b.monthlySales, 0).toLocaleString()}</h3>
+                <p>总月销量</p>
+            </div>
+            <div class="summary-card">
+                <h3>$${(productData.hotProducts.reduce((a, b) => a + b.price, 0) / productData.hotProducts.length).toFixed(2)}</h3>
+                <p>平均价格</p>
+            </div>
+            <div class="summary-card">
+                <h3>${productData.features.length}</h3>
+                <p>产品特性数</p>
+            </div>
+        </div>
+
+        <h2>🏆 热销产品榜单 Top 5</h2>
+        <table>
+            <tr>
+                <th>排名</th>
+                <th>品牌</th>
+                <th>价格</th>
+                <th>月销量</th>
+                <th>特点</th>
+            </tr>
+            ${productData.hotProducts.map((p, i) => `
+            <tr>
+                <td>${i === 0 ? '<span class="badge badge-gold">🥇</span>' : i === 1 ? '<span class="badge badge-silver">🥈</span>' : i === 2 ? '<span class="badge badge-bronze">🥉</span>' : (i + 1)}</td>
+                <td><strong>${p.brand}</strong></td>
+                <td>$${p.price.toFixed(2)}</td>
+                <td>${p.monthlySales.toLocaleString()}</td>
+                <td>${p.feature}</td>
+            </tr>`).join('')}
+        </table>
+
+        <h2>🌟 产品特性分析 (Top 10)</h2>
+        <table>
+            <tr>
+                <th>产品特性</th>
+                <th>产品数量占比</th>
+                <th>月销量占比</th>
+            </tr>
+            ${productData.features.map(f => `
+            <tr>
+                <td>${f.feature}</td>
+                <td>
+                    <div style="background: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div style="background: #0066cc; width: ${parseFloat(f.productRatio)}%; padding: 5px; color: white; text-align: center; font-size: 12px;">
+                            ${f.productRatio}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div style="background: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div style="background: #28a745; width: ${parseFloat(f.salesRatio)}%; padding: 5px; color: white; text-align: center; font-size: 12px;">
+                            ${f.salesRatio}
+                        </div>
+                    </div>
+                </td>
+            </tr>`).join('')}
+        </table>
+
+        <h2>📈 市场洞察</h2>
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">💡 关键发现</h3>
+            <ul style="line-height: 1.8;">
+                <li><strong>价格区间:</strong> $27.99 - $79.99，适合中端市场定位</li>
+                <li><strong>最受欢迎特性:</strong> 无线蓝牙连接 (95.65%产品配备)</li>
+                <li><strong>销量冠军:</strong> Amazon Basics 凭性价比优势领先 (16,883月销量)</li>
+                <li><strong>市场趋势:</strong> 便携、无线、无墨是主流方向</li>
+            </ul>
+        </div>
+
+        <p style="text-align: center; color: #999; margin-top: 40px;">本报告由 Amazon Product Search 技能自动生成</p>
+    </div>
+</body>
+</html>
+  `;
+}
+
+async function main() {
+  try {
+    console.log('🔍 检查飞书应用权限...\n');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    // Check bot info
+    console.log('🤖 获取机器人信息...');
+    const botInfo = await sendMessageToFeishu(token);
+    console.log('Bot info:', JSON.stringify(botInfo, null, 2));
+
+    // Try creating document
+    console.log('\n📄 尝试创建飞书文档...');
+    const docResult = await createDocument(token);
+    console.log('Document result:', JSON.stringify(docResult, null, 2));
+
+    // Generate HTML report
+    console.log('\n📊 生成本地HTML报告...');
+    const htmlPath = 'C:\\Users\\Administrator\\Desktop\\Amazon产品分析报告.html';
+    const fs = require('fs');
+    fs.writeFileSync(htmlPath, generateHTMLReport(), 'utf8');
+    console.log('✅ HTML报告已保存到:', htmlPath);
+
+    console.log('\n' + '='.repeat(70));
+    console.log('✅ 分析完成！');
+    console.log('='.repeat(70));
+
+    console.log('\n📄 报告文件:');
+    console.log(`   ${htmlPath}`);
+    console.log('\n💡 双击HTML文件在浏览器中打开查看完整报告');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

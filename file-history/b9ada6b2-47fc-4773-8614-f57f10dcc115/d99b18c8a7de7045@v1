@@ -1,0 +1,201 @@
+// Write using correct batchUpdate API format
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn"
+};
+
+const temuData = [
+  ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+  [1, "M832 Pro 2025 BT A4", 25.99, 4.2, 1250, "蓝牙无线;A4支持"],
+  [2, "A281U Portable Wireless", 22.99, 4.0, 890, "无线;便携"],
+  [3, "M832 Base Model", 19.99, 3.9, 645, "双用途;纹身转印"],
+  [4, "2026 New Inkless", 28.99, 4.1, 423, "纹身转印"],
+  [5, "Portable Travel", 24.49, 3.8, 312, "旅行设计"],
+  [""],
+  ["📊 Temu vs 亚马逊", "", "", "", "", ""],
+  ["平台", "平均价格($)", "", "", "", ""],
+  ["Temu", 24.29, "", "", "", ""],
+  ["亚马逊", 52.70, "", "", "", ""],
+  ["价格差异", "-54%", "", "", "", ""]
+];
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function batchUpdateValues(token, spreadsheetToken, updates) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}/values:batchUpdate`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRanges: updates
+    })
+  });
+  const text = await response.text();
+  console.log('Batch update response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function createAndPopulate() {
+  const token = await getTenantAccessToken();
+
+  // Create new spreadsheet
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: `Temu热敏打印机-${new Date().toISOString().slice(0,10)}`
+    })
+  });
+  const data = await response.json();
+
+  if (data.code !== 0) {
+    throw new Error(data.msg);
+  }
+
+  const spreadsheetToken = data.data.spreadsheet.spreadsheet_token;
+  const url = data.data.spreadsheet.url;
+  const sheetId = data.data.spreadsheet.sheets[0].sheet_id;
+
+  console.log('✅ 表格创建成功!');
+  console.log('Token:', spreadsheetToken);
+  console.log('Sheet ID:', sheetId);
+  console.log('URL:', url);
+
+  // Try to write using the sheet_id directly
+  console.log('\n📝 尝试方法1: 使用 appendRows API...');
+  try {
+    const appendResponse = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}/sheets/${sheetId}/rows`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        rows: temuData.map(row => ({
+          values: row.map(v => ({ v: v }))
+        }))
+      })
+    });
+    const appendText = await appendResponse.text();
+    console.log('Append result:', appendText);
+    if (appendText.includes('"code":0')) {
+      console.log('✅ 方法1成功!');
+      return { success: true, url };
+    }
+  } catch (e) {
+    console.log('方法1失败:', e.message);
+  }
+
+  console.log('\n📝 尝试方法2: 使用 batchUpdate API...');
+  try {
+    const updates = temuData.map((row, i) => ({
+      range: `Sheet1!A${i + 1}`,
+      values: [row]
+    }));
+    const batchResult = await batchUpdateValues(token, spreadsheetToken, updates);
+    if (batchResult.code === 0) {
+      console.log('✅ 方法2成功!');
+      return { success: true, url };
+    }
+  } catch (e) {
+    console.log('方法2失败:', e.message);
+  }
+
+  console.log('\n📝 尝试方法3: 逐个单元格写入...');
+  for (let r = 0; r < Math.min(5, temuData.length); r++) {
+    for (let c = 0; c < temuData[r].length; c++) {
+      try {
+        const cellResponse = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}/values`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            valueRange: {
+              range: `Sheet1!${String.fromCharCode(65 + c)}${r + 1}`,
+              values: [[temuData[r][c]]]
+            }
+          })
+        });
+        const cellText = await cellResponse.text();
+        if (cellText.includes('"code":0')) {
+          console.log(`  ✅ Cell ${String.fromCharCode(65 + c)}${r + 1} written`);
+        }
+      } catch (e) {
+        // Ignore individual cell failures
+      }
+    }
+  }
+
+  return { success: false, url, error: 'All methods failed' };
+}
+
+function displayData() {
+  console.log('\n' + '='.repeat(80));
+  console.log('📋 手动复制数据 (如自动写入失败)');
+  console.log('='.repeat(80));
+
+  console.log('\n请复制以下数据到飞书表格:\n');
+  console.log('排名\t型号\t价格\t评分\t评价数\t特点');
+  temuData.forEach((row, i) => {
+    if (i > 0 && row[0] !== "") {
+      console.log(row.join('\t'));
+    }
+  });
+
+  console.log('\n\n' + '='.repeat(80));
+}
+
+async function main() {
+  try {
+    console.log('🚀 尝试多种方法写入飞书表格...\n');
+
+    const result = await createAndPopulate();
+
+    console.log('\n' + '='.repeat(80));
+    if (result.success) {
+      console.log('✅ 数据写入成功！');
+    } else {
+      console.log('⚠️ 自动写入遇到问题');
+    }
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 访问链接:');
+    console.log(`   ${result.url}`);
+
+    console.log('\n💡 请刷新飞书表格查看数据！');
+    console.log('   如数据未显示，请手动复制上方的数据');
+
+    if (!result.success) {
+      displayData();
+    }
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    displayData();
+  }
+}
+
+main();

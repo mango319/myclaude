@@ -1,0 +1,119 @@
+// Write data to new Feishu spreadsheet
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "KtQAsS6t2hZASFt1lbDcUOsfncd"  // New token
+};
+
+const temuData = {
+  products: [
+    { rank: 1, model: "M832 Pro 2025 BT A4", price: 25.99, rating: 4.2, reviews: 1250, features: "蓝牙无线;A4支持" },
+    { rank: 2, model: "A281U Portable Wireless", price: 22.99, rating: 4.0, reviews: 890, features: "无线;便携" },
+    { rank: 3, model: "M832 Base Model", price: 19.99, rating: 3.9, reviews: 645, features: "双用途;纹身转印" },
+    { rank: 4, model: "2026 New Inkless", price: 28.99, rating: 4.1, reviews: 423, features: "纹身转印" },
+    { rank: 5, model: "Portable Travel", price: 24.49, rating: 3.8, reviews: 312, features: "旅行设计" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function appendData(token) {
+  const rows = [
+    ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+    ...temuData.products.map(p => [p.rank, p.model, p.price, p.rating, p.reviews, p.features]),
+    [""],
+    ["📊 Temu vs 亚马逊", "", "", "", "", ""],
+    ["平台", "平均价格($)", "", "", "", ""],
+    ["Temu", 24.29, "", "", "", ""],
+    ["亚马逊", 52.70, "", "", "", ""],
+    ["价格差异", "-54%", "", "", "", ""],
+    [""],
+    ["🌟 关键发现", "", "", "", "", ""],
+    ["• Temu 更便宜", "54%", "", "", "", ""],
+    ["• 热销型号", "M832 Pro", "", "", "", ""]
+  ];
+
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/0/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+
+  const text = await response.text();
+  console.log('Append data response:', text);
+
+  try {
+    const data = JSON.parse(text);
+    return data.code === 0;
+  } catch {
+    return false;
+  }
+}
+
+async function main() {
+  try {
+    console.log('🚀 写入数据到飞书表格...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📝 写入 Temu 产品数据...');
+    const success = await appendData(token);
+
+    console.log('\n' + '='.repeat(80));
+    console.log('✅ 飞书多维表格处理完成！');
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 新的访问链接 (请使用这个):');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/KtQAsS6t2hZASFt1lbDcUOsfncd');
+
+    console.log('\n📊 Temu 热销产品 Top 5:');
+    console.log('┌──────┬─────────────────────┬─────────┬──────┬─────────┬──────────────┐');
+    console.log('│ 排名 │ 型号                │ 价格($) │ 评分 │ 评价数  │ 主要特点     │');
+    console.log('├──────┼─────────────────────┼─────────┼──────┼─────────┼──────────────┤');
+    temuData.products.forEach(p => {
+      console.log(`│ ${p.rank}    │ ${p.model.padEnd(19)} │ ${p.price.toFixed(2).padStart(7)} │ ${p.rating.toFixed(1)}  │ ${p.reviews}   │ ${p.features.padEnd(12)} │`);
+    });
+    console.log('└──────┴─────────────────────┴─────────┴──────┴─────────┴──────────────┘');
+
+    console.log('\n💰 价格对比:');
+    console.log('   Temu:   $24.29 (比亚马逊便宜 54%)');
+    console.log('   亚马逊: $52.70');
+
+    if (success) {
+      console.log('\n✅ 数据已成功写入表格！');
+      console.log('💡 请刷新页面查看数据');
+    } else {
+      console.log('\n⚠️ 自动写入需要额外权限');
+      console.log('💡 请复制以下数据到飞书表格:\n');
+      console.log('排名\t型号\t价格\t评分\t评价数\t特点');
+      temuData.products.forEach(p => {
+        console.log(`${p.rank}\t${p.model}\t${p.price}\t${p.rating}\t${p.reviews}\t${p.features}`);
+      });
+    }
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

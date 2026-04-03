@@ -1,0 +1,6 @@
+# VS Code Extensions (可从市场重新安装)
+extensions/
+
+# 只备份配置文件
+!argv.json
+!extensions/extensions.json

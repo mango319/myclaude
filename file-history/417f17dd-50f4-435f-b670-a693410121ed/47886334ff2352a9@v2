@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "glm-5": {
+      "command": "python",
+      "args": [
+        "C:\\Users\\Administrator\\glm-4.7-mcp-server\\server.py"
+      ],
+      "env": {
+        "ZHIPU_API_KEY": "cdf75058c83940e79538694d0ddb126d.SdsnAwPtqwv2pxEg"
+      }
+    }
+  }
+}

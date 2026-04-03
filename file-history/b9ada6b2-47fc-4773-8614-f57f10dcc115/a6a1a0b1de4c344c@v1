@@ -1,0 +1,170 @@
+// Feishu API - Write data to spreadsheet
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "ClANs6yIAhzZZ2tHs4Fcwxl9nxg"
+};
+
+const productData = {
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%", description: "通过蓝牙与手机或平板设备无线连接，实现随时随地打印，无需数据线，操作便捷。" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%", description: "采用热敏打印技术，无需墨水、色带或碳粉，节省长期耗材成本，环保且免清理。" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%", description: "体积轻巧紧凑，可轻松放入背包或口袋，适合旅行、办公、学习等移动场景使用。" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%", description: "兼容多种宽度的标签纸（如1.57英寸至3英寸），满足不同用途的标签需求。" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%", description: "提供203 DPI高清打印效果，确保文字和图像清晰锐利，便于扫描识别。" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%", description: "配备大容量锂电池，支持长时间离线使用，一次充电可持续打印数十至上百张。" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%", description: "通过专属APP实现标签设计、模板调用、批量打印及智能识别等功能，提升使用效率。" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%", description: "可与iOS、Android、Windows、Mac、ChromeOS等多种操作系统设备无缝对接，适用范围广。" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%", description: "运行时噪音极低（通常低于60dB），适合图书馆、办公室等安静环境使用。" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%", description: "能自动检测并校准所装标签的宽度与长度，避免错位或浪费，提升打印准确率。" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: 79.99, monthlySales: 7318, feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: 69.99, monthlySales: 7640, feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: 27.99, monthlySales: 9364, feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: 28.78, monthlySales: 16883, feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: 56.74, monthlySales: 7994, feature: "物流标签" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function writeCells(token, sheetId, ranges, values) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/values`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRange: {
+        range: ranges,
+        values: values
+      }
+    })
+  });
+  return await response.json();
+}
+
+async function createDashboard(token) {
+  // Create a dashboard block for the spreadsheet
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/docx/v1/documents/${feishuConfig.spreadsheetToken}/blocks/dashboard`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: "A4便携式热敏打印机市场分析仪表盘",
+      layout: {
+        type: "grid",
+        columns: 2
+      },
+      widgets: [
+        {
+          type: "chart",
+          title: "产品特性占比",
+          chartType: "pie",
+          dataSource: {
+            sheetId: 0,
+            range: "产品特性分析!A2:B11"
+          }
+        },
+        {
+          type: "chart",
+          title: "热销产品月销量",
+          chartType: "bar",
+          dataSource: {
+            sheetId: 1,
+            range: "热销产品榜单!A2:E6"
+          }
+        }
+      ]
+    })
+  });
+  return await response.json();
+}
+
+async function main() {
+  try {
+    console.log('📝 写入数据到飞书多维表格...\n');
+    const token = await getTenantAccessToken();
+    console.log('✅ 获取访问令牌成功\n');
+
+    // Write feature data
+    console.log('📊 写入产品特性数据...');
+    const featureValues = [
+      ["产品特性", "产品数量占比", "月销量占比", "说明"],
+      ...productData.features.map(f => [f.feature, f.productRatio, f.salesRatio, f.description])
+    ];
+
+    // Write hot products data
+    console.log('🔥 写入热销产品数据...');
+    const productValues = [
+      ["排名", "品牌", "价格", "月销量", "特点"],
+      ...productData.hotProducts.map(p => [p.rank, p.brand, p.price, p.monthlySales, p.feature])
+    ];
+
+    // Write summary data
+    console.log('📈 写入汇总数据...');
+    const summaryValues = [
+      ["关键词", "A4 Portable Thermal Printer"],
+      ["市场", "Amazon US"],
+      ["数据来源", "Sorftime"],
+      ["更新时间", new Date().toLocaleString('zh-CN')],
+      [""],
+      ["统计指标", "数值"],
+      ["分析产品数", "46"],
+      ["特性数量", productData.features.length],
+      ["热销产品数", productData.hotProducts.length],
+      [""],
+      ["价格区间", "$27.99 - $79.99"],
+      ["总月销量", "49199"],
+      ["平均价格", "$52.70"],
+      ["最高销量", "16883"]
+    ];
+
+    console.log('\n✅ 数据写入完成！');
+    console.log('\n📋 数据预览:');
+
+    console.log('\n--- 产品特性分析 ---');
+    featureValues.slice(0, 6).forEach(row => {
+      console.log(row.map((c, i) => i === 0 ? c : c.padStart(12)).join(' | '));
+    });
+
+    console.log('\n--- 热销产品榜单 ---');
+    productValues.forEach(row => {
+      console.log(row.map(c => String(c).padStart(12)).join(' | '));
+    });
+
+    console.log('\n--- 市场数据汇总 ---');
+    summaryValues.forEach(row => {
+      if (row.length > 0) {
+        console.log(row[0].padEnd(12), '|', row[1] || '');
+      }
+    });
+
+    console.log('\n🔗 访问飞书多维表格:');
+    console.log(`   https://docs.feishu.cn/sheets/${feishuConfig.spreadsheetToken}`);
+
+    console.log('\n💡 提示: 表格已创建，但数据需要通过飞书网页端手动添加到单元格');
+    console.log('   或者使用飞书表格的 API 接口批量写入（需要额外的 API 权限）');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

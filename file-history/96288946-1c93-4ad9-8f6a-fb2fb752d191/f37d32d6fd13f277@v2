@@ -1,0 +1,17 @@
+﻿{
+  "mcpServers": {
+    "sorftime": {
+      "type": "http",
+      "url": "https://mcp.sorftime.com?key=ymdqwm1hzjcrbml4tgp2m0f6mxjtqt09"
+    },
+    "glm-5": {
+      "command": "python",
+      "args": [
+        "C:\\Users\\Administrator\\glm-4.7-mcp-server\\server.py"
+      ],
+      "env": {
+        "ZHIPU_API_KEY": "cdf75058c83940e79538694d0ddb126d.SdsnAwPtqwv2pxEg"
+      }
+    }
+  }
+}

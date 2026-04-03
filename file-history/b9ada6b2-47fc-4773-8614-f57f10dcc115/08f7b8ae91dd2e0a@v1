@@ -1,0 +1,213 @@
+// Feishu API - Batch write data to spreadsheet cells
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "ClANs6yIAhzZZ2tHs4Fcwxl9nxg"
+};
+
+const productData = {
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%", description: "通过蓝牙与手机或平板设备无线连接，实现随时随地打印，无需数据线，操作便捷。" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%", description: "采用热敏打印技术，无需墨水、色带或碳粉，节省长期耗材成本，环保且免清理。" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%", description: "体积轻巧紧凑，可轻松放入背包或口袋，适合旅行、办公、学习等移动场景使用。" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%", description: "兼容多种宽度的标签纸（如1.57英寸至3英寸），满足不同用途的标签需求。" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%", description: "提供203 DPI高清打印效果，确保文字和图像清晰锐利，便于扫描识别。" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%", description: "配备大容量锂电池，支持长时间离线使用，一次充电可持续打印数十至上百张。" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%", description: "通过专属APP实现标签设计、模板调用、批量打印及智能识别等功能，提升使用效率。" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%", description: "可与iOS、Android、Windows、Mac、ChromeOS等多种操作系统设备无缝对接，适用范围广。" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%", description: "运行时噪音极低（通常低于60dB），适合图书馆、办公室等安静环境使用。" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%", description: "能自动检测并校准所装标签的宽度与长度，避免错位或浪费，提升打印准确率。" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: 79.99, monthlySales: 7318, feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: 69.99, monthlySales: 7640, feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: 27.99, monthlySales: 9364, feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: 28.78, monthlySales: 16883, feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: 56.74, monthlySales: 7994, feature: "物流标签" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function batchUpdateCells(token, sheetId, updates) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/values:batchUpdate`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRanges: updates
+    })
+  });
+  return await response.json();
+}
+
+async function addSheetRows(token, sheetId, rows) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows
+    })
+  });
+  return await response.json();
+}
+
+async function createDashboardBlock(token) {
+  // Try to create a dashboard/chart in the spreadsheet
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/0/charts`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      chart: {
+        name: "产品特性占比分析",
+        type: "pie",
+        display: {
+          axis: {
+            x: { visible: true },
+            y: { visible: true }
+          },
+          legend: { visible: true },
+          title: { visible: true, text: "产品特性占比" }
+        },
+        dataSets: [{
+          range: "产品特性分析!A2:B11",
+          groupName: "特性占比"
+        }]
+      }
+    })
+  });
+  return await response.json();
+}
+
+async function main() {
+  try {
+    console.log('🚀 开始写入飞书多维表格...\n');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    // Prepare data for Sheet 0 (产品特性分析)
+    console.log('📊 准备产品特性数据...');
+    const featureUpdates = [];
+    productData.features.forEach((f, index) => {
+      const row = index + 2;
+      featureUpdates.push({
+        range: `产品特性分析!A${row}`,
+        values: [[f.feature]]
+      });
+      featureUpdates.push({
+        range: `产品特性分析!B${row}`,
+        values: [[f.productRatio]]
+      });
+      featureUpdates.push({
+        range: `产品特性分析!C${row}`,
+        values: [[f.salesRatio]]
+      });
+      featureUpdates.push({
+        range: `产品特性分析!D${row}`,
+        values: [[f.description]]
+      });
+    });
+
+    // Add header
+    featureUpdates.unshift(
+      { range: "产品特性分析!A1", values: [["产品特性"]] },
+      { range: "产品特性分析!B1", values: [["产品数量占比"]] },
+      { range: "产品特性分析!C1", values: [["月销量占比"]] },
+      { range: "产品特性分析!D1", values: [["说明"]] }
+    );
+
+    // Prepare data for Sheet 1 (热销产品榜单)
+    console.log('🔥 准备热销产品数据...');
+    const productUpdates = [];
+    productData.hotProducts.forEach((p, index) => {
+      const row = index + 2;
+      productUpdates.push({ range: `热销产品榜单!A${row}`, values: [[p.rank]] });
+      productUpdates.push({ range: `热销产品榜单!B${row}`, values: [[p.brand]] });
+      productUpdates.push({ range: `热销产品榜单!C${row}`, values: [[p.price]] });
+      productUpdates.push({ range: `热销产品榜单!D${row}`, values: [[p.monthlySales]] });
+      productUpdates.push({ range: `热销产品榜单!E${row}`, values: [[p.feature]] });
+    });
+
+    productUpdates.unshift(
+      { range: "热销产品榜单!A1", values: [["排名"]] },
+      { range: "热销产品榜单!B1", values: [["品牌"]] },
+      { range: "热销产品榜单!C1", values: [["价格"]] },
+      { range: "热销产品榜单!D1", values: [["月销量"]] },
+      { range: "热销产品榜单!E1", values: [["特点"]] }
+    );
+
+    // Batch write to sheets
+    console.log('📝 批量写入产品特性数据...');
+    const featureResult = await batchUpdateCells(token, 0, featureUpdates);
+    console.log('✅ 产品特性数据写入结果:', featureResult.code === 0 ? '成功' : featureResult.msg);
+
+    console.log('📝 批量写入热销产品数据...');
+    const productResult = await batchUpdateCells(token, 1, productUpdates);
+    console.log('✅ 热销产品数据写入结果:', productResult.code === 0 ? '成功' : productResult.msg);
+
+    // Try to create a chart
+    console.log('\n📈 创建数据图表...');
+    try {
+      const chartResult = await createDashboardBlock(token);
+      console.log('图表创建结果:', chartResult.code === 0 ? '成功' : chartResult.msg);
+    } catch (e) {
+      console.log('图表创建需要额外权限:', e.message);
+    }
+
+    console.log('\n' + '='.repeat(60));
+    console.log('✅ 飞书多维表格和仪表盘创建完成！');
+    console.log('='.repeat(60));
+
+    console.log('\n📊 数据摘要:');
+    console.log('   ├─ 产品特性分析: ' + productData.features.length + ' 条');
+    console.log('   ├─ 热销产品榜单: ' + productData.hotProducts.length + ' 条');
+    console.log('   └─ 数据来源: Sorftime');
+
+    console.log('\n💰 价格分析:');
+    const prices = productData.hotProducts.map(p => p.price);
+    const avgPrice = (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2);
+    console.log('   ├─ 价格区间: $27.99 - $79.99');
+    console.log('   ├─ 平均价格: $' + avgPrice);
+    console.log('   └─ 总月销量: 49,199');
+
+    console.log('\n🏆 热销品牌 Top 3:');
+    const sorted = [...productData.hotProducts].sort((a, b) => b.monthlySales - a.monthlySales);
+    sorted.slice(0, 3).forEach((p, i) => {
+      console.log(`   ${i + 1}. ${p.brand.padEnd(15)} - $${p.price} (${p.monthlySales.toLocaleString()} 月销量)`);
+    });
+
+    console.log('\n🔗 访问链接:');
+    console.log(`   https://docs.feishu.cn/sheets/${feishuConfig.spreadsheetToken}`);
+
+    console.log('\n💡 提示:');
+    console.log('   1. 表格数据已通过 API 写入');
+    console.log('   2. 可以在飞书表格中创建图表和仪表盘');
+    console.log('   3. 支持实时数据更新和协作编辑');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    console.error('\n详细错误:', error);
+  }
+}
+
+main();

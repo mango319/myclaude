@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+
+/**
+ * Feishu/Lark API Test Script
+ * Test your App ID and App Secret credentials
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Read config
+const configPath = path.join(require('os').homedir(), '.lark-config.json');
+const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+
+console.log('🔧 Feishu Configuration:');
+console.log('   App ID:', config.appId);
+console.log('   App Secret:', config.appSecret ? config.appSecret.substring(0, 10) + '...' : 'N/A');
+console.log('   Endpoint:', config.endpoint);
+console.log('');
+
+// Test function using fetch
+async function testConnection() {
+  console.log('🔗 Testing connection to Feishu API...\n');
+
+  try {
+    // Get tenant_access_token
+    const tokenResponse = await fetch(`${config.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        app_id: config.appId,
+        app_secret: config.appSecret
+      })
+    });
+
+    const tokenData = await tokenResponse.json();
+
+    if (tokenData.code === 0) {
+      console.log('✅ Authentication successful!');
+      console.log('   Tenant Access Token:', tokenData.tenant_access_token.substring(0, 20) + '...');
+      console.log('   Expire in:', tokenData.expire, 'seconds');
+      console.log('');
+
+      // Get app info
+      const appResponse = await fetch(`${config.endpoint}/open-apis/application/v6/applications/app_info`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenData.tenant_access_token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const appData = await appResponse.json();
+
+      if (appData.code === 0 && appData.data) {
+        console.log('📱 Application Info:');
+        console.log('   App Name:', appData.data.app_name || 'N/A');
+        console.log('   App Type:', appData.data.app_type || 'N/A');
+        console.log('   Status:', appData.data.status || 'N/A');
+      }
+    } else {
+      console.log('❌ Authentication failed!');
+      console.log('   Error Code:', tokenData.code);
+      console.log('   Error Message:', tokenData.msg);
+    }
+
+  } catch (error) {
+    console.log('❌ Connection error:', error.message);
+  }
+}
+
+testConnection();

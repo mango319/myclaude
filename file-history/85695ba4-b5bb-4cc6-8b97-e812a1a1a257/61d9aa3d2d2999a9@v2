@@ -1,0 +1,28 @@
+# Cache
+cache/
+
+# Backups (循环)
+backups/
+
+# Downloads
+downloads/
+
+# Debug
+debug/
+
+# Telemetry
+telemetry/
+statsig/
+
+# Temporary files
+shell-snapshots/
+*.tmp
+
+# Logs
+*.log
+
+# File history - now backed up
+# file-history/
+
+# Large history file - now backed up
+# history.jsonl

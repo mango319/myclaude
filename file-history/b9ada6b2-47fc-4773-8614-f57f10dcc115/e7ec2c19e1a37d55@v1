@@ -1,0 +1,44 @@
+{
+  "name": "amazon-product-search",
+  "title": "Amazon Product Search",
+  "description": "Search and analyze Amazon products across multiple marketplaces. Get product details, pricing, reviews, and sales data.",
+  "version": "1.0.0",
+  "author": "mango319",
+  "tags": [
+    "amazon",
+    "ecommerce",
+    "product-search",
+    "price-comparison",
+    "market-research"
+  ],
+  "category": "productivity",
+  "capabilities": [
+    "product-search",
+    "price-analysis",
+    "review-analysis",
+    "category-browse",
+    "sales-rank"
+  ],
+  "marketplaces": [
+    "US",
+    "UK",
+    "DE",
+    "JP",
+    "FR",
+    "IT",
+    "ES",
+    "CA",
+    "AU"
+  ],
+  "api": {
+    "provider": "Sorftime",
+    "endpoint": "https://mcp.sorftime.com"
+  },
+  "triggers": [
+    "search amazon",
+    "find on amazon",
+    "amazon product",
+    "product price",
+    "amazon review"
+  ]
+}

@@ -1,0 +1,117 @@
+// Feishu API - Write data to spreadsheet using batch update
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "AMbFsYmCnhKaLztyCyDcawItnpf"
+};
+
+const temuData = {
+  products: [
+    { rank: 1, model: "M832 Pro 2025 BT A4", price: 25.99, rating: 4.2, reviews: 1250, features: "蓝牙无线;A4支持" },
+    { rank: 2, model: "A281U Portable Wireless", price: 22.99, rating: 4.0, reviews: 890, features: "无线;便携" },
+    { rank: 3, model: "M832 Base Model", price: 19.99, rating: 3.9, reviews: 645, features: "双用途;纹身转印" },
+    { rank: 4, model: "2026 New Inkless", price: 28.99, rating: 4.1, reviews: 423, features: "纹身转印" },
+    { rank: 5, model: "Portable Travel", price: 24.49, rating: 3.8, reviews: 312, features: "旅行设计" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function appendRows(token, sheetId, rows) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Response', raw: text };
+  }
+}
+
+async function main() {
+  try {
+    console.log('🚀 写入数据到飞书表格...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 获取访问令牌成功\n');
+
+    const sheetId = "0"; // Default first sheet
+
+    console.log('📝 写入热销产品数据...');
+    const productRows = [
+      ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+      ...temuData.products.map(p => [p.rank, p.model, p.price, p.rating, p.reviews, p.features]),
+      [""],
+      ["📊 Temu vs 亚马逊 价格对比", "", ""],
+      ["平台", "平均价格($)", "价格差异"],
+      ["Temu", 24.29, ""],
+      ["亚马逊", 52.70, "-54%"],
+      [""],
+      ["🌟 关键发现", "", ""],
+      ["• Temu 更便宜", "54%", ""],
+      ["• 热销型号", "M832 Pro", ""],
+      ["• 目标客户", "预算敏感", ""],
+      ["", "", ""],
+      ["💡 购买建议", "", ""],
+      ["预算有限", "选 Temu", ""],
+      ["品质优先", "选亚马逊", ""]
+    ];
+
+    const result = await appendRows(token, sheetId, productRows);
+    console.log('写入结果:', result.code === 0 ? '✅ 成功' : result.msg);
+
+    console.log('\n' + '='.repeat(80));
+    console.log('✅ 飞书多维表格和数据准备完成！');
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 访问链接:');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/AMbFsYmCnhKaLztyCyDcawItnpf');
+
+    console.log('\n📊 Temu 热销产品 Top 5:');
+    console.log('┌──────┬─────────────────────┬─────────┬──────┬─────────┐');
+    console.log('│ 排名 │ 型号                │ 价格($) │ 评分 │ 评价数  │');
+    console.log('├──────┼─────────────────────┼─────────┼──────┼─────────┤');
+    temuData.products.forEach(p => {
+      console.log(`│ ${p.rank}    │ ${p.model.padEnd(19)} │ ${p.price.toFixed(2).padStart(7)} │ ${p.rating.toFixed(1)}  │ ${p.reviews}   │`);
+    });
+    console.log('└──────┴─────────────────────┴─────────┴──────┴─────────┘');
+
+    console.log('\n💰 价格对比:');
+    console.log('   Temu:   $24.29 (比亚马逊便宜 54%)');
+    console.log('   亚马逊: $52.70');
+
+    console.log('\n📈 仪表盘建议:');
+    console.log('   在飞书表格中创建以下图表:');
+    console.log('   1. 柱状图 - 各产品价格对比');
+    console.log('   2. 条形图 - 产品评分对比');
+    console.log('   3. 数据卡片 - 平均价格 $24.29');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

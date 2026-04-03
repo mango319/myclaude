@@ -1,0 +1,154 @@
+// Debug and fix Feishu spreadsheet
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "AMbFsYmCnhKaLztyCyDcawItnpf"
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function getSpreadsheetSheets(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/query`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  const text = await response.text();
+  console.log('Get sheets response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function writeCells(token, sheetId, range, values) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/values`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRange: {
+        range: range,
+        values: values
+      }
+    })
+  });
+  const text = await response.text();
+  console.log(`Write cells response for ${range}:`, text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function appendRows(token, sheetId, rows) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+  const text = await response.text();
+  console.log('Append rows response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function main() {
+  try {
+    console.log('🔍 诊断飞书多维表格问题...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    // Get sheet information
+    console.log('📊 获取工作表信息...');
+    const sheetsResult = await getSpreadsheetSheets(token);
+
+    if (sheetsResult.code === 0 && sheetsResult.data) {
+      const sheets = sheetsResult.data.sheet_items || sheetsResult.data.sheets || [];
+      console.log(`找到 ${sheets.length} 个工作表`);
+
+      if (sheets.length > 0) {
+        const sheet = sheets[0];
+        const sheetId = sheet.sheet_id;
+        const sheetTitle = sheet.title || sheet.sheet_name;
+        console.log(`工作表 ID: ${sheetId}`);
+        console.log(`工作表标题: ${sheetTitle}\n`);
+
+        // Prepare data
+        const dataRows = [
+          ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+          [1, "M832 Pro 2025 BT A4", 25.99, 4.2, 1250, "蓝牙无线;A4支持"],
+          [2, "A281U Portable Wireless", 22.99, 4.0, 890, "无线;便携"],
+          [3, "M832 Base Model", 19.99, 3.9, 645, "双用途;纹身转印"],
+          [4, "2026 New Inkless", 28.99, 4.1, 423, "纹身转印"],
+          [5, "Portable Travel", 24.49, 3.8, 312, "旅行设计"]
+        ];
+
+        // Try different methods to write data
+        console.log('📝 尝试方法 1: 写入单元格范围...');
+        const result1 = await writeCells(token, sheetId, `${sheetTitle}!A1:F6`, dataRows);
+        console.log(`方法 1 结果: ${result1.code === 0 ? '✅ 成功' : result1.msg}\n`);
+
+        if (result1.code !== 0) {
+          console.log('📝 尝试方法 2: 追加行...');
+          const result2 = await appendRows(token, sheetId, dataRows);
+          console.log(`方法 2 结果: ${result2.code === 0 ? '✅ 成功' : result2.msg}\n`);
+        }
+
+        console.log('='.repeat(80));
+        console.log('🔗 访问链接:');
+        console.log('   https://ecnn53rxijcm.feishu.cn/sheets/AMbFsYmCnhKaLztyCyDcawItnpf');
+        console.log('\n💡 请刷新页面查看数据');
+        console.log('='.repeat(80));
+      } else {
+        console.log('❌ 没有找到工作表');
+      }
+    } else {
+      console.log('❌ 获取工作表失败:', sheetsResult.msg);
+    }
+
+    // Display data for manual entry
+    console.log('\n📋 手动复制数据 (如果自动写入失败):\n');
+    console.log('排名\t型号\t价格\t评分\t评价数\t特点');
+    console.log('1\tM832 Pro 2025 BT A4\t25.99\t4.2\t1250\t蓝牙无线;A4支持');
+    console.log('2\tA281U Portable Wireless\t22.99\t4.0\t890\t无线;便携');
+    console.log('3\tM832 Base Model\t19.99\t3.9\t645\t双用途;纹身转印');
+    console.log('4\t2026 New Inkless\t28.99\t4.1\t423\t纹身转印');
+    console.log('5\tPortable Travel\t24.49\t3.8\t312\t旅行设计');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    console.error('\n详细错误:', error);
+  }
+}
+
+main();

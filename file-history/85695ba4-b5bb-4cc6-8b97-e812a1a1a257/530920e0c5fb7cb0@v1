@@ -1,0 +1,7 @@
+# Temporary files
+tmpclaude-*
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db

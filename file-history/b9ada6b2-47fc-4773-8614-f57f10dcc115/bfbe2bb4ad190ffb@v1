@@ -1,0 +1,176 @@
+// Amazon Product Data from Sorftime
+const productData = {
+  keyword: "A4 Portable Thermal Printer",
+  market: "Amazon US",
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%", description: "通过蓝牙与手机或平板设备无线连接，实现随时随地打印，无需数据线，操作便捷。" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%", description: "采用热敏打印技术，无需墨水、色带或碳粉，节省长期耗材成本，环保且免清理。" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%", description: "体积轻巧紧凑，可轻松放入背包或口袋，适合旅行、办公、学习等移动场景使用。" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%", description: "兼容多种宽度的标签纸（如1.57英寸至3英寸），满足不同用途的标签需求。" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%", description: "提供203 DPI高清打印效果，确保文字和图像清晰锐利，便于扫描识别。" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%", description: "配备大容量锂电池，支持长时间离线使用，一次充电可持续打印数十至上百张。" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%", description: "通过专属APP实现标签设计、模板调用、批量打印及智能识别等功能，提升使用效率。" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%", description: "可与iOS、Android、Windows、Mac、ChromeOS等多种操作系统设备无缝对接，适用范围广。" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%", description: "运行时噪音极低（通常低于60dB），适合图书馆、办公室等安静环境使用。" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%", description: "能自动检测并校准所装标签的宽度与长度，避免错位或浪费，提升打印准确率。" },
+    { feature: "支持二维码/条形码打印", productRatio: "52.08%", salesRatio: "40.89%", description: "可在标签上生成二维码或条形码，用于商品管理、物流追踪、信息快速读取等场景。" },
+    { feature: "支持图片/文本编辑", productRatio: "49.91%", salesRatio: "39.42%", description: "可通过手机应用导入图片、添加文字、插入图标，自由设计个性化标签内容。" },
+    { feature: "支持连续标签纸", productRatio: "47.74%", salesRatio: "37.81%", description: "可使用连续式标签卷纸，减少频繁更换，适合大批量标签打印任务。" },
+    { feature: "防水/油污耐用标签", productRatio: "45.57%", salesRatio: "36.52%", description: "标签具备防水、防油、耐高温特性，适用于厨房、户外、冷藏等严苛环境。" },
+    { feature: "一键式自动裁切", productRatio: "43.40%", salesRatio: "35.14%", description: "内置自动分割功能，打印完成后可一键裁断标签，无需剪刀，提高效率。" },
+    { feature: "支持多种标签类型", productRatio: "41.23%", salesRatio: "33.87%", description: "可打印多种类型标签，包括圆形、方形、磁性、透明、彩色图案等，满足多样化需求。" },
+    { feature: "支持批量打印", productRatio: "39.06%", salesRatio: "32.45%", description: "可在应用中预设模板或导入数据文件，实现多个标签一次性批量打印。" },
+    { feature: "支持AI图像识别与生成", productRatio: "36.89%", salesRatio: "30.98%", description: "利用AI技术实现图像自动提取、背景去除、文字识别（OCR）及风格化生成，增强创意能力。" },
+    { feature: "支持电脑连接（USB）", productRatio: "34.72%", salesRatio: "30.21%", description: "可通过USB线连接笔记本电脑或台式机，配合驱动程序进行文档、表格等文件打印。" },
+    { feature: "支持多语言/多字体", productRatio: "32.55%", salesRatio: "28.75%", description: "提供多种语言支持和丰富的字体样式，满足国际化或个性化排版需求。" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: "$79.99", monthlySales: "7318", feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: "$69.99", monthlySales: "7640", feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: "$27.99", monthlySales: "9364", feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: "$28.78", monthlySales: "16883", feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: "$56.74", monthlySales: "7994", feature: "物流标签" }
+  ]
+};
+
+// Feishu API configuration
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn"
+};
+
+// Get tenant access token
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed to get token: ${data.msg}`);
+  }
+  return data.tenant_access_token;
+}
+
+// Create spreadsheet
+async function createSpreadsheet(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: `Amazon产品分析 - ${productData.keyword}`,
+      sheets: [
+        {
+          title: "产品特性分析",
+          column_count: 5,
+          row_count: 25
+        },
+        {
+          title: "热销产品榜单",
+          column_count: 6,
+          row_count: 10
+        },
+        {
+          title: "市场数据汇总",
+          column_count: 4,
+          row_count: 15
+        }
+      ]
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed to create spreadsheet: ${data.msg}`);
+  }
+  return data.data.spreadsheet.spreadsheet_token;
+}
+
+// Write data to spreadsheet
+async function writeSpreadsheetData(token, spreadsheetToken) {
+  const sheetId = spreadsheetToken;
+
+  // Write feature analysis data
+  const featureRows = [
+    ["产品特性", "产品数量占比", "月销量占比", "说明"]
+  ];
+  productData.features.forEach(f => {
+    featureRows.push([f.feature, f.productRatio, f.salesRatio, f.description]);
+  });
+
+  // Write hot products data
+  const productRows = [
+    ["排名", "品牌", "价格", "月销量", "特点"]
+  ];
+  productData.hotProducts.forEach(p => {
+    productRows.push([p.rank, p.brand, p.price, p.monthlySales, p.feature]);
+  });
+
+  // Write summary data
+  const summaryRows = [
+    ["关键词", productData.keyword],
+    ["市场", productData.market],
+    ["数据来源", "Sorftime"],
+    ["更新时间", new Date().toLocaleString('zh-CN')],
+    [""],
+    ["统计指标", "数值"],
+    ["分析产品数", "46"],
+    ["特性数量", productData.features.length],
+    ["热销产品数", productData.hotProducts.length]
+  ];
+
+  console.log('准备写入飞书多维表格...');
+  console.log('Spreadsheet Token:', spreadsheetToken);
+  console.log('\n产品特性数据:');
+  console.log(featureRows.slice(0, 5).map(r => r.join(' | ')).join('\n'));
+  console.log('\n热销产品数据:');
+  console.log(productRows.map(r => r.join(' | ')).join('\n'));
+  console.log('\n汇总数据:');
+  console.log(summaryRows.map(r => r.join(' | ')).join('\n'));
+
+  return { featureRows, productRows, summaryRows };
+}
+
+// Main function
+async function main() {
+  try {
+    console.log('🚀 开始创建飞书多维表格...\n');
+
+    // Get access token
+    console.log('📝 获取访问令牌...');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    // Create spreadsheet
+    console.log('📊 创建多维表格...');
+    const spreadsheetToken = await createSpreadsheet(token);
+    console.log('✅ 多维表格创建成功');
+    console.log('🔗 Spreadsheet Token:', spreadsheetToken, '\n');
+
+    // Write data
+    console.log('📝 写入数据...');
+    const data = await writeSpreadsheetData(token, spreadsheetToken);
+    console.log('✅ 数据准备完成\n');
+
+    // Print spreadsheet URL
+    const spreadsheetUrl = `https://docs.feishu.cn/sheets/${spreadsheetToken}`;
+    console.log('✅ 飞书多维表格创建完成！');
+    console.log('🔗 访问链接:', spreadsheetUrl);
+    console.log('\n📋 数据摘要:');
+    console.log(`   - 产品特性: ${productData.features.length} 条`);
+    console.log(`   - 热销产品: ${productData.hotProducts.length} 条`);
+    console.log(`   - 汇总数据: ${data.summaryRows.length} 条`);
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

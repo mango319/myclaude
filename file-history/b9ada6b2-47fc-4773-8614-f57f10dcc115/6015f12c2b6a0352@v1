@@ -1,0 +1,177 @@
+// Write data to Feishu using batch update API
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "KtQAsS6t2hZASFt1lbDcUOsfncd"
+};
+
+const temuData = {
+  products: [
+    [1, "M832 Pro 2025 BT A4", 25.99, 4.2, 1250, "蓝牙无线;A4支持"],
+    [2, "A281U Portable Wireless", 22.99, 4.0, 890, "无线;便携"],
+    [3, "M832 Base Model", 19.99, 3.9, 645, "双用途;纹身转印"],
+    [4, "2026 New Inkless", 28.99, 4.1, 423, "纹身转印"],
+    [5, "Portable Travel", 24.49, 3.8, 312, "旅行设计"]
+  ],
+  comparison: [
+    ["平台", "平均价格($)", "价格区间"],
+    ["Temu", 24.29, "$19.99 - $28.99"],
+    ["亚马逊", 52.70, "$27.99 - $79.99"],
+    ["价格差异", "-54%", ""]
+  ],
+  features: [
+    ["产品特性", "配备比例", "影响"],
+    ["无线蓝牙连接", "100%", "高"],
+    ["无墨热敏打印", "100%", "高"],
+    ["支持A4尺寸", "100%", "高"],
+    ["可充电电池", "90%", "高"],
+    ["便携设计", "100%", "中"],
+    ["纹身转印", "20%", "低"]
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed to get token: ${data.msg}`);
+  }
+  return data.tenant_access_token;
+}
+
+async function batchUpdate(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/values:batchUpdate`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      valueRanges: [
+        {
+          range: "Sheet1!A1",
+          values: [["排名", "型号", "价格($)", "评分", "评价数", "主要特点"]]
+        },
+        {
+          range: "Sheet1!A2",
+          values: [temuData.products[0]]
+        },
+        {
+          range: "Sheet1!A3",
+          values: [temuData.products[1]]
+        },
+        {
+          range: "Sheet1!A4",
+          values: [temuData.products[2]]
+        },
+        {
+          range: "Sheet1!A5",
+          values: [temuData.products[3]]
+        },
+        {
+          range: "Sheet1!A6",
+          values: [temuData.products[4]]
+        },
+        {
+          range: "Sheet1!A8",
+          values: [["📊 Temu vs 亚马逊价格对比"]]
+        },
+        {
+          range: "Sheet1!A9",
+          values: [["平台", "平均价格($)", "价格区间"]]
+        },
+        {
+          range: "Sheet1!A10",
+          values: [temuData.comparison[0]]
+        },
+        {
+          range: "Sheet1!A11",
+          values: [temuData.comparison[1]]
+        },
+        {
+          range: "Sheet1!A12",
+          values: [temuData.comparison[2]]
+        },
+        {
+          range: "产品特性分析!A1",
+          values: [["产品特性", "配备比例", "影响"]]
+        },
+        {
+          range: "产品特性分析!A2",
+          values: [temuData.features[0]]
+        },
+        {
+          range: "产品特性分析!A3",
+          values: [temuData.features[1]]
+        },
+        {
+          range: "产品特性分析!A4",
+          values: [temuData.features[2]]
+        },
+        {
+          range: "产品特性分析!A5",
+          values: [temuData.features[3]]
+        },
+        {
+          range: "产品特性分析!A6",
+          values: [temuData.features[4]]
+        },
+        {
+          range: "产品特性分析!A7",
+          values: [temuData.features[5]]
+        }
+      ]
+    })
+  });
+
+  const text = await response.text();
+  console.log('Batch update response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function main() {
+  try {
+    console.log('🚀 批量写入数据到飞书表格...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📝 批量写入数据...');
+    const result = await batchUpdate(token);
+
+    console.log('\n' + '='.repeat(80));
+    if (result.code === 0) {
+      console.log('✅ 数据写入成功！');
+    } else {
+      console.log('⚠️ 写入结果:', result.msg || result.raw);
+    }
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 访问链接:');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/KtQAsS6t2hZASFt1lbDcUOsfncd');
+
+    console.log('\n💡 请刷新飞书表格查看数据！');
+
+    console.log('\n📊 数据摘要:');
+    console.log('   • 热销产品: 5 条');
+    console.log('   • 价格对比: Temu vs 亚马逊');
+    console.log('   • 产品特性: 6 条');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+  }
+}
+
+main();

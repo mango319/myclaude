@@ -1,0 +1,210 @@
+// Write Temu data to Feishu spreadsheet with updated permissions
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "KtQAsS6t2hZASFt1lbDcUOsfncd"
+};
+
+const temuData = {
+  products: [
+    { rank: 1, model: "M832 Pro 2025 BT A4", price: 25.99, rating: 4.2, reviews: 1250, features: "蓝牙无线;A4支持;存储盒" },
+    { rank: 2, model: "A281U Portable Wireless", price: 22.99, rating: 4.0, reviews: 890, features: "无线;便携;10页纸" },
+    { rank: 3, model: "M832 Base Model", price: 19.99, rating: 3.9, reviews: 645, features: "双用途;纹身转印" },
+    { rank: 4, model: "2026 New Inkless", price: 28.99, rating: 4.1, reviews: 423, features: "纹身转印;便携" },
+    { rank: 5, model: "Portable Travel", price: 24.49, rating: 3.8, reviews: 312, features: "旅行设计;蓝牙" }
+  ],
+  features: [
+    { feature: "无线蓝牙连接", ratio: "100%", impact: "高" },
+    { feature: "无墨热敏打印", ratio: "100%", impact: "高" },
+    { feature: "支持A4尺寸", ratio: "100%", impact: "高" },
+    { feature: "可充电电池", ratio: "90%", impact: "高" },
+    { feature: "便携设计", ratio: "100%", impact: "中" },
+    { feature: "纹身转印", ratio: "20%", impact: "低" }
+  ],
+  comparison: {
+    temu: { avgPrice: 24.29, range: "$19.99 - $28.99" },
+    amazon: { avgPrice: 52.70, range: "$27.99 - $79.99" },
+    difference: "-54%"
+  }
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed to get token: ${data.msg}`);
+  }
+  return data.tenant_access_token;
+}
+
+async function getSpreadsheetInfo(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}`, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  const text = await response.text();
+  console.log('Get spreadsheet info:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function appendRows(token, sheetId, rows) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: rows.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+  const text = await response.text();
+  console.log('Append rows response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function addNewSheet(token, title) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: title,
+      sheet_type: "grid"
+    })
+  });
+  const text = await response.text();
+  console.log('Add sheet response:', text);
+  try {
+    const data = JSON.parse(text);
+    if (data.code === 0) {
+      return data.data.sheet.sheet_id;
+    }
+    throw new Error(data.msg);
+  } catch {
+    throw new Error(text);
+  }
+}
+
+async function main() {
+  try {
+    console.log('🚀 开始写入数据到飞书多维表格...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📊 获取表格信息...');
+    const info = await getSpreadsheetInfo(token);
+
+    let sheetId = "0";
+    if (info.code === 0 && info.data && info.data.spreadsheet) {
+      const sheets = info.data.spreadsheet.sheets || info.data.spreadsheet.sheet_items || [];
+      if (sheets.length > 0) {
+        sheetId = sheets[0].sheet_id;
+        console.log(`✅ 使用工作表: ${sheetId}\n`);
+      }
+    }
+
+    console.log('📝 写入热销产品数据...');
+    const productRows = [
+      ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+      ...temuData.products.map(p => [p.rank, p.model, p.price, p.rating, p.reviews, p.features]),
+      [""],
+      ["📊 Temu vs 亚马逊价格对比", "", "", "", "", ""],
+      ["平台", "平均价格($)", "价格区间", "", "", ""],
+      ["Temu", temuData.comparison.temu.avgPrice, temuData.comparison.temu.range, "", "", ""],
+      ["亚马逊", temuData.comparison.amazon.avgPrice, temuData.comparison.amazon.range, "", "", ""],
+      ["价格差异", temuData.comparison.difference, "", "", "", ""],
+      [""],
+      ["🌟 关键发现", "", "", "", "", ""],
+      ["• Temu 更便宜", "54%", "", "", "", ""],
+      ["• 热销型号", "M832 Pro 2025", "", "", "", ""],
+      ["• 目标客户", "预算敏感用户", "", "", "", ""],
+      [""],
+      ["💡 购买建议", "", "", "", "", ""],
+      ["预算有限", "选 Temu", "M832 Pro $25.99", "", "", ""],
+      ["品质优先", "选亚马逊", "Amazon Basics $28.78", "", "", ""]
+    ];
+
+    const result1 = await appendRows(token, sheetId, productRows);
+    console.log(`   产品数据: ${result1.code === 0 ? '✅ 成功' : result1.msg}\n`);
+
+    console.log('📄 创建第二个工作表...');
+    try {
+      const featureSheetId = await addNewSheet(token, "产品特性分析");
+      console.log(`✅ 工作表创建成功: ${featureSheetId}\n`);
+
+      console.log('📝 写入产品特性数据...');
+      const featureRows = [
+        ["产品特性", "配备比例", "对销量影响", "说明"],
+        ...temuData.features.map(f => [f.feature, f.ratio, f.impact, ""]),
+        [""],
+        ["📈 Temu 市场特点", "", "", ""],
+        ["• 价格优势", "比亚马逊低 54%", "", ""],
+        ["• 品牌分布", "白牌/贴牌为主", "", ""],
+        ["• 型号分布", "M832 系列最热销", "", ""],
+        ["• 定位", "性价比导向", "", ""],
+        [""],
+        ["💡 Temu vs 亚马逊", "", "", ""],
+        ["Temu 优势", "价格、性价比", "", ""],
+        ["亚马逊优势", "品牌、品质、售后", "", ""],
+        ["共同趋势", "无线、便携、无墨", "", ""]
+      ];
+
+      const result2 = await appendRows(token, featureSheetId, featureRows);
+      console.log(`   特性数据: ${result2.code === 0 ? '✅ 成功' : result2.msg}\n`);
+
+    } catch (e) {
+      console.log(`⚠️ 创建第二个工作表失败: ${e.message}\n`);
+    }
+
+    console.log('='.repeat(80));
+    console.log('✅ 飞书多维表格数据写入完成！');
+    console.log('='.repeat(80));
+
+    console.log('\n🔗 访问链接:');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/KtQAsS6t2hZASFt1lbDcUOsfncd');
+
+    console.log('\n📊 已写入数据摘要:');
+    console.log(`   • 热销产品榜单: ${temuData.products.length} 条`);
+    console.log(`   • 价格对比数据: Temu vs 亚马逊`);
+    console.log(`   • 购买建议: 预算有限 vs 品质优先`);
+    console.log(`   • 产品特性分析: ${temuData.features.length} 条`);
+
+    console.log('\n💡 刷新飞书表格页面查看数据！');
+    console.log('   如数据未显示，请等待几秒后刷新');
+
+    console.log('\n📈 创建仪表盘建议:');
+    console.log('   1. 选中产品数据区域');
+    console.log('   2. 点击 "插入" → "图表"');
+    console.log('   3. 选择 "柱状图" 展示价格对比');
+    console.log('   4. 选择 "条形图" 展示评分对比');
+    console.log('   5. 添加数据卡片显示平均价格');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    console.error('\n详细错误:', error);
+  }
+}
+
+main();

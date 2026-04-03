@@ -1,0 +1,296 @@
+// Feishu API - Create Temu spreadsheet and populate data
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn"
+};
+
+const temuProductData = {
+  keyword: "A4 Portable Thermal Printer",
+  platform: "Temu",
+  products: [
+    { rank: 1, model: "M832 Pro 2025 BT A4", price: 25.99, rating: 4.2, reviews: 1250, features: "蓝牙无线;A4支持;存储盒" },
+    { rank: 2, model: "A281U Portable Wireless", price: 22.99, rating: 4.0, reviews: 890, features: "无线;便携;10页纸" },
+    { rank: 3, model: "M832 Base Model", price: 19.99, rating: 3.9, reviews: 645, features: "双用途;纹身转印" },
+    { rank: 4, model: "2026 New Inkless", price: 28.99, rating: 4.1, reviews: 423, features: "纹身转印;便携" },
+    { rank: 5, model: "Portable Travel", price: 24.49, rating: 3.8, reviews: 312, features: "旅行设计;蓝牙" }
+  ],
+  features: [
+    { feature: "无线蓝牙连接", ratio: "100%", impact: "高" },
+    { feature: "无墨热敏打印", ratio: "100%", impact: "高" },
+    { feature: "支持A4尺寸", ratio: "100%", impact: "高" },
+    { feature: "可充电电池", ratio: "90%", impact: "高" },
+    { feature: "便携设计", ratio: "100%", impact: "中" },
+    { feature: "纹身转印", ratio: "20%", impact: "低" }
+  ],
+  priceComparison: [
+    { platform: "Temu", avgPrice: 24.29, minPrice: 19.99, maxPrice: 28.99 },
+    { platform: "亚马逊", avgPrice: 52.70, minPrice: 27.99, maxPrice: 79.99 }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function createSpreadsheet(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: `Temu-A4热敏打印机分析-${Date.now()}`,
+      folder_token: ""
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed to create spreadsheet: ${data.msg}`);
+  }
+  return {
+    spreadsheetToken: data.data.spreadsheet.spreadsheet_token,
+    url: data.data.spreadsheet.url
+  };
+}
+
+async function getSheetId(token, spreadsheetToken) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${spreadsheetToken}/sheets/query`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  const data = await response.json();
+  if (data.code === 0 && data.data.sheet_items && data.data.sheet_items.length > 0) {
+    return data.data.sheet_items[0].sheet_id;
+  }
+  throw new Error('Failed to get sheet ID');
+}
+
+async function writeDataBatch(token, spreadsheetToken, sheetId) {
+  const base_url = `${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}`;
+
+  // Write header and product data (rows 1-6)
+  const productData = [
+    ["排名", "型号", "价格($)", "评分", "评价数", "主要特点"],
+    [1, "M832 Pro 2025 BT A4", 25.99, 4.2, 1250, "蓝牙无线;A4支持;存储盒"],
+    [2, "A281U Portable Wireless", 22.99, 4.0, 890, "无线;便携;10页纸"],
+    [3, "M832 Base Model", 19.99, 3.9, 645, "双用途;纹身转印"],
+    [4, "2026 New Inkless", 28.99, 4.1, 423, "纹身转印;便携"],
+    [5, "Portable Travel", 24.49, 3.8, 312, "旅行设计;蓝牙"]
+  ];
+
+  // Write product data
+  const productResponse = await fetch(`${base_url}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: productData.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+
+  console.log('Product data write result:', productResponse.ok ? 'Success' : 'Failed');
+
+  // Write comparison data starting from row 8
+  const comparisonData = [
+    ["", ""],
+    ["📊 Temu vs 亚马逊 价格对比", ""],
+    ["平台", "平均价格($)"],
+    ["Temu", 24.29],
+    ["亚马逊", 52.70],
+    ["价格差异", "-54%"],
+    ["", ""],
+    ["🌟 关键发现", ""],
+    ["• Temu 平均价格:", "$24.29"],
+    ["• 亚马逊平均价格:", "$52.70"],
+    ["• Temu 更便宜:", "54%"],
+    ["• Temu 热销型号:", "M832 Pro 系列"],
+    ["• 主要优势:", "价格、便携性"],
+    ["", ""],
+    ["💡 购买建议", ""],
+    ["预算有限:", "选择 Temu (M832 Pro)"],
+    ["品质优先:", "选择亚马逊 (Amazon Basics/NIIMBOT)"]
+  ];
+
+  const comparisonResponse = await fetch(`${base_url}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: comparisonData.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+
+  console.log('Comparison data write result:', comparisonResponse.ok ? 'Success' : 'Failed');
+
+  return {
+    product: productResponse.ok,
+    comparison: comparisonResponse.ok
+  };
+}
+
+async function addSecondSheet(token, spreadsheetToken) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${spreadsheetToken}/sheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: "产品特性分析",
+      sheet_type: "grid"
+    })
+  });
+  const data = await response.json();
+  if (data.code === 0) {
+    return data.data.sheet.sheet_id;
+  }
+  throw new Error('Failed to add sheet');
+}
+
+async function writeFeatureData(token, spreadsheetToken, sheetId) {
+  const base_url = `${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}`;
+
+  const featureData = [
+    ["产品特性", "配备占比", "对销量影响"],
+    ["无线蓝牙连接", "100%", "高"],
+    ["无墨热敏打印", "100%", "高"],
+    ["支持A4尺寸", "100%", "高"],
+    ["可充电电池", "90%", "高"],
+    ["便携设计", "100%", "中"],
+    ["纹身转印功能", "20%", "低"],
+    ["", ""],
+    ["📈 Temu 市场特点", ""],
+    ["• 价格:", "比亚马逊低 54%"],
+    ["• 品牌:", "以白牌/贴牌为主"],
+    ["• 型号:", "M832 系列最热销"],
+    ["• 定位:", "性价比导向"],
+    ["• 目标:", "预算敏感客户"]
+  ];
+
+  const response = await fetch(`${base_url}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: featureData.map(row => ({
+        values: row.map(v => ({ v: v }))
+      }))
+    })
+  });
+
+  console.log('Feature data write result:', response.ok ? 'Success' : 'Failed');
+  return response.ok;
+}
+
+function displayResults(spreadsheetUrl, spreadsheetToken) {
+  console.log('\n' + '='.repeat(80));
+  console.log('✅ 飞书多维表格创建并填充数据成功！');
+  console.log('='.repeat(80));
+
+  console.log('\n🔗 访问链接:');
+  console.log(`   ${spreadsheetUrl}`);
+
+  console.log('\n📊 数据已自动填充到表格中:');
+
+  console.log('\n【工作表 1: 热销产品榜单】');
+  console.log('┌──────┬─────────────────────┬─────────┬──────┬─────────┬────────────────┐');
+  console.log('│ 排名 │ 型号                │ 价格($) │ 评分 │ 评价数  │ 主要特点       │');
+  console.log('├──────┼─────────────────────┼─────────┼──────┼─────────┼────────────────┤');
+  temuProductData.products.forEach(p => {
+    console.log(`│ ${p.rank}    │ ${p.model.padEnd(19)} │ ${p.price.toFixed(2).padStart(7)} │ ${p.rating.toFixed(1)}  │ ${p.reviews}   │ ${p.features.padEnd(14)} │`);
+  });
+  console.log('└──────┴─────────────────────┴─────────┴──────┴─────────┴────────────────┘');
+
+  console.log('\n【工作表 2: 产品特性分析】');
+  console.log('┌──────────────┬──────────┬──────────┐');
+  console.log('│ 产品特性     │ 配备占比 │ 影响程度 │');
+  console.log('├──────────────┼──────────┼──────────┤');
+  temuProductData.features.forEach(f => {
+    console.log(`│ ${f.feature.padEnd(12)} │ ${f.ratio.padStart(8)} │ ${f.impact.padStart(8)} │`);
+  });
+  console.log('└──────────────┴──────────┴──────────┘');
+
+  console.log('\n💰 Temu vs 亚马逊价格对比:');
+  console.log('   Temu 平均价格:   $24.29');
+  console.log('   亚马逊平均价格: $52.70');
+  console.log('   价格优势:       -54%');
+
+  console.log('\n📈 仪表盘创建建议:');
+  console.log('   在飞书表格中创建以下图表:');
+  console.log('   1. 柱状图 - Temu vs 亚马逊价格对比');
+  console.log('   2. 条形图 - 产品评分横向对比');
+  console.log('   3. 饼图 - 价格区间分布');
+  console.log('   4. 数据卡片 - 平均价格、总评价数');
+
+  console.log('\n💡 后续操作:');
+  console.log('   1. 点击上方链接打开飞书表格');
+  console.log('   2. 数据已自动填充，可直接查看');
+  console.log('   3. 使用"插入图表"创建可视化仪表盘');
+
+  console.log('\n' + '='.repeat(80));
+}
+
+async function main() {
+  try {
+    console.log('🚀 开始创建飞书多维表格并自动填充数据...\n');
+
+    console.log('📝 获取访问令牌...');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📊 创建新的多维表格...');
+    const { spreadsheetToken, url } = await createSpreadsheet(token);
+    console.log('✅ 多维表格创建成功');
+    console.log('   Token:', spreadsheetToken);
+    console.log('   URL:', url, '\n');
+
+    console.log('📄 获取工作表ID...');
+    const sheetId = await getSheetId(token, spreadsheetToken);
+    console.log('✅ 工作表ID:', sheetId, '\n');
+
+    console.log('📝 写入热销产品数据...');
+    const writeResult = await writeDataBatch(token, spreadsheetToken, sheetId);
+    console.log(`   产品数据: ${writeResult.product ? '✅' : '❌'}`);
+    console.log(`   对比数据: ${writeResult.comparison ? '✅' : '❌'}`, '\n');
+
+    console.log('📄 创建第二个工作表...');
+    const featureSheetId = await addSecondSheet(token, spreadsheetToken);
+    console.log('✅ 工作表创建成功:', featureSheetId, '\n');
+
+    console.log('📝 写入产品特性数据...');
+    const featureResult = await writeFeatureData(token, spreadsheetToken, featureSheetId);
+    console.log(`   特性数据: ${featureResult ? '✅' : '❌'}`, '\n');
+
+    displayResults(url, spreadsheetToken);
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    console.error('\n详细错误:', error);
+  }
+}
+
+main();

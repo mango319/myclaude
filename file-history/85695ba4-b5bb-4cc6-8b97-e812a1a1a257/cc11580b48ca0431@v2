@@ -1,0 +1,5 @@
+# VS Code Extensions (可从市场重新安装)
+extensions/*
+
+# 但保留扩展列表
+!extensions/extensions.json

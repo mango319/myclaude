@@ -1,0 +1,234 @@
+// Feishu API - Write data to existing spreadsheet
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn",
+  spreadsheetToken: "HjPdst5TxhLabgt8FbpcVBKMnAg"
+};
+
+const productData = {
+  features: [
+    { feature: "无线蓝牙连接", productRatio: "95.65%", salesRatio: "74.23%", description: "通过蓝牙与手机或平板设备无线连接，实现随时随地打印，无需数据线，操作便捷。" },
+    { feature: "无墨热敏打印", productRatio: "91.30%", salesRatio: "72.18%", description: "采用热敏打印技术，无需墨水、色带或碳粉，节省长期耗材成本，环保且免清理。" },
+    { feature: "便携小巧设计", productRatio: "86.96%", salesRatio: "67.85%", description: "体积轻巧紧凑，可轻松放入背包或口袋，适合旅行、办公、学习等移动场景使用。" },
+    { feature: "支持多种标签纸尺寸", productRatio: "76.09%", salesRatio: "56.72%", description: "兼容多种宽度的标签纸（如1.57英寸至3英寸），满足不同用途的标签需求。" },
+    { feature: "高分辨率打印（203 DPI）", productRatio: "71.74%", salesRatio: "54.31%", description: "提供203 DPI高清打印效果，确保文字和图像清晰锐利，便于扫描识别。" },
+    { feature: "内置可充电电池", productRatio: "71.74%", salesRatio: "53.98%", description: "配备大容量锂电池，支持长时间离线使用，一次充电可持续打印数十至上百张。" },
+    { feature: "配套专用手机应用", productRatio: "69.57%", salesRatio: "52.81%", description: "通过专属APP实现标签设计、模板调用、批量打印及智能识别等功能，提升使用效率。" },
+    { feature: "支持多平台兼容", productRatio: "67.40%", salesRatio: "51.34%", description: "可与iOS、Android、Windows、Mac、ChromeOS等多种操作系统设备无缝对接，适用范围广。" },
+    { feature: "静音/低噪音", productRatio: "58.60%", salesRatio: "46.12%", description: "运行时噪音极低（通常低于60dB），适合图书馆、办公室等安静环境使用。" },
+    { feature: "自动识别标签纸尺寸", productRatio: "54.25%", salesRatio: "42.67%", description: "能自动检测并校准所装标签的宽度与长度，避免错位或浪费，提升打印准确率。" }
+  ],
+  hotProducts: [
+    { rank: 1, brand: "Gloryang", price: 79.99, monthlySales: 7318, feature: "8.5\" x 11\" 支持" },
+    { rank: 2, brand: "Phomemo", price: 69.99, monthlySales: 7640, feature: "蓝牙无线" },
+    { rank: 3, brand: "NIIMBOT", price: 27.99, monthlySales: 9364, feature: "标签打印机" },
+    { rank: 4, brand: "Amazon Basics", price: 28.78, monthlySales: 16883, feature: "热敏层压机" },
+    { rank: 5, brand: "NULLTONEX", price: 56.74, monthlySales: 7994, feature: "物流标签" }
+  ]
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  return data.tenant_access_token;
+}
+
+async function getSpreadsheetSheets(token) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/query`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  return await response.json();
+}
+
+async function appendRow(token, sheetId, values) {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: [{
+        values: values.map(v => ({ v: v }))
+      }]
+    })
+  });
+  return await response.json();
+}
+
+async function updateCells(token, sheetId, startRow, startColumn, values) {
+  // Calculate end column based on data
+  const maxCols = Math.max(...values.map(row => row.length));
+  const endColumn = startColumn + maxCols - 1;
+  const endRow = startRow + values.length - 1;
+
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${feishuConfig.spreadsheetToken}/sheets/${sheetId}/cells/${startRow}_${startColumn}/${endRow}_${endColumn}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      value: {
+        values: values.map(row => row.map(v => ({ v: v })))
+      }
+    })
+  });
+  return await response.json();
+}
+
+async function writeDataToSheets(token) {
+  // Get sheet info
+  console.log('📊 获取表格信息...');
+  const sheetsInfo = await getSpreadsheetSheets(token);
+  console.log('Sheets info:', JSON.stringify(sheetsInfo, null, 2));
+
+  if (sheetsInfo.code !== 0) {
+    throw new Error(`Failed to get sheets: ${sheetsInfo.msg}`);
+  }
+
+  const sheets = sheetsInfo.data.sheet_items || sheetsInfo.data.sheets || [];
+  console.log(`找到 ${sheets.length} 个工作表`);
+
+  const results = [];
+
+  // Write feature data to first sheet
+  if (sheets.length > 0) {
+    const sheetId = sheets[0].sheet_id;
+    console.log(`\n📝 写入产品特性数据到 Sheet ${sheetId}...`);
+
+    const featureValues = [
+      ["产品特性", "产品数量占比", "月销量占比", "说明"],
+      ...productData.features.map(f => [f.feature, f.productRatio, f.salesRatio, f.description])
+    ];
+
+    try {
+      const result = await updateCells(token, sheetId, 1, 1, featureValues);
+      console.log('✅ 产品特性数据写入结果:', result.code === 0 ? '成功' : result.msg);
+      results.push({ sheet: '产品特性', success: result.code === 0 });
+    } catch (e) {
+      console.log('❌ 写入失败:', e.message);
+      results.push({ sheet: '产品特性', success: false, error: e.message });
+    }
+  }
+
+  // Create new sheet for products
+  console.log('\n📄 创建热销产品工作表...');
+  const addSheetResponse = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets/${feishuConfig.spreadsheetToken}/sheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: "热销产品榜单",
+      sheet_type: "grid"
+    })
+  });
+  const addSheetResult = await addSheetResponse.json();
+  console.log('Add sheet result:', JSON.stringify(addSheetResult, null, 2));
+
+  if (addSheetResult.code === 0) {
+    const productSheetId = addSheetResult.data.sheet.sheet_id;
+    console.log(`✅ 新工作表创建成功: ${productSheetId}`);
+
+    const productValues = [
+      ["排名", "品牌", "价格", "月销量", "特点"],
+      ...productData.hotProducts.map(p => [p.rank, p.brand, p.price, p.monthlySales, p.feature])
+    ];
+
+    try {
+      const result = await updateCells(token, productSheetId, 1, 1, productValues);
+      console.log('✅ 热销产品数据写入结果:', result.code === 0 ? '成功' : result.msg);
+      results.push({ sheet: '热销产品', success: result.code === 0 });
+    } catch (e) {
+      console.log('❌ 写入失败:', e.message);
+      results.push({ sheet: '热销产品', success: false, error: e.message });
+    }
+  }
+
+  return results;
+}
+
+function displayDataForCopy() {
+  console.log('\n' + '='.repeat(80));
+  console.log('📋 可直接复制粘贴的数据格式');
+  console.log('='.repeat(80));
+
+  console.log('\n【产品特性分析】- 复制以下内容粘贴到飞书表格:\n');
+  console.log('产品特性\t产品数量占比\t月销量占比\t说明');
+  productData.features.forEach(f => {
+    console.log(`${f.feature}\t${f.productRatio}\t${f.salesRatio}\t${f.description}`);
+  });
+
+  console.log('\n\n【热销产品榜单】- 复制以下内容粘贴到飞书表格:\n');
+  console.log('排名\t品牌\t价格\t月销量\t特点');
+  productData.hotProducts.forEach(p => {
+    console.log(`${p.rank}\t${p.brand}\t${p.price}\t${p.monthlySales}\t${p.feature}`);
+  });
+
+  console.log('\n\n【市场数据汇总】:\n');
+  console.log('关键词\tA4 Portable Thermal Printer');
+  console.log('市场\tAmazon US');
+  console.log('数据来源\tSorftime');
+  console.log('更新时间\t' + new Date().toLocaleString('zh-CN'));
+  console.log('\n统计指标\t数值');
+  console.log('分析产品数\t46');
+  console.log('特性数量\t' + productData.features.length);
+  console.log('热销产品数\t' + productData.hotProducts.length);
+  console.log('价格区间\t$27.99 - $79.99');
+  console.log('总月销量\t49199');
+  console.log('平均价格\t$52.70');
+}
+
+async function main() {
+  try {
+    console.log('🚀 开始写入数据到飞书表格...\n');
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    const results = await writeDataToSheets(token);
+
+    console.log('\n' + '='.repeat(80));
+    console.log('📊 写入结果汇总');
+    console.log('='.repeat(80));
+
+    results.forEach(r => {
+      console.log(`${r.success ? '✅' : '❌'} ${r.sheet}: ${r.success ? '成功' : r.error || '失败'}`);
+    });
+
+    displayDataForCopy();
+
+    console.log('\n' + '='.repeat(80));
+    console.log('🔗 访问飞书表格:');
+    console.log('   https://ecnn53rxijcm.feishu.cn/sheets/HjPdst5TxhLabgt8FbpcVBKMnAg');
+    console.log('='.repeat(80));
+
+    console.log('\n💡 操作建议:');
+    console.log('   1. 打开飞书表格链接');
+    console.log('   2. 如果表格为空，复制上方的数据');
+    console.log('   3. 在飞书表格中粘贴数据（使用 Ctrl+V）');
+    console.log('   4. 数据会自动对齐到单元格');
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    console.error('\n详细错误:', error);
+
+    // Still show copy data even on error
+    displayDataForCopy();
+  }
+}
+
+main();

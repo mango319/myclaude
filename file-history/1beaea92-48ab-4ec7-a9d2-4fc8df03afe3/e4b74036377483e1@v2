@@ -1,0 +1,25 @@
+Windows Registry Editor Version 5.00
+
+; 在桌面和文件夹右键菜单中添加"在此处打开 PowerShell"
+[HKEY_CLASSES_ROOT\Directory\Background\shell\PowerShellHere]
+@="在此处打开 PowerShell"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\PowerShellHere\command]
+@="powershell.exe -noexit -command \"Set-Location '%V'\""
+
+; 在文件夹右键菜单中添加"在此处打开 PowerShell"
+[HKEY_CLASSES_ROOT\Directory\shell\PowerShellHere]
+@="在此处打开 PowerShell"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\PowerShellHere\command]
+@="powershell.exe -noexit -command \"Set-Location -LiteralPath '%L'\""
+
+; 在驱动器右键菜单中添加"在此处打开 PowerShell"
+[HKEY_CLASSES_ROOT\Drive\shell\PowerShellHere]
+@="在此处打开 PowerShell"
+"Icon"="powershell.exe"
+
+[HKEY_CLASSES_ROOT\Drive\shell\PowerShellHere\command]
+@="powershell.exe -noexit -command \"Set-Location -LiteralPath '%L'\""

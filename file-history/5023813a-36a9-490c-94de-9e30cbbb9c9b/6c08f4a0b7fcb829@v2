@@ -1,0 +1,100 @@
+# Windows系统文件
+NTUSER.DAT*
+ntuser.dat*
+ntuser.ini
+ntuser.pol
+AppData/
+Application Data/
+Local Settings/
+My Documents/
+Contacts/
+Cookies/
+Desktop/
+Downloads/
+Links/
+Music/
+Videos/
+Saved Games/
+Searches/
+SendTo/
+Recent/
+IntelGraphicsProfiles/
+
+# 开发工具目录
+.agents/
+.ai_completion/
+.antigravity/
+.cache/
+.cc-switch/
+.chelper/
+.claw/
+.codebuddy/
+.codebuddycn/
+.codex/
+.cursor/
+.follow-builders/
+.gemini/
+.kiro/
+.lark-cli/
+.local/
+.marscode/
+.matplotlib/
+.mpdev-cli/
+.openclaw/
+.openclaw-autoclaw/
+.openclaw.backup/
+.pencil/
+.skillhub/
+.trae/
+.trae-cn/
+.vscode/
+.wdm/
+
+# Node.js
+node_modules/
+package-lock.json
+.npmrc
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 临时文件
+*.tmp
+*.temp
+tmpclaude-*/
+nul
+
+# 配置文件
+.claude.json
+.claude.json.backup
+.gitconfig
+.lark-config.json
+.ssh/
+
+# 压缩包和备份
+*.backup/
+*.tar.gz
+*.zip
+
+# 数据和导出文件
+*.csv
+*.json
+xianyu_*
+
+# 项目目录
+ecommerce-cs-bot/
+feishu-*/
+fruit-ninja/
+glm-4.7-mcp-server/
+ima-skills*/
+openclaw-installer/
+WeChatProjects/
+
+# 系统快捷方式
+*.lnk
+
+# Office临时文件
+~$*

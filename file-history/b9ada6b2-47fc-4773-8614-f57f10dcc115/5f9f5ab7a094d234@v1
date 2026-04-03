@@ -1,0 +1,163 @@
+// Check Feishu app permissions and provide setup guide
+const feishuConfig = {
+  appId: "cli_a944a4e852385cc9",
+  appSecret: "iiJSwleMNwXeSMf4ayN72bKLNFEZnqrP",
+  endpoint: "https://open.feishu.cn"
+};
+
+async function getTenantAccessToken() {
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/auth/v3/tenant_access_token/internal`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      app_id: feishuConfig.appId,
+      app_secret: feishuConfig.appSecret
+    })
+  });
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`Failed: ${data.msg}`);
+  }
+  return data.tenant_access_token;
+}
+
+async function getAppPermissions(token) {
+  // Try to get app info to see current permissions
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/application/v6/applications/app_info`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  const text = await response.text();
+  console.log('App info response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function testWritePermission(token, spreadsheetToken) {
+  // Test write permission
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v2/spreadsheets/${spreadsheetToken}/sheets/0/rows`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rows: [{
+        values: [{ v: "测试" }, { v: "数据" }]
+      }]
+    })
+  });
+  const text = await response.text();
+  console.log('Test write response:', text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    return { code: -1, msg: 'Invalid JSON', raw: text };
+  }
+}
+
+async function createAndWrite() {
+  // Create new spreadsheet and try to write immediately
+  const token = await getTenantAccessToken();
+
+  const response = await fetch(`${feishuConfig.endpoint}/open-apis/sheets/v3/spreadsheets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title: `测试表格-${Date.now()}`
+    })
+  });
+  const data = await response.json();
+
+  console.log('Create result:', JSON.stringify(data, null, 2));
+
+  if (data.code === 0) {
+    const spreadsheetToken = data.data.spreadsheet.spreadsheet_token;
+    const url = data.data.spreadsheet.url;
+
+    console.log('\n✅ 测试表格创建成功!');
+    console.log('Token:', spreadsheetToken);
+    console.log('URL:', url);
+
+    // Try to write data immediately
+    console.log('\n📝 测试写入数据...');
+    const testResult = await testWritePermission(token, spreadsheetToken);
+
+    return { success: testResult.code === 0, spreadsheetToken, url, error: testResult.msg };
+  }
+
+  return { success: false, error: data.msg };
+}
+
+function displayPermissionGuide() {
+  console.log('\n' + '='.repeat(80));
+  console.log('📋 飞书应用权限配置指南');
+  console.log('='.repeat(80));
+
+  console.log('\n🔗 打开飞书开放平台配置页面:');
+  console.log('   https://open.feishu.cn/app/cli_a944a4e852385cc9/zh-CN/config');
+
+  console.log('\n📝 需要开通的权限 (Scope):');
+  console.log('   ✅ sheets:spreadsheet       - 查看表格');
+  console.log('   ✅ sheets:spreadsheet:write - 写入表格 (需要开通)');
+  console.log('   ✅ sheets:sheet:write        - 写入工作表 (需要开通)');
+  console.log('   ✅ drive:drive:readonly      - 读取文件');
+
+  console.log('\n🔧 配置步骤:');
+  console.log('   1. 访问: https://open.feishu.cn/app/cli_a944a4e852385cc9/auth');
+  console.log('   2. 找到 "权限管理" 或 "权限配置"');
+  console.log('   3. 添加以下权限:');
+  console.log('      • sheets:spreadsheet:write');
+  console.log('      • sheets:sheet:write');
+  console.log('   4. 点击 "保存" 或 "申请"');
+  console.log('   5. 等待审核通过（通常即时）');
+
+  console.log('\n⚠️ 常见问题:');
+  console.log('   • 如果权限列表为空，联系租户管理员');
+  console.log('   • 某些权限需要租户管理员批准');
+  console.log('   • 权限生效可能需要等待几分钟');
+
+  console.log('\n💡 快速测试:');
+  console.log('   配置完成后，运行以下命令测试:');
+  console.log('   node feishu-test-permissions.js');
+
+  console.log('\n' + '='.repeat(80));
+}
+
+async function main() {
+  try {
+    console.log('🔍 检查飞书应用权限...\n');
+
+    const token = await getTenantAccessToken();
+    console.log('✅ 访问令牌获取成功\n');
+
+    console.log('📊 获取应用信息...');
+    const appInfo = await getAppPermissions(token);
+
+    console.log('\n📝 测试写入权限...');
+    const testResult = await createAndWrite();
+
+    if (testResult.success) {
+      console.log('\n✅ 写入权限已开通！');
+      console.log('🔗 测试表格:', testResult.url);
+    } else {
+      console.log('\n⚠️ 写入权限未开通或配置错误');
+      console.log('错误:', testResult.error);
+      displayPermissionGuide();
+    }
+
+  } catch (error) {
+    console.error('❌ 错误:', error.message);
+    displayPermissionGuide();
+  }
+}
+
+main();
